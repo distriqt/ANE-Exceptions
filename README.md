@@ -1,4 +1,4 @@
-This extension was built by [distriqt //](http://airnativeextensions.com) 
+built by [distriqt //](http://airnativeextensions.com) 
 
 
 ![Exceptions](images/promo.png)
