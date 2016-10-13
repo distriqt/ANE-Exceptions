@@ -1,6 +1,8 @@
 This extension was built by [distriqt //](http://airnativeextensions.com) 
 
 
+![Exceptions](images/promo.png)
+
 
 # Exceptions
 
@@ -73,5 +75,5 @@ http://airnativeextensions.com
 
 This extension was made possible with support by [MovieStarPlanet](http://corporate.moviestarplanet.com/) 
 
-![MovieStarPlanet](https://raw.githubusercontent.com/distriqt/ANE-Memory/master/images/msp_logo.png)
+![MovieStarPlanet](images/msp_logo.png)
 
