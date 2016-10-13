@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="corenativeextension.android.lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/corenativeextension.android.lib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

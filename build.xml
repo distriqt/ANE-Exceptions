@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<project default="all" name="ane.build.core"> 
+	
+	<taskdef resource="net/sf/antcontrib/antlib.xml"/>
+	<target name="bootstrap">
+		<mkdir dir="${user.home}/.ant/lib"/>
+		<get dest="${user.home}/.ant/lib/ant-contrib.jar" src="http://search.maven.org/remotecontent?filepath=ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar"/>
+	</target>
+	
+	<!-- SCRIPTS -->
+
+	<scriptdef language="javascript" name="lower">
+		<attribute name="name" />
+		<attribute name="value" /> 
+		<![CDATA[
+		project.setProperty( attributes.get( "name" ),
+							 attributes.get( "value" ).toLowerCase() );
+		]]>
+	</scriptdef>
+
+	<scriptdef language="javascript" name="cleanchars">
+		<attribute name="name" />
+		<attribute name="value" /> 
+		<![CDATA[
+		project.setProperty( attributes.get( "name" ),
+							 attributes.get( "value" ).replace( ".", "" ) );
+		]]>
+	</scriptdef>
+	
+	<scriptdef language="javascript" name="wrapxmltag">
+		<attribute name="name" /> 
+		<attribute name="input" />
+		<attribute name="tag" />
+		<![CDATA[
+		var value = "";
+		var input = String(attributes.get( "input" ));
+		var tag = String(attributes.get( "tag" ));
+		if (input.length > 0)
+		{ 
+			value = "<"+tag+">"+input+"</"+tag+">";
+		}
+		project.setProperty( attributes.get( "name" ), value );
+		]]>
+	</scriptdef>
+
+
+
+	<!-- CONFIGURATION -->
+
+	<property file="./build_config/build.config" description="build properties" />
+	<property file="./build_config/global.config" description="global properties" />
+
+	<property file="${android.dir}/project.properties" description="android build properties" />
+	<property name="android.target" value="${target}" />
+	
+	
+	<lower name="project.packagename" value="${project.name}" />
+
+	<property name="actionscript.name" value="distriqt.extension.${project.packagename}.swc" />
+	<property name="default.name" value="distriqt.extension.${project.packagename}.default.swc" />
+	<cleanchars name="ios.name" value="${project.name}" />
+	<property name="android.name" value="distriqt.extension.${project.packagename}.android.jar" />
+	<property name="android.package" value="com.distriqt.extension.${project.packagename}" />
+	<property name="android.packagepath" value="com/distriqt/extension/${project.packagename}" />
+	
+	<property name="AIR_SDK_HOME" value="${air.sdk}" />
+	<taskdef resource="flexTasks.tasks" classpath="${air.sdk}/ant/lib/flexTasks.jar" />
+	
+	
+	<!-- VERSIONING -->
+
+	<target name="version">
+
+		<propertyfile file="./build_config/version.config">
+			<entry key="version_build" type="int" operation="+" value="1" pattern="000" />
+		</propertyfile>
+		
+	</target>
+
+	<target name="version_write" >
+		<property file="./build_config/version.config" description="build version properties" />
+		<property name="version" value="${version_major}.${version_minor}.${version_build}" />
+
+		<copy file="./build_config/extension.xml" tofile="./build_config/extension.build.xml" overwrite="true" >
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="@VERSION@" to="${version}"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+		<copy file="${templates}/Version.as" tofile="${actionscript.dir}/src/com/distriqt/extension/${project.packagename}/Version.as" overwrite="true" >
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="@VERSION@" to="${version}"/>
+					<replacestring from="@PACKAGE@" to="${project.packagename}"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+		<copy file="${templates}/Version.as" tofile="${default.dir}/src/com/distriqt/extension/${project.packagename}/Version.as" overwrite="true" >
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="@VERSION@" to="${version}"/>
+					<replacestring from="@PACKAGE@" to="${project.packagename}"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+	</target>
+
+	
+	
+	<!-- ACTIONSCRIPT LIBS -->
+	
+	<!-- Actionscript library -->
+	<target name="pre_build_actionscript" />
+	<target name="build_actionscript" depends="pre_build_actionscript">
+		<echo message="Building actionscript library..."/>
+		<compc output="${actionscript.dir}/bin/${actionscript.name}" debug="${DEBUG_MODE}" swf-version="17">
+			<load-config filename="${air.sdk}/frameworks/air-config.xml" />
+			<source-path path-element="${actionscript.dir}/src" />
+			<include-sources dir="${actionscript.dir}/src" includes="*" />
+		</compc>
+		<echo message="done"/>
+	</target>
+
+	<target name="clean_actionscript" >
+		<delete dir="${actionscript.dir}/bin" />
+	</target>
+	
+	<!-- Default library -->
+	<target name="pre_build_default" />
+	<target name="build_default" depends="pre_build_default" >
+		<echo message="Building default library..."/>
+		<compc output="${default.dir}/bin/${default.name}" debug="${DEBUG_MODE}" swf-version="17">
+			<load-config filename="${air.sdk}/frameworks/air-config.xml" />
+			<source-path path-element="${default.dir}/src" />
+			<include-sources dir="${default.dir}/src" includes="*" />
+		</compc>
+		<echo message="done"/>
+	</target>
+
+	<target name="clean_default" >
+		<delete dir="${default.dir}/bin" />	
+	</target>
+
+	
+	<!-- IOS TASKS -->
+
+	<!-- iOS simulator library -->
+	<target name="build_ios_simulator_project" unless="${ios.useworkspace}">
+		<echo message="[${ios.name}] Building iOS simulator library..." />
+		<exec executable="${ios.xcode_buildpath}">
+			<arg line="-project ${ios.dir}/${ios.name}.xcodeproj"/>
+			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-alltargets" />
+			<arg value="build" />
+			<arg line="-sdk iphonesimulator" />
+		</exec>
+	</target>
+	<target name="build_ios_simulator_workspace" if="${ios.useworkspace}">
+		<echo message="[${ios.name}] Building iOS simulator library..." />
+		<exec executable="${ios.xcode_buildpath}">
+			<arg line="-workspace ${ios.dir}/${ios.name}.xcworkspace"/>
+			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-alltargets" />
+			<arg value="build" />
+			<arg line="-sdk iphonesimulator" />
+		</exec>
+	</target>
+
+	<!-- iOS iphoneos library -->
+	<target name="build_ios_iphone_project" unless="${ios.useworkspace}">
+		<echo message="[${ios.name}] Building iOS library..."/>
+		<exec executable="${ios.xcode_buildpath}">
+			<arg line="-project ${ios.dir}/${ios.name}.xcodeproj"/>
+			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-alltargets" />
+			<arg value="build"/>
+			<arg line="-sdk iphoneos" />
+		</exec>
+	</target>
+	<target name="build_ios_iphone_workspace" if="${ios.useworkspace}">
+		<echo message="[${ios.name}] Building iOS library..."/>
+		<exec executable="${ios.xcode_buildpath}">
+			<arg line="-workspace ${ios.dir}/${ios.name}.xcworkspace"/>
+			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-alltargets" />
+			<arg value="build"/>
+			<arg line="-sdk iphoneos" />
+		</exec>
+	</target>
+
+	<!-- Builds both iOS libs -->
+	<target name="pre_build_ios" />
+	<target name="build_ios" depends="pre_build_ios">
+		<antcall target="build_ios_simulator_project" />
+		<antcall target="build_ios_simulator_workspace" />
+		<antcall target="build_ios_iphone_project" />
+		<antcall target="build_ios_iphone_workspace" />
+	</target>
+
+	
+	<target name="setup_platform_options_ios" >
+		<fileset id="platform.ios.pods.fs" dir="${ios.dir}/${ios.iphoneos_dir}" casesensitive="yes">
+			<include name="**/*.a"/>
+			<exclude name="**/lib${project.name}.a" />
+			<exclude name="**/libPods*.a" />
+		</fileset>
+		<pathconvert refid="platform.ios.pods.fs" property="platform.ios.pods" pathsep="&lt;/packagedDependency&gt;${line.separator}&lt;packagedDependency&gt;">
+			<map from="${basedir}/platform/ios/${ios.iphoneos_dir}/" to="" />
+		</pathconvert>
+		<wrapxmltag name="platform.ios.pods.str" input="${platform.ios.pods}" tag="packagedDependency" />
+		<copy file="./build_config/platform_ios.xml" tofile="./build_config/platform_ios.build.xml" overwrite="true" >
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="@PODS@" to="${platform.ios.pods.str}"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+	</target>
+
+	<target name="pre_package_ios" />
+	<target name="package_ios" depends="pre_package_ios, setup_platform_options_ios" description="Copy iOS files for packaging" >
+		
+		<copy overwrite="true" todir="${ios.dir}/${ios.iphoneos_dir}" >
+			<fileset dir="${ios.dir}/${project.name}" erroronmissingdir="false">
+				<include name="*.framework/**"/>
+				<include name="*.bundle/**"/>
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${ios.dir}/${ios.iphonesimulator_dir}" >
+			<fileset dir="${ios.dir}/${project.name}" erroronmissingdir="false">
+				<include name="*.framework/**"/>
+				<include name="*.bundle/**"/>
+			</fileset>
+		</copy>
+		
+		<delete>
+			<fileset dir="${ios.dir}/${ios.iphoneos_dir}">
+				<include name="**/libPods*.a" />
+			</fileset>
+			<fileset dir="${ios.dir}/${ios.iphonesimulator_dir}">
+				<include name="**/libPods*.a" />
+			</fileset>
+		</delete>
+
+	</target>
+		
+	
+	<target name="clean_ios">
+		<delete dir="${ios.dir}/build/" />
+	</target>
+
+	
+
+	<!-- ANDROID TASKS -->
+	
+	<!-- Build the Android library -->
+	<target name="pre_build_android" />
+	<target name="build_android" depends="pre_build_android">
+		<echo message="Building Android library..."/>
+
+		<delete>
+			<fileset dir="${android.dir}" defaultexcludes="false">
+				<include name="**/.DS_Store"  />
+			</fileset>
+		</delete>
+
+		<exec executable="./gradlew" dir="${android.dir}">
+			<arg line="assemble" />
+		</exec>
+
+	</target>
+
+	<target name="setup_platform_options_android" >
+		<fileset id="platform.android.jar.fs" dir="${android.dir}/${output.dir}" casesensitive="yes">
+			<include name="**/*.jar"/>
+			<exclude name="**/${android.name}" />
+		</fileset>
+		<pathconvert refid="platform.android.jar.fs" property="platform.android.jars" pathsep="&lt;/packagedDependency&gt;${line.separator}&lt;packagedDependency&gt;">
+			<map from="${basedir}/platform/android/build/" to="" />
+		</pathconvert>
+		<wrapxmltag name="platform.android.jars.str" input="${platform.android.jars}" tag="packagedDependency" />
+		<copy file="./build_config/platform_android.xml" tofile="./build_config/platform_android.build.xml" overwrite="true" >
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="@JARS@" to="${platform.android.jars.str}"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+	</target>
+
+	<target name="pre_package_android" />
+	<target name="package_android" depends="pre_package_android" description="Copy Android files for packaging" >
+
+		<mkdir dir="${android.dir}/${output.tmpdir}" />
+		<unzip src="${android.dir}/app/build/outputs/aar/app-release.aar" dest="${android.dir}/${output.tmpdir}" overwrite="true"/>
+
+		<copy file="${android.dir}/${output.tmpdir}/classes.jar" tofile="${android.dir}/${output.dir}/${android.name}" />
+		<copy includeEmptyDirs="false" overwrite="true" todir="${android.dir}/${output.dir}/distriqt-extension-${project.packagename}-res">
+			<fileset dir="${android.dir}/${output.tmpdir}/res/" />
+		</copy>
+		
+		<copy includeEmptyDirs="false" overwrite="true" failonerror="false" quiet="true" todir="${android.dir}/${output.dir}">
+			<fileset dir="${android.dir}/${output.tmpdir}/libs/" >
+				<exclude name="**/FlashRuntimeExtensions.jar" />
+				<exclude name="**/runtimeClasses.jar" />
+				<exclude name="**/mockable-android-24.jar" />
+			</fileset>
+		</copy>
+		<delete dir="${android.dir}/${output.tmpdir}" />
+		
+		<copy includeEmptyDirs="false" overwrite="true" failonerror="false" quiet="true" todir="${android.dir}/${output.dir}">
+			<fileset dir="${android.dir}/externals/" />
+		</copy>
+				
+
+		<!--
+		<copy file="${android.dir}/bin/${android.name}" todir="${android.dir}/${output.dir}" />
+		<copy includeEmptyDirs="false" overwrite="true" todir="${android.dir}/${output.dir}/distriqt-extension-${project.packagename}-res">
+			<fileset dir="${android.dir}/res/" />
+		</copy>
+		<copy includeEmptyDirs="false" overwrite="true" failonerror="false" quiet="true" todir="${android.dir}/${output.dir}">
+			<fileset dir="${android.dir}/libs/" />
+		</copy>
+		-->
+		
+		<antcall target="setup_platform_options_android" />
+	</target>
+	
+
+	<target name="externals_android" >
+		<for list="${android.externals}" param="lib">
+			<sequential>
+				<echo>@{lib}</echo>
+				<path id="aarfile">
+					<first>
+						<fileset dir="${android.sdk}/extras/google/m2repository" includes="**/@{lib}.aar" />
+					</first>
+				</path>
+				<mkdir dir="${android.dir}/${output.tmpdir}" />
+				<unzip src="${toString:aarfile}" dest="${android.dir}/${output.tmpdir}" overwrite="true"/>
+				<copy file="${android.dir}/${output.tmpdir}/classes.jar" tofile="${android.dir}/externals/@{lib}.jar" failonerror="false" />
+				<copy todir="${android.dir}/externals/@{lib}-res" failonerror="false">
+					<fileset dir="${android.dir}/${output.tmpdir}/res" />
+				</copy>
+				<delete dir="${android.dir}/${output.tmpdir}" />
+
+			</sequential>
+		</for>
+	
+	</target>
+
+
+	<target name="clean_android">
+		<delete dir="${android.dir}/${output.dir}" />
+	</target>
+
+
+	<!-- ANE PACKAGE -->
+
+	<target name="build" description="Build Libraries" >
+		<antcall target="build_actionscript" />
+		<antcall target="build_default" />
+		<antcall target="build_ios" />
+		<antcall target="build_android" />
+	</target>
+
+
+	<target name="package">
+		
+		<antcall target="package_android" />
+		<antcall target="package_ios" />
+		<antcall target="package_ane" />
+		<antcall target="package_asdocs" />
+		
+	</target>
+
+
+	<target name="package_ane" depends="version_write" description="Package ANE">
+		<!-- Copy over library.swf to each platform output -->
+		<mkdir dir="${output.tmpdir}" />
+		<unzip src="${actionscript.dir}/bin/${actionscript.name}" dest="${output.tmpdir}" overwrite="true"/>
+		<copy file="${output.tmpdir}/library.swf" todir="${ios.dir}/${ios.iphoneos_dir}" failonerror="true" />
+		<copy file="${output.tmpdir}/library.swf" todir="${ios.dir}/${ios.iphonesimulator_dir}" failonerror="true" />
+		<copy file="${output.tmpdir}/library.swf" todir="${android.dir}/${output.dir}" failonerror="true" />
+		<delete dir="${output.tmpdir}" />
+		
+		<unzip src="${default.dir}/bin/${default.name}" dest="${default.dir}/bin" overwrite="true"/>
+		<delete file="${default.dir}/bin/catalog.xml" />
+		
+		<mkdir dir="${output.dir}" />
+		<!-- Compile ANE -->
+		<exec executable="${air.sdk}/bin/adt" failonerror="true">
+			<arg value="-package"/>
+			<arg value="-target"/>
+			<arg value="ane"/>
+			<arg value="${output.dir}/${output.name}"/>
+			<arg value="./build_config/extension.build.xml"/>
+			<arg line="-swc ${actionscript.dir}/bin/${actionscript.name}"/>
+			<arg line="-platform iPhone-ARM -platformoptions ./build_config/platform_ios.build.xml -C ${ios.dir}/${ios.iphoneos_dir} ."/>
+			<arg line="-platform iPhone-x86 -platformoptions ./build_config/platform_ios.build.xml -C ${ios.dir}/${ios.iphonesimulator_dir} ."/>
+			<arg line="-platform Android-ARM -platformoptions ./build_config/platform_android.build.xml -C ${android.dir}/${output.dir} ."/>
+			<arg line="-platform Android-x86 -platformoptions ./build_config/platform_android.build.xml -C ${android.dir}/${output.dir} ."/>
+			<arg line="-platform default -C ${default.dir}/bin ."/>
+		</exec>
+		
+		<delete file="${ios.dir}/${ios.iphoneos_dir}/library.swf" />
+		<delete file="${ios.dir}/${ios.iphonesimulator_dir}/library.swf" />
+		<delete file="${android.dir}/${output.dir}/library.swf" />
+		<delete file="${default.dir}/bin/library.swf" />   
+	</target>
+
+
+	<target name="package_asdocs" if="${output.packageasdocs}">
+		<property name="output.docs.tmp" value="${output.dir}/tmpdocs" />
+
+		<mkdir dir="${output.docs.tmp}" />
+
+		<exec executable="${air.sdk}/bin/asdoc" failonerror="true">
+			<env key="FLEX_HOME" value="${air.sdk}"/>
+			<env key="FALCON_HOME" value="${air.sdk}"/>
+			<arg line="-source-path ${actionscript.dir}/src" />
+			<arg line="-window-title 'distriqt // ${project.name}'" />
+			<arg line="-main-title '&lt;a href=&quot;http://distriqt.com&quot; target=&quot;_top&quot; &gt;distriqt&lt;/a&gt; // ${project.name} Native Extension Documentation'" />
+			<arg line="-footer 'Copyright &lt;a href=&quot;http://distriqt.com&quot; target=&quot;_top&quot; &gt;distriqt&lt;/a&gt; 2016'" />
+			<arg line="-doc-sources ${actionscript.dir}/src"/>
+			<arg line="-output ${output.docs.tmp}"/>
+			<arg line="-lenient" />
+			<arg line="-keep-xml=true" />
+			<arg line="-skip-xsl=true" />
+			<arg line="-library-path+='${air.sdk}/frameworks/libs/air/airglobal.swc'"/>
+		</exec>
+		
+		<zip destfile="${output.dir}/${output.name}" update="true">
+			<zipfileset dir="${output.docs.tmp}/tempdita" prefix="docs">
+				<include name="*.*"/>
+				<exclude name="ASDoc_Config.xml"/>
+				<exclude name="overviews.xml"/>
+			</zipfileset>
+		</zip>  
+
+		<delete dir="${output.docs.tmp}" />
+
+	</target>
+
+	<target name="clean_ane" >
+		<delete file="./build_config/platform_android.build.xml" />
+		<delete file="./build_config/platform_ios.build.xml" />
+		<delete file="./build_config/extension.build.xml" />
+	</target>
+
+
+	<!-- CLEAN -->
+
+	<target name="clean">
+		<antcall target="clean_actionscript" />
+		<antcall target="clean_default" />
+		<antcall target="clean_ios" />
+		<antcall target="clean_android" />
+		<antcall target="clean_ane" />
+	</target>
+
+	
+	<!--  DOCUMENTATION -->
+
+	<target name="docs" description="Generate asdocs">
+		<delete dir="${output.docs}" />
+		<mkdir dir="${output.docs}" />
+		
+		<exec executable="${air.sdk}/bin/asdoc" failonerror="true">
+			<env key="FLEX_HOME" value="${air.sdk}"/>
+			<env key="FALCON_HOME" value="${air.sdk}"/>
+			<arg line="-source-path ${actionscript.dir}/src" />
+			<arg line="-window-title 'distriqt // ${project.name}'" />
+			<arg line="-main-title '&lt;a href=&quot;http://distriqt.com&quot; target=&quot;_top&quot; &gt;distriqt&lt;/a&gt; // ${project.name} Native Extension Documentation'" />
+			<arg line="-footer 'Copyright &lt;a href=&quot;http://distriqt.com&quot; target=&quot;_top&quot; &gt;distriqt&lt;/a&gt; 2016'" />
+			<arg line="-doc-sources ${actionscript.dir}/src"/>
+			<arg line="-output ${output.docs}"/>
+			<arg line="-lenient" />
+			<arg line="-library-path+='${air.sdk}/frameworks/libs/air/airglobal.swc'"/>
+		</exec>	  
+
+	</target>
+	
+	
+	<target name="all" depends="clean, version, build, package, docs" />
+
+	<target name="dev" depends="clean, build, package, docs" />
+
+
+</project>

@@ -1,0 +1,320 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E33ED8AA1BBD15AE00D23A8C /* DTEXEventDispatcherDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = E33ED8A91BBD15AE00D23A8C /* DTEXEventDispatcherDelegate.h */; };
+		E34D85B31BB0D81B000DA3F9 /* DTEXTag.h in Headers */ = {isa = PBXBuildFile; fileRef = E34D85B21BB0D81B000DA3F9 /* DTEXTag.h */; };
+		E34D85B61BB0D87C000DA3F9 /* DTEXController.h in Headers */ = {isa = PBXBuildFile; fileRef = E34D85B41BB0D87C000DA3F9 /* DTEXController.h */; };
+		E34D85B71BB0D87C000DA3F9 /* DTEXController.m in Sources */ = {isa = PBXBuildFile; fileRef = E34D85B51BB0D87C000DA3F9 /* DTEXController.m */; };
+		E34D85BA1BB0D88D000DA3F9 /* DTEXEventDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = E34D85B81BB0D88D000DA3F9 /* DTEXEventDispatcher.h */; };
+		E34D85BB1BB0D88D000DA3F9 /* DTEXEventDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E34D85B91BB0D88D000DA3F9 /* DTEXEventDispatcher.m */; };
+		E36881591D791F0B0004FC90 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E36881581D791F0B0004FC90 /* CrashReporter.framework */; };
+		E38716E61DAF17DA0016844B /* DTEXFREUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E38716E41DAF17DA0016844B /* DTEXFREUtils.h */; };
+		E38716E71DAF17DA0016844B /* DTEXFREUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E38716E51DAF17DA0016844B /* DTEXFREUtils.m */; };
+		E3F4A7B6153D8C110057A446 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3F4A7B5153D8C110057A446 /* Foundation.framework */; };
+		E3F4A7BC153D8C110057A446 /* Exceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = E3F4A7BB153D8C110057A446 /* Exceptions.m */; };
+		E3F4A7C3153D8C4A0057A446 /* FlashRuntimeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = E3F4A7C2153D8C4A0057A446 /* FlashRuntimeExtensions.h */; };
+		E3FD7C821898742800881968 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E33692DA17CF44850021F35A /* UIKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E33692DA17CF44850021F35A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E33ED8A91BBD15AE00D23A8C /* DTEXEventDispatcherDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTEXEventDispatcherDelegate.h; sourceTree = "<group>"; };
+		E34D85B21BB0D81B000DA3F9 /* DTEXTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTEXTag.h; sourceTree = "<group>"; };
+		E34D85B41BB0D87C000DA3F9 /* DTEXController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTEXController.h; sourceTree = "<group>"; };
+		E34D85B51BB0D87C000DA3F9 /* DTEXController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTEXController.m; sourceTree = "<group>"; };
+		E34D85B81BB0D88D000DA3F9 /* DTEXEventDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTEXEventDispatcher.h; sourceTree = "<group>"; };
+		E34D85B91BB0D88D000DA3F9 /* DTEXEventDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTEXEventDispatcher.m; sourceTree = "<group>"; };
+		E36881581D791F0B0004FC90 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = Exceptions/CrashReporter.framework; sourceTree = "<group>"; };
+		E38716E41DAF17DA0016844B /* DTEXFREUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTEXFREUtils.h; sourceTree = "<group>"; };
+		E38716E51DAF17DA0016844B /* DTEXFREUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTEXFREUtils.m; sourceTree = "<group>"; };
+		E3F4A7B2153D8C110057A446 /* libExceptions.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libExceptions.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3F4A7B5153D8C110057A446 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E3F4A7B9153D8C110057A446 /* Exceptions-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Exceptions-Prefix.pch"; sourceTree = "<group>"; };
+		E3F4A7BB153D8C110057A446 /* Exceptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Exceptions.m; sourceTree = "<group>"; };
+		E3F4A7C2153D8C4A0057A446 /* FlashRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashRuntimeExtensions.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E3F4A7AF153D8C110057A446 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E3FD7C821898742800881968 /* UIKit.framework in Frameworks */,
+				E3F4A7B6153D8C110057A446 /* Foundation.framework in Frameworks */,
+				E36881591D791F0B0004FC90 /* CrashReporter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E3F4A7A7153D8C110057A446 = {
+			isa = PBXGroup;
+			children = (
+				E3F4A7B7153D8C110057A446 /* Exceptions */,
+				E3F4A7B4153D8C110057A446 /* Frameworks */,
+				E3F4A7B3153D8C110057A446 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E3F4A7B3153D8C110057A446 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E3F4A7B2153D8C110057A446 /* libExceptions.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E3F4A7B4153D8C110057A446 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E36881581D791F0B0004FC90 /* CrashReporter.framework */,
+				E33692DA17CF44850021F35A /* UIKit.framework */,
+				E3F4A7B5153D8C110057A446 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E3F4A7B7153D8C110057A446 /* Exceptions */ = {
+			isa = PBXGroup;
+			children = (
+				E3F4A7BB153D8C110057A446 /* Exceptions.m */,
+				E3F4A7B8153D8C110057A446 /* Supporting Files */,
+				E34D85B21BB0D81B000DA3F9 /* DTEXTag.h */,
+				E38716E41DAF17DA0016844B /* DTEXFREUtils.h */,
+				E38716E51DAF17DA0016844B /* DTEXFREUtils.m */,
+				E34D85B41BB0D87C000DA3F9 /* DTEXController.h */,
+				E34D85B51BB0D87C000DA3F9 /* DTEXController.m */,
+				E34D85B81BB0D88D000DA3F9 /* DTEXEventDispatcher.h */,
+				E34D85B91BB0D88D000DA3F9 /* DTEXEventDispatcher.m */,
+				E33ED8A91BBD15AE00D23A8C /* DTEXEventDispatcherDelegate.h */,
+			);
+			path = Exceptions;
+			sourceTree = "<group>";
+		};
+		E3F4A7B8153D8C110057A446 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E3F4A7C2153D8C4A0057A446 /* FlashRuntimeExtensions.h */,
+				E3F4A7B9153D8C110057A446 /* Exceptions-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E3F4A7B0153D8C110057A446 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E34D85BA1BB0D88D000DA3F9 /* DTEXEventDispatcher.h in Headers */,
+				E38716E61DAF17DA0016844B /* DTEXFREUtils.h in Headers */,
+				E3F4A7C3153D8C4A0057A446 /* FlashRuntimeExtensions.h in Headers */,
+				E34D85B61BB0D87C000DA3F9 /* DTEXController.h in Headers */,
+				E33ED8AA1BBD15AE00D23A8C /* DTEXEventDispatcherDelegate.h in Headers */,
+				E34D85B31BB0D81B000DA3F9 /* DTEXTag.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E3F4A7B1153D8C110057A446 /* Exceptions */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E3F4A7BF153D8C110057A446 /* Build configuration list for PBXNativeTarget "Exceptions" */;
+			buildPhases = (
+				E3F4A7AE153D8C110057A446 /* Sources */,
+				E3F4A7AF153D8C110057A446 /* Frameworks */,
+				E3F4A7B0153D8C110057A446 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Exceptions;
+			productName = Exceptions;
+			productReference = E3F4A7B2153D8C110057A446 /* libExceptions.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E3F4A7A9153D8C110057A446 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = distriqt;
+			};
+			buildConfigurationList = E3F4A7AC153D8C110057A446 /* Build configuration list for PBXProject "Exceptions" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E3F4A7A7153D8C110057A446;
+			productRefGroup = E3F4A7B3153D8C110057A446 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E3F4A7B1153D8C110057A446 /* Exceptions */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E3F4A7AE153D8C110057A446 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E38716E71DAF17DA0016844B /* DTEXFREUtils.m in Sources */,
+				E3F4A7BC153D8C110057A446 /* Exceptions.m in Sources */,
+				E34D85B71BB0D87C000DA3F9 /* DTEXController.m in Sources */,
+				E34D85BB1BB0D88D000DA3F9 /* DTEXEventDispatcher.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		E3F4A7BD153D8C110057A446 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		E3F4A7BE153D8C110057A446 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E3F4A7C0153D8C110057A446 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/Exceptions.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/marchbold/work/distriqt/extensions/supportlibs/corelibraries/platform/ios/build/Release-iphoneos",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Exceptions",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Exceptions/Exceptions-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		E3F4A7C1153D8C110057A446 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/Exceptions.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/marchbold/work/distriqt/extensions/supportlibs/corelibraries/platform/ios/build/Release-iphoneos",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Exceptions",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Exceptions/Exceptions-Prefix.pch";
+				GCC_THUMB_SUPPORT = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E3F4A7AC153D8C110057A446 /* Build configuration list for PBXProject "Exceptions" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E3F4A7BD153D8C110057A446 /* Debug */,
+				E3F4A7BE153D8C110057A446 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E3F4A7BF153D8C110057A446 /* Build configuration list for PBXNativeTarget "Exceptions" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E3F4A7C0153D8C110057A446 /* Debug */,
+				E3F4A7C1153D8C110057A446 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E3F4A7A9153D8C110057A446 /* Project object */;
+}

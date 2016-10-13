@@ -1,0 +1,37 @@
+<extension xmlns="http://ns.adobe.com/air/extension/4.0">
+	<id>com.distriqt.Exceptions</id>
+	<versionNumber>@VERSION@</versionNumber>
+	<platforms>
+		<platform name="Android-ARM">
+			<applicationDeployment>
+				<nativeLibrary>distriqt.extension.exceptions.android.jar</nativeLibrary>
+				<initializer>com.distriqt.extension.exceptions.ExceptionsExtension</initializer>
+				<finalizer>com.distriqt.extension.exceptions.ExceptionsExtension</finalizer>
+			</applicationDeployment>
+		</platform>
+		<platform name="Android-x86">
+			<applicationDeployment>
+				<nativeLibrary>distriqt.extension.exceptions.android.jar</nativeLibrary>
+				<initializer>com.distriqt.extension.exceptions.ExceptionsExtension</initializer>
+				<finalizer>com.distriqt.extension.exceptions.ExceptionsExtension</finalizer>
+			</applicationDeployment>
+		</platform>
+		<platform name="iPhone-ARM">
+			<applicationDeployment>
+				<nativeLibrary>libExceptions.a</nativeLibrary>
+				<initializer>ExceptionsExtInitializer</initializer>
+				<finalizer>ExceptionsExtFinalizer</finalizer>
+			</applicationDeployment>
+		</platform>
+		<platform name="iPhone-x86">
+			<applicationDeployment>
+				<nativeLibrary>libExceptions.a</nativeLibrary>
+				<initializer>ExceptionsExtInitializer</initializer>
+				<finalizer>ExceptionsExtFinalizer</finalizer>
+			</applicationDeployment>
+		</platform>
+		<platform name="default"> 
+			<applicationDeployment /> 
+		</platform>
+	</platforms>
+</extension>
