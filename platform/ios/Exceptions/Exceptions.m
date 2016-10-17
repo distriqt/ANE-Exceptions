@@ -29,7 +29,6 @@ NSString * const Exceptions_VERSION = @"1.0";
 NSString * const Exceptions_IMPLEMENTATION = @"iOS";
 
 FREContext distriqt_exceptions_ctx = nil;
-Boolean distriqt_exceptions_v = false;
 DTEXEventDispatcher* distriqt_exceptions_eventDispatcher = nil;
 DTEXController* distriqt_exceptions_controller = nil;
 
@@ -100,17 +99,13 @@ FREObject Exceptions_setUncaughtExceptionHandler(FREContext ctx, void* funcData,
 	FREObject result = NULL;
 	@autoreleasepool
 	{
-		if (distriqt_exceptions_v)
+		[DTEXFREUtils log: DTEX_TAG message: @"setUncaughtExceptionHandler" ];
+	
+		PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+		NSError* error;
+		if (![crashReporter enableCrashReporterAndReturnError: &error])
 		{
-			[DTEXFREUtils log: DTEX_TAG message: @"setUncaughtExceptionHandler" ];
-//			NSSetUncaughtExceptionHandler( &uncaughtExceptionHandler );
-			
-			PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-			NSError* error;
-			if (![crashReporter enableCrashReporterAndReturnError: &error])
-			{
-				[DTEXFREUtils log: DTEX_TAG message: @"ERROR: %@", error ];
-			}
+			[DTEXFREUtils log: DTEX_TAG message: @"ERROR: %@", error ];
 		}
 	}
 	return result;
@@ -123,12 +118,9 @@ FREObject Exceptions_hasPendingException(FREContext ctx, void* funcData, uint32_
 	@autoreleasepool
 	{
 		Boolean hasPendingException = false;
-		if (distriqt_exceptions_v)
-		{
-			[DTEXFREUtils log: DTEX_TAG message: @"hasPendingException" ];
-			PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-			hasPendingException = [crashReporter hasPendingCrashReport];
-		}
+		[DTEXFREUtils log: DTEX_TAG message: @"hasPendingException" ];
+		PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+		hasPendingException = [crashReporter hasPendingCrashReport];
 		result = [DTEXFREUtils newFREObjectFromBoolean: hasPendingException];
 	}
 	return result;
@@ -141,43 +133,40 @@ FREObject Exceptions_getPendingException(FREContext ctx, void* funcData, uint32_
 	@autoreleasepool
 	{
 		result = [DTEXFREUtils newFREObject];
-		if (distriqt_exceptions_v)
+		[DTEXFREUtils log: DTEX_TAG message: @"getPendingException" ];
+		PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+		if([crashReporter hasPendingCrashReport])
 		{
-			[DTEXFREUtils log: DTEX_TAG message: @"getPendingException" ];
-			PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-			if([crashReporter hasPendingCrashReport])
+			NSData* crashData = [crashReporter loadPendingCrashReportData];
+			if (crashData != nil)
 			{
-				NSData* crashData = [crashReporter loadPendingCrashReportData];
-				if (crashData != nil)
+				PLCrashReport* report = [[PLCrashReport alloc] initWithData: crashData error: NULL];
+				if (report != nil)
 				{
-					PLCrashReport* report = [[PLCrashReport alloc] initWithData: crashData error: NULL];
-					if (report != nil)
-					{
-						NSString* reportString = [PLCrashReportTextFormatter stringValueForCrashReport: report
-																						withTextFormat: PLCrashReportTextFormatiOS];
-						
-						[DTEXFREUtils setFREObjectProperty: @"timestamp"
-													object: result
-													 value: [DTEXFREUtils newFREObjectFromDouble: report.systemInfo.timestamp.timeIntervalSince1970 * 1000]];
-						
-						[DTEXFREUtils setFREObjectProperty: @"name"
-													object: result
-													 value: [DTEXFREUtils newFREObjectFromString: report.exceptionInfo.exceptionName]];
-						
-						[DTEXFREUtils setFREObjectProperty: @"reason"
-													object: result
-													 value: [DTEXFREUtils newFREObjectFromString: report.exceptionInfo.exceptionReason]];
-						
-						[DTEXFREUtils setFREObjectProperty: @"report"
-													object: result
-													 value: [DTEXFREUtils newFREObjectFromString: reportString]];
-						
-						
-					}
+					NSString* reportString = [PLCrashReportTextFormatter stringValueForCrashReport: report
+																					withTextFormat: PLCrashReportTextFormatiOS];
+					
+					[DTEXFREUtils setFREObjectProperty: @"timestamp"
+												object: result
+												 value: [DTEXFREUtils newFREObjectFromDouble: report.systemInfo.timestamp.timeIntervalSince1970 * 1000]];
+					
+					[DTEXFREUtils setFREObjectProperty: @"name"
+												object: result
+												 value: [DTEXFREUtils newFREObjectFromString: report.exceptionInfo.exceptionName]];
+					
+					[DTEXFREUtils setFREObjectProperty: @"reason"
+												object: result
+												 value: [DTEXFREUtils newFREObjectFromString: report.exceptionInfo.exceptionReason]];
+					
+					[DTEXFREUtils setFREObjectProperty: @"report"
+												object: result
+												 value: [DTEXFREUtils newFREObjectFromString: reportString]];
+					
+					
 				}
-				
-				[crashReporter purgePendingCrashReport];
 			}
+			
+			[crashReporter purgePendingCrashReport];
 		}
 	}
 	return result;
@@ -215,7 +204,6 @@ void ExceptionsContextInitializer(void* extData, const uint8_t* ctxType, FRECont
 	//	Store the global states
 	
     distriqt_exceptions_ctx = ctx;
-    distriqt_exceptions_v = false;
     
     distriqt_exceptions_eventDispatcher = [[DTEXEventDispatcher alloc] init];
     distriqt_exceptions_eventDispatcher.context = distriqt_exceptions_ctx;

@@ -35,9 +35,9 @@
         </excludedEntries>
       </libraryPathEntry>
       <libraryPathEntry kind="3" linkType="1" path="/distriqt.extension.exceptions/bin/distriqt.extension.exceptions.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="5" linkType="2" path="${DOCUMENTS}/extensions/exceptions/source/build/com.distriqt.Exceptions.ane"/>
       <libraryPathEntry kind="5" linkType="2" path="${DOCUMENTS}/extensions/debug/source/build/com.distriqt.Debug.ane"/>
       <libraryPathEntry kind="5" linkType="2" path="${DOCUMENTS}/supportextensions/core/source/build/com.distriqt.Core.ane"/>
+      <libraryPathEntry kind="5" linkType="2" path="${DOCUMENTS}/opensource/exceptions/source/build/com.distriqt.Exceptions.ane"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -55,9 +55,9 @@
       <airSettings airCertificatePath="/Users/marchbold/Dropbox/work/certs/iPhoneDeveloper_MichaelArchbold_Certificates.p12" airTimestamp="true" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths>
-          <anePathEntry path="${DOCUMENTS}/extensions/exceptions/source/build/com.distriqt.Exceptions.ane"/>
           <anePathEntry path="${DOCUMENTS}/extensions/debug/source/build/com.distriqt.Debug.ane"/>
           <anePathEntry path="${DOCUMENTS}/supportextensions/core/source/build/com.distriqt.Core.ane"/>
+          <anePathEntry path="${DOCUMENTS}/opensource/exceptions/source/build/com.distriqt.Exceptions.ane"/>
         </anePaths>
         <newLaunchParams/>
         <modifiedLaunchParams/>
@@ -71,9 +71,9 @@
       <airSettings airCertificatePath="" airTimestamp="true" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths>
-          <anePathEntry path="${DOCUMENTS}/extensions/exceptions/source/build/com.distriqt.Exceptions.ane"/>
           <anePathEntry path="${DOCUMENTS}/extensions/debug/source/build/com.distriqt.Debug.ane"/>
           <anePathEntry path="${DOCUMENTS}/supportextensions/core/source/build/com.distriqt.Core.ane"/>
+          <anePathEntry path="${DOCUMENTS}/opensource/exceptions/source/build/com.distriqt.Exceptions.ane"/>
         </anePaths>
         <newLaunchParams/>
         <modifiedLaunchParams/>
