@@ -30,6 +30,7 @@
 			<key>UIDeviceFamily</key>
 			<array>
 				<string>1</string>
+				<string>2</string>
 			</array>
 		]]></InfoAdditions>
 		<requestedDisplayResolution>high</requestedDisplayResolution>
@@ -50,7 +51,6 @@
 	<extensions>
 		<extensionID>com.distriqt.Exceptions</extensionID>
 		<extensionID>com.distriqt.Debug</extensionID>
-		<extensionID>com.distriqt.Core</extensionID>
 	</extensions>
 	
 </application>

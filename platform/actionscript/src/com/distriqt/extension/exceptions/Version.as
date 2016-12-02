@@ -2,6 +2,6 @@ package com.distriqt.extension.exceptions
 {
 	internal final class Version
 	{
-		public static const VERSION : String = "1.0.004"; 
+		public static const VERSION : String = "1.0.009"; 
 	}
 }

@@ -64,8 +64,11 @@
 +(FREObject) newFREObjectFromString: (NSString*) value
 {
     FREObject result = NULL;
-    FRENewObjectFromUTF8( (uint32_t)strlen((const char*)[value UTF8String]) + 1, (const uint8_t*)[value UTF8String], &result);
-    return result;
+	if (value != nil)
+	{
+		FRENewObjectFromUTF8( (uint32_t)strlen((const char*)[value UTF8String]) + 1, (const uint8_t*)[value UTF8String], &result);
+	}
+	return result;
 }
 
 

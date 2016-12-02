@@ -36,7 +36,6 @@
       </libraryPathEntry>
       <libraryPathEntry kind="3" linkType="1" path="/distriqt.extension.exceptions/bin/distriqt.extension.exceptions.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="5" linkType="2" path="${DOCUMENTS}/extensions/debug/source/build/com.distriqt.Debug.ane"/>
-      <libraryPathEntry kind="5" linkType="2" path="${DOCUMENTS}/supportextensions/core/source/build/com.distriqt.Core.ane"/>
       <libraryPathEntry kind="5" linkType="2" path="${DOCUMENTS}/opensource/exceptions/source/build/com.distriqt.Exceptions.ane"/>
     </libraryPath>
     <sourceAttachmentPath/>
@@ -51,8 +50,8 @@
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
-    <buildTarget buildTargetName="device" iosSettingsVersion="2" isCurrent="true" platformId="com.adobe.flexide.multiplatform.ios.platform" provisioningFile="/Users/marchbold/Dropbox/work/certs/distriqt_test_profile.mobileprovision" releasePackageType="">
-      <airSettings airCertificatePath="/Users/marchbold/Dropbox/work/certs/iPhoneDeveloper_MichaelArchbold_Certificates.p12" airTimestamp="true" anePathSet="true" version="1">
+    <buildTarget buildTargetName="device" iosSettingsVersion="2" isCurrent="true" platformId="com.adobe.flexide.multiplatform.ios.platform" provisioningFile="/Users/marchbold/Dropbox/work/certs/distriqt_test_profile.mobileprovision" releasePackageType="ipa-app-store">
+      <airSettings airCertificatePath="/Users/marchbold/Dropbox/work/certs/distribution/distriqt_distribution.p12" airTimestamp="true" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths>
           <anePathEntry path="${DOCUMENTS}/extensions/debug/source/build/com.distriqt.Debug.ane"/>

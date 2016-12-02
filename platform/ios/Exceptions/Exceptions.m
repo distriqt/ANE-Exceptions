@@ -137,36 +137,45 @@ FREObject Exceptions_getPendingException(FREContext ctx, void* funcData, uint32_
 		PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
 		if([crashReporter hasPendingCrashReport])
 		{
-			NSData* crashData = [crashReporter loadPendingCrashReportData];
-			if (crashData != nil)
+			@try
 			{
-				PLCrashReport* report = [[PLCrashReport alloc] initWithData: crashData error: NULL];
-				if (report != nil)
+				NSData* crashData = [crashReporter loadPendingCrashReportData];
+				if (crashData != nil)
 				{
-					NSString* reportString = [PLCrashReportTextFormatter stringValueForCrashReport: report
-																					withTextFormat: PLCrashReportTextFormatiOS];
-					
-					[DTEXFREUtils setFREObjectProperty: @"timestamp"
-												object: result
-												 value: [DTEXFREUtils newFREObjectFromDouble: report.systemInfo.timestamp.timeIntervalSince1970 * 1000]];
-					
-					[DTEXFREUtils setFREObjectProperty: @"name"
-												object: result
-												 value: [DTEXFREUtils newFREObjectFromString: report.exceptionInfo.exceptionName]];
-					
-					[DTEXFREUtils setFREObjectProperty: @"reason"
-												object: result
-												 value: [DTEXFREUtils newFREObjectFromString: report.exceptionInfo.exceptionReason]];
-					
-					[DTEXFREUtils setFREObjectProperty: @"report"
-												object: result
-												 value: [DTEXFREUtils newFREObjectFromString: reportString]];
-					
-					
+					PLCrashReport* report = [[PLCrashReport alloc] initWithData: crashData error: NULL];
+					if (report != nil)
+					{
+						NSString* reportString = [PLCrashReportTextFormatter stringValueForCrashReport: report
+																						withTextFormat: PLCrashReportTextFormatiOS];
+						
+						NSString* name = @"";
+						NSString* reason = @"";
+						if (report.exceptionInfo != nil)
+						{
+							name   = report.exceptionInfo.exceptionName;
+							reason = report.exceptionInfo.exceptionReason;
+						}
+						NSTimeInterval timestamp = 0;
+						if (report.systemInfo != nil)
+						{
+							timestamp = report.systemInfo.timestamp.timeIntervalSince1970 * 1000;
+						}
+						
+						[DTEXFREUtils setFREObjectProperty: @"timestamp" object: result value: [DTEXFREUtils newFREObjectFromDouble: timestamp]];
+						[DTEXFREUtils setFREObjectProperty: @"name"      object: result value: [DTEXFREUtils newFREObjectFromString: name ]];
+						[DTEXFREUtils setFREObjectProperty: @"reason"    object: result value: [DTEXFREUtils newFREObjectFromString: reason ]];
+						[DTEXFREUtils setFREObjectProperty: @"report"    object: result value: [DTEXFREUtils newFREObjectFromString: reportString]];
+						
+					}
 				}
 			}
-			
-			[crashReporter purgePendingCrashReport];
+			@catch (NSException *exception)
+			{
+			}
+			@finally
+			{
+				[crashReporter purgePendingCrashReport];
+			}
 		}
 	}
 	return result;

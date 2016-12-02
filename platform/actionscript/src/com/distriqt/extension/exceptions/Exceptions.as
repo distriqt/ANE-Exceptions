@@ -55,9 +55,9 @@ package com.distriqt.extension.exceptions
 		private static var _instance				: Exceptions;
 		private static var _shouldCreateInstance	: Boolean = false;
 		
-		private static var _extContext		: ExtensionContext = null;
+		private static var _extContext				: ExtensionContext = null;
 		
-		private var _extensionId			: String = "";
+		private var _extensionId					: String = "";
 
 		
 		
