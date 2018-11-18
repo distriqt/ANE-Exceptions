@@ -89,7 +89,7 @@
 				</tokenfilter>
 			</filterchain>
 		</copy>
-		<copy file="${templates}/Version.as" tofile="${actionscript.dir}/src/com/distriqt/extension/${project.packagename}/Version.as" overwrite="true" >
+		<copy file="${codetmpl}/Version.as" tofile="${actionscript.dir}/src/com/distriqt/extension/${project.packagename}/Version.as" overwrite="true" >
 			<filterchain>
 				<tokenfilter>
 					<replacestring from="@VERSION@" to="${version}"/>
@@ -97,7 +97,7 @@
 				</tokenfilter>
 			</filterchain>
 		</copy>
-		<copy file="${templates}/Version.as" tofile="${default.dir}/src/com/distriqt/extension/${project.packagename}/Version.as" overwrite="true" >
+		<copy file="${codetmpl}/Version.as" tofile="${default.dir}/src/com/distriqt/extension/${project.packagename}/Version.as" overwrite="true" >
 			<filterchain>
 				<tokenfilter>
 					<replacestring from="@VERSION@" to="${version}"/>
@@ -488,7 +488,7 @@
 	</target>
 	
 	
-	<target name="all" depends="clean, version, build, package, docs" />
+	<target name="all" depends="clean, version, version_write, build, package, docs" />
 
 	<target name="dev" depends="clean, build, package, docs" />
 

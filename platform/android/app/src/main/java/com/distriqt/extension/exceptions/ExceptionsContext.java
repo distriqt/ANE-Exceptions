@@ -23,8 +23,10 @@ import com.distriqt.extension.exceptions.functions.GetPendingExceptionFunction;
 import com.distriqt.extension.exceptions.functions.HasPendingExceptionFunction;
 import com.distriqt.extension.exceptions.functions.ImplementationFunction;
 import com.distriqt.extension.exceptions.functions.IsSupportedFunction;
+import com.distriqt.extension.exceptions.functions.PurgePendingExceptionFunction;
 import com.distriqt.extension.exceptions.functions.SetUncaughtExceptionHandlerFunction;
 import com.distriqt.extension.exceptions.functions.VersionFunction;
+import com.distriqt.extension.exceptions.functions.WritePendingExceptionToFileFunction;
 import com.distriqt.extension.exceptions.util.IEventDispatcher;
 
 import java.util.HashMap;
@@ -72,6 +74,8 @@ public class ExceptionsContext extends FREContext implements IEventDispatcher
 		functionMap.put( "setUncaughtExceptionHandler", new SetUncaughtExceptionHandlerFunction() );
 		functionMap.put( "hasPendingException", 		new HasPendingExceptionFunction() );
 		functionMap.put( "getPendingException", 		new GetPendingExceptionFunction() );
+		functionMap.put( "writePendingExceptionToFile", new WritePendingExceptionToFileFunction() );
+		functionMap.put( "purgePendingException", 		new PurgePendingExceptionFunction() );
 
 		return functionMap;
 	}

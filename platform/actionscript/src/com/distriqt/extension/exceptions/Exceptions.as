@@ -19,6 +19,7 @@ package com.distriqt.extension.exceptions
 	import flash.events.EventDispatcher;
 	import flash.events.StatusEvent;
 	import flash.external.ExtensionContext;
+	import flash.filesystem.File;
 	
 	
 	/**	
@@ -233,10 +234,13 @@ package com.distriqt.extension.exceptions
 		
 		
 		/**
-		 * 
-		 * @return 
-		 * 
-		 */		
+		 * <p>
+		 *     Checks if there is a pending exception that may have occurred on a previous
+		 *     run of the application.
+		 * </p>
+		 *
+		 * @return	<code>true</code> if an exception report is available and <code>false</code> if not
+		 */
 		public function hasPendingException():Boolean
 		{
 			try
@@ -251,21 +255,68 @@ package com.distriqt.extension.exceptions
 		
 		
 		/**
-		 * 
-		 * @return 
-		 * 
-		 */		
-		public function getPendingException():ExceptionReport
+		 * <p>
+		 *     Returns the <code>ExceptionReport</code> for any pending exception that
+		 *     may have occurred previously.
+		 * </p>
+		 *
+		 * @param purge	If <code>true</code> the pending exception will be purged and no longer be accessible
+		 *
+		 * @return	<code>ExceptionReport</code> object or null if there was no pending exception
+		 */
+		public function getPendingException( purge:Boolean=true ):ExceptionReport
 		{
 			try
 			{
-				var data:Object = _extContext.call( "getPendingException" ) as Object;
+				var data:Object = _extContext.call( "getPendingException", purge ) as Object;
 				return ExceptionReport.fromObject( data );
 			}
 			catch (e:Error)
 			{
 			}
 			return null;
+		}
+		
+		
+		/**
+		 * <p>
+		 *     Writes the crash report into a file.
+		 * </p>
+		 *
+		 *
+		 * @param file	The <code>File</code> reference to write the crash output into
+		 * @param purge	If <code>true</code> the pending exception will be purged and no longer be accessible
+		 *
+		 * @return <code>true</code> if the pending exception was successfully written to the file
+		 */
+		public function writePendingExceptionToFile( file:File, purge:Boolean=true ):Boolean
+		{
+			try
+			{
+				if (file == null || file.nativePath == null)
+					return false;
+				
+				return _extContext.call( "writePendingExceptionToFile", file.nativePath, purge ) as Boolean;
+			}
+			catch (e:Error)
+			{
+			}
+			return false;
+		}
+		
+		
+		/**
+		 * Purges (clears) any pending exceptions.
+		 */
+		public function purgePendingException():void
+		{
+			try
+			{
+				_extContext.call( "purgePendingException" );
+			}
+			catch (e:Error)
+			{
+			}
 		}
 		
 		

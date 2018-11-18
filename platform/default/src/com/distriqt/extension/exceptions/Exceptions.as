@@ -16,10 +16,10 @@
 package com.distriqt.extension.exceptions
 {
 	import flash.events.EventDispatcher;
+	import flash.filesystem.File;
 	
 	
-	
-	/**	
+	/**
 	 * <p>
 	 * This class represents the Exceptions extension.
 	 * </p>
@@ -141,15 +141,59 @@ package com.distriqt.extension.exceptions
 		}
 		
 		
+		/**
+		 * <p>
+		 *     Checks if there is a pending exception that may have occurred on a previous
+		 *     run of the application.
+		 * </p>
+		 *
+		 * @return	<code>true</code> if an exception report is available and <code>false</code> if not
+		 */
 		public function hasPendingException():Boolean
 		{
 			return false;
 		}
 		
 		
-		public function getPendingException():ExceptionReport
+		/**
+		 * <p>
+		 *     Returns the <code>ExceptionReport</code> for any pending exception that
+		 *     may have occurred previously.
+		 * </p>
+		 *
+		 * @param purge	If <code>true</code> the pending exception will be purged and no longer be accessible
+		 *
+		 * @return	<code>ExceptionReport</code> object or null if there was no pending exception
+		 */
+		public function getPendingException( purge:Boolean=true ):ExceptionReport
 		{
 			return null;
+		}
+		
+		
+		/**
+		 * <p>
+		 *     Writes the crash report into a file.
+		 * </p>
+		 *
+		 *
+		 * @param file	The <code>File</code> reference to write the crash output into
+		 * @param purge	If <code>true</code> the pending exception will be purged and no longer be accessible
+		 *
+		 * @return <code>true</code> if the pending exception was successfully written to the file
+		 */
+		public function writePendingExceptionToFile( file:File, purge:Boolean=true ):Boolean
+		{
+			return false;
+		}
+		
+		
+		/**
+		 * Purges (clears) any pending exceptions.
+		 */
+		public function purgePendingException():void
+		{
+		
 		}
 		
 		

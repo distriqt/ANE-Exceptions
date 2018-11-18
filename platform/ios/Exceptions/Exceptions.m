@@ -137,6 +137,8 @@ FREObject Exceptions_getPendingException(FREContext ctx, void* funcData, uint32_
 		PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
 		if([crashReporter hasPendingCrashReport])
 		{
+			Boolean purge = [DTEXFREUtils getFREObjectAsBoolean: argv[0]];
+			
 			@try
 			{
 				NSData* crashData = [crashReporter loadPendingCrashReportData];
@@ -172,7 +174,8 @@ FREObject Exceptions_getPendingException(FREContext ctx, void* funcData, uint32_
 			@catch (NSException *exception)
 			{
 			}
-			@finally
+			
+			if (purge)
 			{
 				[crashReporter purgePendingCrashReport];
 			}
@@ -180,6 +183,77 @@ FREObject Exceptions_getPendingException(FREContext ctx, void* funcData, uint32_
 	}
 	return result;
 }
+
+
+FREObject Exceptions_writePendingExceptionToFile(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+{
+	FREObject result = NULL;
+	@autoreleasepool
+	{
+		[DTEXFREUtils log: DTEX_TAG message: @"writePendingExceptionToFile" ];
+
+		result = [DTEXFREUtils newFREObjectFromBoolean: false];
+
+		PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+		if([crashReporter hasPendingCrashReport])
+		{
+			NSString* outputPath = [DTEXFREUtils getFREObjectAsString: argv[0]];
+			Boolean purge = [DTEXFREUtils getFREObjectAsBoolean: argv[1]];
+			
+			@try
+			{
+				NSData* crashData = [crashReporter loadPendingCrashReportData];
+				if (crashData != nil)
+				{
+					PLCrashReport* report = [[PLCrashReport alloc] initWithData: crashData error: NULL];
+					if (report != nil)
+					{
+						NSString* reportString = [PLCrashReportTextFormatter stringValueForCrashReport: report
+																					 withTextFormat: PLCrashReportTextFormatiOS];
+						
+						if (![reportString writeToFile: outputPath
+											atomically: YES
+											  encoding: NSUTF8StringEncoding
+												 error: nil])
+						{
+							[DTEXFREUtils log: DTEX_TAG message: @"Failed to write crash report" ];
+						}
+						else
+						{
+							result = [DTEXFREUtils newFREObjectFromBoolean: true];
+						}
+					}
+				}
+			}
+			@catch (NSException* e)
+			{
+			}
+			
+			if (purge)
+			{
+				[crashReporter purgePendingCrashReport];
+			}
+		}
+	}
+	return result;
+}
+
+
+FREObject Exceptions_purgePendingException(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+{
+	FREObject result = NULL;
+	@autoreleasepool
+	{
+		[DTEXFREUtils log: DTEX_TAG message: @"purgePendingException" ];
+		PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+		if([crashReporter hasPendingCrashReport])
+		{
+			[crashReporter purgePendingCrashReport];
+		}
+	}
+	return result;
+}
+
 
 
 ////////////////////////////////////////////////////////
@@ -200,7 +274,9 @@ void ExceptionsContextInitializer(void* extData, const uint8_t* ctxType, FRECont
 		
 		MAP_FUNCTION( Exceptions_setUncaughtExceptionHandler,	"setUncaughtExceptionHandler", NULL ),
 		MAP_FUNCTION( Exceptions_hasPendingException,			"hasPendingException", NULL ),
-		MAP_FUNCTION( Exceptions_getPendingException,			"getPendingException", NULL )
+		MAP_FUNCTION( Exceptions_getPendingException,			"getPendingException", NULL ),
+		MAP_FUNCTION( Exceptions_writePendingExceptionToFile,	"writePendingExceptionToFile", NULL ),
+		MAP_FUNCTION( Exceptions_purgePendingException,			"purgePendingException", NULL )
 		
     };
 	

@@ -24,6 +24,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.filesystem.File;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
@@ -77,11 +78,18 @@ package
 					
 					if (Exceptions.service.hasPendingException())
 					{
-						var report:ExceptionReport = Exceptions.service.getPendingException();
+						var report:ExceptionReport = Exceptions.service.getPendingException( false );
 						message( "date: "+		new Date(report.timestamp).toLocaleString() );
 						message( "name: "+		report.name );
 						message( "reason: "+	report.reason );
 						message( "report: "+	report.report );
+						
+						
+						var output:File = File.applicationStorageDirectory.resolvePath( "report.crash" );
+						var success:Boolean = Exceptions.service.writePendingExceptionToFile( output, false );
+						
+						
+						Exceptions.service.purgePendingException();
 					}
 					
 					Exceptions.service.setUncaughtExceptionHandler();

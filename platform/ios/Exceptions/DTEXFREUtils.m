@@ -56,6 +56,32 @@
 
 #pragma mark - FREObject HELPERS
 
++(NSString*) getFREObjectAsString: (FREObject) object
+{
+	uint32_t length;
+	const uint8_t *value;
+	
+	if (FRE_OK == FREGetObjectAsUTF8( object, &length, &value))
+	{
+		NSString* objectString = [NSString stringWithUTF8String:(char*)value];
+		return objectString;
+	}
+	
+	return @"";
+}
+
++(Boolean) getFREObjectAsBoolean: (FREObject) object
+{
+	uint32_t value;
+	if (FRE_OK == FREGetObjectAsBool( object, &value ))
+	{
+		return (value == 1);
+	}
+	return false;
+}
+
+
+
 //
 //  NEW OBJECTS
 //

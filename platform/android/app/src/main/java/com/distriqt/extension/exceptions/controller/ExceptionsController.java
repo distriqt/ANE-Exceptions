@@ -74,7 +74,7 @@ public class ExceptionsController
 	}
 
 
-	public ExceptionReport getPendingException()
+	public ExceptionReport getPendingException( boolean purge )
 	{
 		ExceptionReport report = null;
 		if (hasPendingException())
@@ -87,7 +87,7 @@ public class ExceptionsController
 				ois.close();
 				fis.close();
 
-				new File( _activity.getFilesDir(), EXCEPTION_FILENAME ).delete();
+				if (purge) purgePendingException();
 			}
 			catch (Exception e)
 			{
@@ -97,6 +97,51 @@ public class ExceptionsController
 		return report;
 	}
 
+
+	public boolean writePendingExceptionToFile( String outputPath, boolean purge )
+	{
+		if (hasPendingException())
+		{
+			try
+			{
+				File outputFile = new File( outputPath );
+
+				FileInputStream fis = _activity.openFileInput( EXCEPTION_FILENAME );
+
+				FileOutputStream fos = new FileOutputStream( outputFile );
+
+				byte[] buffer = new byte[1024];
+				int read;
+				while((read = fis.read(buffer)) != -1){
+					fos.write(buffer, 0, read);
+				}
+
+				fos.close();
+				fis.close();
+
+				if (purge) purgePendingException();
+
+				return true;
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+
+	public void purgePendingException()
+	{
+		try
+		{
+			new File( _activity.getFilesDir(), EXCEPTION_FILENAME ).delete();
+		}
+		catch (Exception e)
+		{
+		}
+	}
 
 
 	//

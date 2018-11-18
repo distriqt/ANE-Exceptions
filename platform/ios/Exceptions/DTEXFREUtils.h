@@ -31,6 +31,8 @@
 //  FREObject HELPERS
 //
 
++(NSString*) getFREObjectAsString: (FREObject) object;
++(Boolean) getFREObjectAsBoolean: (FREObject) object;
 
 +(FREObject) newFREObjectFromString: (NSString*) value;
 +(FREObject) newFREObjectFromInt: (int) value;

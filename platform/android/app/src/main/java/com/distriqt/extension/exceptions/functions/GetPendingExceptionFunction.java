@@ -33,7 +33,9 @@ public class GetPendingExceptionFunction implements FREFunction
 			ExceptionsContext ctx = (ExceptionsContext)context;
 			result = FREObject.newObject( "Object", null );
 
-			ExceptionReport e = ctx.controller().getPendingException();
+			boolean purge = args[0].getAsBool();
+
+			ExceptionReport e = ctx.controller().getPendingException( purge );
 			if (e != null)
 			{
 				result.setProperty("timestamp", FREObject.newObject(e.timestamp));
