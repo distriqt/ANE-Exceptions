@@ -1,4 +1,15 @@
+/local.properties
 bin
 gen
 build
 release
+.idea/libraries
+.idea/shelf
+.idea/caches
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/tasks.xml
+.idea/modules.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.gradle

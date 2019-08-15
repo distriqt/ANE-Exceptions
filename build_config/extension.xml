@@ -9,6 +9,13 @@
 				<finalizer>com.distriqt.extension.exceptions.ExceptionsExtension</finalizer>
 			</applicationDeployment>
 		</platform>
+		<platform name="Android-ARM64">
+			<applicationDeployment>
+				<nativeLibrary>distriqt.extension.exceptions.android.jar</nativeLibrary>
+				<initializer>com.distriqt.extension.exceptions.ExceptionsExtension</initializer>
+				<finalizer>com.distriqt.extension.exceptions.ExceptionsExtension</finalizer>
+			</applicationDeployment>
+		</platform>
 		<platform name="Android-x86">
 			<applicationDeployment>
 				<nativeLibrary>distriqt.extension.exceptions.android.jar</nativeLibrary>

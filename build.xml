@@ -63,24 +63,34 @@
 	<property name="android.name" value="distriqt.extension.${project.packagename}.android.jar" />
 	<property name="android.package" value="com.distriqt.extension.${project.packagename}" />
 	<property name="android.packagepath" value="com/distriqt/extension/${project.packagename}" />
-	
+		
 	<property name="AIR_SDK_HOME" value="${air.sdk}" />
 	<taskdef resource="flexTasks.tasks" classpath="${air.sdk}/ant/lib/flexTasks.jar" />
 	
 	
-	<!-- VERSIONING -->
-
+	<!-- 
+	//
+	//
+	//	VERSIONING 
+	//
+	//
+	-->
+	
 	<target name="version">
+		<antcall target="version_increment" />
+		<antcall target="version_write" />
+	</target>
 
+	<target name="version_increment">
 		<propertyfile file="./build_config/version.config">
 			<entry key="version_build" type="int" operation="+" value="1" pattern="000" />
 		</propertyfile>
-		
 	</target>
 
 	<target name="version_write" >
 		<property file="./build_config/version.config" description="build version properties" />
 		<property name="version" value="${version_major}.${version_minor}.${version_build}" />
+		<property name="version_externals" value="${version_externals_major}.${version_externals_minor}.${version_externals_build}" />
 
 		<copy file="./build_config/extension.xml" tofile="./build_config/extension.build.xml" overwrite="true" >
 			<filterchain>
@@ -109,8 +119,14 @@
 
 	
 	
-	<!-- ACTIONSCRIPT LIBS -->
-	
+	<!-- 
+	//
+	//
+	//	ACTIONSCRIPT TASKS 
+	//
+	//
+	-->
+
 	<!-- Actionscript library -->
 	<target name="pre_build_actionscript" />
 	<target name="build_actionscript" depends="pre_build_actionscript">
@@ -144,7 +160,14 @@
 	</target>
 
 	
-	<!-- IOS TASKS -->
+
+	<!-- 
+	//
+	//
+	//	IOS / APPLETV TASKS 
+	//
+	//
+	-->
 
 	<!-- iOS simulator library -->
 	<target name="build_ios_simulator_project" unless="${ios.useworkspace}">
@@ -152,6 +175,7 @@
 		<exec executable="${ios.xcode_buildpath}">
 			<arg line="-project ${ios.dir}/${ios.name}.xcodeproj"/>
 			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="BITCODE_GENERATION_MODE=bitcode" />
 			<arg line="-configuration ${ios.xcode_build}"/>
 			<arg line="-alltargets" />
 			<arg value="build" />
@@ -163,8 +187,9 @@
 		<exec executable="${ios.xcode_buildpath}">
 			<arg line="-workspace ${ios.dir}/${ios.name}.xcworkspace"/>
 			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="BITCODE_GENERATION_MODE=bitcode" />
 			<arg line="-configuration ${ios.xcode_build}"/>
-			<arg line="-alltargets" />
+			<arg line="-scheme ${ios.name}" />
 			<arg value="build" />
 			<arg line="-sdk iphonesimulator" />
 		</exec>
@@ -176,6 +201,8 @@
 		<exec executable="${ios.xcode_buildpath}">
 			<arg line="-project ${ios.dir}/${ios.name}.xcodeproj"/>
 			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="BITCODE_GENERATION_MODE=bitcode" />
+			<arg line="OTHER_CFLAGS='-fembed-bitcode'" />
 			<arg line="-configuration ${ios.xcode_build}"/>
 			<arg line="-alltargets" />
 			<arg value="build"/>
@@ -187,10 +214,40 @@
 		<exec executable="${ios.xcode_buildpath}">
 			<arg line="-workspace ${ios.dir}/${ios.name}.xcworkspace"/>
 			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="BITCODE_GENERATION_MODE=bitcode" />
+			<arg line="OTHER_CFLAGS='-fembed-bitcode'" />
 			<arg line="-configuration ${ios.xcode_build}"/>
-			<arg line="-alltargets" />
+			<arg line="-scheme ${ios.name}" />
 			<arg value="build"/>
 			<arg line="-sdk iphoneos" />
+		</exec>
+	</target>
+
+	<!-- AppleTV library -->
+	<target name="build_tvos_project" unless="${ios.useworkspace}">
+		<echo message="[${ios.name}] Building Apple TV library..." />
+		<exec executable="${ios.xcode_buildpath}">
+			<arg line="-project ${ios.dir}/${ios.name}.xcodeproj"/>
+			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="BITCODE_GENERATION_MODE=bitcode" />
+			<arg line="OTHER_CFLAGS='-fembed-bitcode'" />
+			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-alltargets" />
+			<arg value="build" />
+			<arg line="-sdk appletvos" />
+		</exec>
+	</target>
+	<target name="build_tvos_workspace" if="${ios.useworkspace}">
+		<echo message="[${ios.name}] Building Apple TV library..." />
+		<exec executable="${ios.xcode_buildpath}">
+			<arg line="-workspace ${ios.dir}/${ios.name}.xcworkspace"/>
+			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="BITCODE_GENERATION_MODE=bitcode" />
+			<arg line="OTHER_CFLAGS='-fembed-bitcode'" />
+			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-scheme ${ios.name}" />
+			<arg value="build" />
+			<arg line="-sdk appletvos" />
 		</exec>
 	</target>
 
@@ -201,11 +258,28 @@
 		<antcall target="build_ios_simulator_workspace" />
 		<antcall target="build_ios_iphone_project" />
 		<antcall target="build_ios_iphone_workspace" />
+		<antcall target="build_tvos_project" />
+		<antcall target="build_tvos_workspace" />
 	</target>
 
 	
+	
+	<target name="copy_corenativeextension_framework" if="${ios.packagecoreframework}">
+		<echo message="Copying CoreNativeExtension.framework ..."/>
+		<copy overwrite="true" todir="${ios.dir}/${ios.iphoneos_dir}/CoreNativeExtension.framework">
+			<fileset dir="${supportlibs.coreframework}/Release-iphoneos/CoreNativeExtension.framework" />
+		</copy>
+		<copy overwrite="true" todir="${ios.dir}/${ios.iphonesimulator_dir}/CoreNativeExtension.framework">
+			<fileset dir="${supportlibs.coreframework}/Release-iphonesimulator/CoreNativeExtension.framework" />
+		</copy>
+		<copy overwrite="true" todir="${ios.dir}/${ios.tvos_dir}/CoreNativeExtension.framework">
+			<fileset dir="${supportlibs.coreframework}/Release-appletvos/CoreNativeExtension.framework" />
+		</copy>
+	</target> 
+	
 	<target name="setup_platform_options_ios" >
-		<fileset id="platform.ios.pods.fs" dir="${ios.dir}/${ios.iphoneos_dir}" casesensitive="yes">
+		<property name="version" value="${version_major}.${version_minor}.${version_build}" />
+        <fileset id="platform.ios.pods.fs" dir="${ios.dir}/${ios.iphoneos_dir}" casesensitive="yes">
 			<include name="**/*.a"/>
 			<exclude name="**/lib${project.name}.a" />
 			<exclude name="**/libPods*.a" />
@@ -217,6 +291,15 @@
 		<copy file="./build_config/platform_ios.xml" tofile="./build_config/platform_ios.build.xml" overwrite="true" >
 			<filterchain>
 				<tokenfilter>
+					<replacestring from="@VERSION@" to="${version}"/>
+					<replacestring from="@PODS@" to="${platform.ios.pods.str}"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+		<copy file="./build_config/platform_tvos.xml" tofile="./build_config/platform_tvos.build.xml" overwrite="true" failonerror="false" >
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="@VERSION@" to="${version}"/>
 					<replacestring from="@PODS@" to="${platform.ios.pods.str}"/>
 				</tokenfilter>
 			</filterchain>
@@ -225,6 +308,7 @@
 
 	<target name="pre_package_ios" />
 	<target name="package_ios" depends="pre_package_ios, setup_platform_options_ios" description="Copy iOS files for packaging" >
+		<antcall target="copy_corenativeextension_framework" />
 		
 		<copy overwrite="true" todir="${ios.dir}/${ios.iphoneos_dir}" >
 			<fileset dir="${ios.dir}/${project.name}" erroronmissingdir="false">
@@ -238,7 +322,32 @@
 				<include name="*.bundle/**"/>
 			</fileset>
 		</copy>
+		<copy overwrite="true" todir="${ios.dir}/${ios.tvos_dir}" >
+			<fileset dir="${ios.dir}/${project.name}" erroronmissingdir="false">
+				<include name="*.framework/**"/>
+				<include name="*.bundle/**"/>
+			</fileset>
+		</copy>
 		
+		<copy overwrite="true" todir="${ios.dir}/${ios.iphoneos_dir}" >
+			<fileset dir="${ios.dir}/libs" erroronmissingdir="false">
+				<include name="*.framework/**"/>
+				<include name="*.bundle/**"/>
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${ios.dir}/${ios.iphonesimulator_dir}" >
+			<fileset dir="${ios.dir}/libs" erroronmissingdir="false">
+				<include name="*.framework/**"/>
+				<include name="*.bundle/**"/>
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${ios.dir}/${ios.tvos_dir}" >
+			<fileset dir="${ios.dir}/libs" erroronmissingdir="false">
+				<include name="*.framework/**"/>
+				<include name="*.bundle/**"/>
+			</fileset>
+		</copy>
+
 		<delete>
 			<fileset dir="${ios.dir}/${ios.iphoneos_dir}">
 				<include name="**/libPods*.a" />
@@ -256,28 +365,34 @@
 	</target>
 
 	
-
-	<!-- ANDROID TASKS -->
+	<!-- 
+	//
+	//
+	//	ANDROID TASKS 
+	//
+	//
+	-->
 	
 	<!-- Build the Android library -->
 	<target name="pre_build_android" />
 	<target name="build_android" depends="pre_build_android">
 		<echo message="Building Android library..."/>
 
-		<delete>
-			<fileset dir="${android.dir}" defaultexcludes="false">
-				<include name="**/.DS_Store"  />
-			</fileset>
-		</delete>
-
 		<exec executable="./gradlew" dir="${android.dir}">
 			<arg line="assemble" />
 		</exec>
 
+		<delete>
+			<fileset dir="${android.dir}" defaultexcludes="false">
+				<include name="**/.DS_Store"  />
+				<include name="build"  />
+			</fileset>
+		</delete>
+
 	</target>
 
 	<target name="setup_platform_options_android" >
-		<fileset id="platform.android.jar.fs" dir="${android.dir}/${output.dir}" casesensitive="yes">
+		<fileset id="platform.android.jar.fs" dir="${android.dir}/${android.outputdir}" casesensitive="yes">
 			<include name="**/*.jar"/>
 			<exclude name="**/${android.name}" />
 		</fileset>
@@ -285,66 +400,129 @@
 			<map from="${basedir}/platform/android/build/" to="" />
 		</pathconvert>
 		<wrapxmltag name="platform.android.jars.str" input="${platform.android.jars}" tag="packagedDependency" />
+		<property name="version" value="${version_major}.${version_minor}.${version_build}" />
+		<property name="version_externals" value="${version_externals_major}.${version_externals_minor}.${version_externals_build}" />
 		<copy file="./build_config/platform_android.xml" tofile="./build_config/platform_android.build.xml" overwrite="true" >
 			<filterchain>
 				<tokenfilter>
 					<replacestring from="@JARS@" to="${platform.android.jars.str}"/>
+					<replacestring from="@VERSION@" to="${version}"/>
+					<replacestring from="@VERSIONEXT@" to="${version_externals}"/>
 				</tokenfilter>
 			</filterchain>
 		</copy>
 	</target>
 
+	<target name="copy_corenativeextension_android_lib" if="${android.packagecorelib}">
+		<echo message="Copying corenativeextension.android.lib ..."/>
+		<copy overwrite="true" todir="${android.dir}/${android.outputdir}">
+			<fileset file="${supportlibs.corejar}" />
+		</copy>
+	</target> 
+
 	<target name="pre_package_android" />
 	<target name="package_android" depends="pre_package_android" description="Copy Android files for packaging" >
+		<delete dir="${android.dir}/${android.outputdir}/android-profile" />
+		<antcall target="copy_corenativeextension_android_lib" />
 
 		<mkdir dir="${android.dir}/${output.tmpdir}" />
 		<unzip src="${android.dir}/app/build/outputs/aar/app-release.aar" dest="${android.dir}/${output.tmpdir}" overwrite="true"/>
 
-		<copy file="${android.dir}/${output.tmpdir}/classes.jar" tofile="${android.dir}/${output.dir}/${android.name}" />
-		<copy includeEmptyDirs="false" overwrite="true" todir="${android.dir}/${output.dir}/distriqt-extension-${project.packagename}-res">
-			<fileset dir="${android.dir}/${output.tmpdir}/res/" />
-		</copy>
+		<copy file="${android.dir}/${output.tmpdir}/classes.jar" tofile="${android.dir}/${android.outputdir}/${android.name}" />
 		
-		<copy includeEmptyDirs="false" overwrite="true" failonerror="false" quiet="true" todir="${android.dir}/${output.dir}">
-			<fileset dir="${android.dir}/${output.tmpdir}/libs/" >
-				<exclude name="**/FlashRuntimeExtensions.jar" />
-				<exclude name="**/runtimeClasses.jar" />
-				<exclude name="**/mockable-android-24.jar" />
+		<copy includeEmptyDirs="false" overwrite="true" todir="${android.dir}/${android.outputdir}/distriqt-extension-${project.packagename}-res">
+			<!--<fileset dir="${android.dir}/${output.tmpdir}/res/" >-->
+			<fileset dir="${android.dir}/app/src/main/res/" >
+				<exclude name="**/values.xml" />
 			</fileset>
 		</copy>
+		
+		<copy includeEmptyDirs="false" overwrite="true" failonerror="false" quiet="true" todir="${android.dir}/${android.outputdir}">
+			<fileset dir="${android.dir}/app/libs" >
+				<exclude name="**/corenativeextension.android.lib.jar" />
+				<exclude name="**/corenativeextension.android.lib.air.jar" />
+				<exclude name="**/FlashRuntimeExtensions.jar" />
+				<exclude name="**/runtimeClasses.jar" />
+				<exclude name="**/mockable-android*" />
+			</fileset>
+		</copy>
+
+		<copy includeEmptyDirs="false" overwrite="true" failonerror="false" quiet="true" todir="${android.dir}/${android.outputdir}/libs">
+			<fileset dir="${android.dir}/${output.tmpdir}/jni/" />
+		</copy>
+		
 		<delete dir="${android.dir}/${output.tmpdir}" />
 		
-		<copy includeEmptyDirs="false" overwrite="true" failonerror="false" quiet="true" todir="${android.dir}/${output.dir}">
+		<copy includeEmptyDirs="false" overwrite="true" failonerror="false" quiet="true" todir="${android.dir}/${android.outputdir}">
 			<fileset dir="${android.dir}/externals/" />
 		</copy>
 				
 
-		<!--
-		<copy file="${android.dir}/bin/${android.name}" todir="${android.dir}/${output.dir}" />
-		<copy includeEmptyDirs="false" overwrite="true" todir="${android.dir}/${output.dir}/distriqt-extension-${project.packagename}-res">
-			<fileset dir="${android.dir}/res/" />
-		</copy>
-		<copy includeEmptyDirs="false" overwrite="true" failonerror="false" quiet="true" todir="${android.dir}/${output.dir}">
-			<fileset dir="${android.dir}/libs/" />
-		</copy>
-		-->
-		
 		<antcall target="setup_platform_options_android" />
 	</target>
 	
 
-	<target name="externals_android" >
+	<target name="explode_aar">
+		<basename property="explode_aar_name" file="${explode_aar_file}" suffix=".aar" />
+		<echo message="explode ${explode_aar_file} ${explode_aar_name}" />
+
+		<mkdir dir="${android.dir}/${output.tmpdir}" />
+		<unzip src="${explode_aar_file}" dest="${android.dir}/${output.tmpdir}" overwrite="true"/>
+
+		<copy file="${android.dir}/${output.tmpdir}/classes.jar" tofile="${android.dir}/${android.outputdir}/${explode_aar_name}.jar" />
+		<copy includeEmptyDirs="false" overwrite="true" todir="${android.dir}/${android.outputdir}/${explode_aar_name}-res" failonerror="false">
+			<fileset dir="${android.dir}/${output.tmpdir}/res/" />
+		</copy>
+
+		<copy includeEmptyDirs="false" overwrite="true" failonerror="false" quiet="true" todir="${android.dir}/${android.outputdir}/libs">
+			<fileset dir="${android.dir}/${output.tmpdir}/jni/" />
+		</copy>
+
+		<delete dir="${android.dir}/${output.tmpdir}" />
+		
+	</target>
+
+
+
+
+	<target name="externals_android" if="android.externals" >
+		<property file="./build_config/version.config" description="build version properties" />
+		<delete dir="${android.dir}/externals" />
 		<for list="${android.externals}" param="lib">
 			<sequential>
 				<echo>@{lib}</echo>
+				<fileset dir="${android.sdk}/extras" id="fileset1">
+					<include name="**/@{lib}.aar" />
+					<include name="**/@{lib}.jar" />
+				</fileset>
+				<fileset dir="${android.gradle_cache}" id="fileset2">
+					<include name="**/@{lib}.aar" />
+					<include name="**/@{lib}.jar" />
+				</fileset>
+				<fileset dir="${android.dir}" id="fileset3">
+					<include name="**/@{lib}.aar" />
+					<include name="**/@{lib}.jar" />
+				</fileset>
 				<path id="aarfile">
 					<first>
-						<fileset dir="${android.sdk}/extras/google/m2repository" includes="**/@{lib}.aar" />
+						<union>
+							<resources refid="fileset1" />
+   							<resources refid="fileset2" />
+   							<resources refid="fileset3" />
+						</union>
 					</first>
 				</path>
 				<mkdir dir="${android.dir}/${output.tmpdir}" />
 				<unzip src="${toString:aarfile}" dest="${android.dir}/${output.tmpdir}" overwrite="true"/>
+				<copy file="${toString:aarfile}" todir="${android.dir}/${output.tmpdir}" failonerror="false" />
 				<copy file="${android.dir}/${output.tmpdir}/classes.jar" tofile="${android.dir}/externals/@{lib}.jar" failonerror="false" />
+				<copy file="${android.dir}/${output.tmpdir}/@{lib}.jar" tofile="${android.dir}/externals/@{lib}.jar" failonerror="false" />
+				<copy todir="${android.dir}/externals" failonerror="false" flatten="true">
+					<fileset dir="${android.dir}/${output.tmpdir}" >
+						<include name="**/*.jar" />
+						<exclude name="classes.jar" />
+					</fileset>
+				</copy>
 				<copy todir="${android.dir}/externals/@{lib}-res" failonerror="false">
 					<fileset dir="${android.dir}/${output.tmpdir}/res" />
 				</copy>
@@ -357,11 +535,19 @@
 
 
 	<target name="clean_android">
-		<delete dir="${android.dir}/${output.dir}" />
+		<delete dir="${android.dir}/${android.outputdir}" />
 	</target>
 
 
-	<!-- ANE PACKAGE -->
+
+
+	<!-- 
+	//
+	//
+	//	ANE PACKAGE 
+	//
+	//
+	-->
 
 	<target name="build" description="Build Libraries" >
 		<antcall target="build_actionscript" />
@@ -381,13 +567,14 @@
 	</target>
 
 
-	<target name="package_ane" depends="version_write" description="Package ANE">
+	<target name="package_ane" description="Package ANE">
 		<!-- Copy over library.swf to each platform output -->
 		<mkdir dir="${output.tmpdir}" />
 		<unzip src="${actionscript.dir}/bin/${actionscript.name}" dest="${output.tmpdir}" overwrite="true"/>
 		<copy file="${output.tmpdir}/library.swf" todir="${ios.dir}/${ios.iphoneos_dir}" failonerror="true" />
 		<copy file="${output.tmpdir}/library.swf" todir="${ios.dir}/${ios.iphonesimulator_dir}" failonerror="true" />
-		<copy file="${output.tmpdir}/library.swf" todir="${android.dir}/${output.dir}" failonerror="true" />
+		<copy file="${output.tmpdir}/library.swf" todir="${ios.dir}/${ios.tvos_dir}" failonerror="true" />
+		<copy file="${output.tmpdir}/library.swf" todir="${android.dir}/${android.outputdir}" failonerror="true" />
 		<delete dir="${output.tmpdir}" />
 		
 		<unzip src="${default.dir}/bin/${default.name}" dest="${default.dir}/bin" overwrite="true"/>
@@ -404,14 +591,17 @@
 			<arg line="-swc ${actionscript.dir}/bin/${actionscript.name}"/>
 			<arg line="-platform iPhone-ARM -platformoptions ./build_config/platform_ios.build.xml -C ${ios.dir}/${ios.iphoneos_dir} ."/>
 			<arg line="-platform iPhone-x86 -platformoptions ./build_config/platform_ios.build.xml -C ${ios.dir}/${ios.iphonesimulator_dir} ."/>
-			<arg line="-platform Android-ARM -platformoptions ./build_config/platform_android.build.xml -C ${android.dir}/${output.dir} ."/>
-			<arg line="-platform Android-x86 -platformoptions ./build_config/platform_android.build.xml -C ${android.dir}/${output.dir} ."/>
+			<!-- <arg line="-platform appleTV-ARM -platformoptions ./build_config/platform_tvos.build.xml -C ${ios.dir}/${ios.tvos_dir} ."/> -->
+			<arg line="-platform Android-ARM -platformoptions ./build_config/platform_android.build.xml -C ${android.dir}/${android.outputdir} ."/>
+			<arg line="-platform Android-ARM64 -platformoptions ./build_config/platform_android.build.xml -C ${android.dir}/${android.outputdir} ."/>
+			<arg line="-platform Android-x86 -platformoptions ./build_config/platform_android.build.xml -C ${android.dir}/${android.outputdir} ."/>
 			<arg line="-platform default -C ${default.dir}/bin ."/>
 		</exec>
 		
 		<delete file="${ios.dir}/${ios.iphoneos_dir}/library.swf" />
 		<delete file="${ios.dir}/${ios.iphonesimulator_dir}/library.swf" />
-		<delete file="${android.dir}/${output.dir}/library.swf" />
+		<delete file="${ios.dir}/${ios.tvos_dir}/library.swf" />
+		<delete file="${android.dir}/${android.outputdir}/library.swf" />
 		<delete file="${default.dir}/bin/library.swf" />   
 	</target>
 
@@ -449,9 +639,11 @@
 	</target>
 
 	<target name="clean_ane" >
-		<delete file="./build_config/platform_android.build.xml" />
-		<delete file="./build_config/platform_ios.build.xml" />
-		<delete file="./build_config/extension.build.xml" />
+		<delete>
+			<fileset dir="./build_config">
+				<include name="*.build.xml" />
+			</fileset>
+		</delete>
 	</target>
 
 
@@ -466,7 +658,14 @@
 	</target>
 
 	
-	<!--  DOCUMENTATION -->
+
+	<!-- 
+	//
+	//
+	//	DOCUMENTATION 
+	//
+	//
+	-->
 
 	<target name="docs" description="Generate asdocs">
 		<delete dir="${output.docs}" />
@@ -487,10 +686,112 @@
 
 	</target>
 	
-	
-	<target name="all" depends="clean, version, version_write, build, package, docs" />
+
+	<!-- RELEASE TASKS -->
+
+	<target name="wikiToPages">
+		<mkdir dir="docs/site" />
+		<echo file="docs/site/.gitignore" >
+Gemfile
+_site
+		</echo>
+		
+		<delete defaultexcludes="false" includeemptydirs="true">
+			<fileset dir="docs/site">
+				<include name="**/*" />
+				<exclude name=".gitignore" />
+			</fileset>
+		</delete>
+
+
+
+		<!-- Clone the site template -->
+		<exec executable="git" >
+			<arg value="clone" />
+			<arg value="git@gitlab.com:airnativeextensions/github-pages-template.git" />
+			<arg value="_tmpclone" />
+		</exec>
+		<copy todir="docs/site" overwrite="true" >
+			<fileset dir="_tmpclone" />
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="Template" to="${project.name}"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+		<delete dir="_tmpclone" failonerror="false" />
+
+		<!-- Copy the wiki files 
+		 - update links to md 
+		 - move Home to index 
+		 - copy images 
+		 - sidebar manipulation to html
+		 -->
+		<copy todir="docs/site" overwrite="true" >
+			<fileset dir="docs/wiki" defaultexcludes="false">
+				<exclude name="**/_Sidebar.md" />
+				<exclude name="**/_Footer.md" />
+				<include name="**/*.md" />
+			</fileset>
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="[[" to="![]("/>
+					<replacestring from="]]" to=")"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+		<move file="docs/site/Home.md" tofile="docs/site/index.md" />
+		<copy todir="docs/site" overwrite="true" >
+			<fileset dir="docs/wiki" defaultexcludes="false">
+				<include name="**/images/**" />
+			</fileset>
+		</copy>
+		<copy file="docs/wiki/_Sidebar.md" tofile="docs/site/_includes/Sidebar.html" overwrite="true">
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="---" to="&lt;br/&gt;&lt;hr/&gt;"/>
+					<!--<replacestring from="|Home]]" to="|https://airnativeextensions.com/extension/com.distriqt.${project.name}]]"/>-->
+					<replaceregex flags="g" 
+						pattern="^(.[^\[\(\&lt;]+)$" 
+						replace="&lt;h4&gt;\1&lt;/h4&gt;" />
+					<replaceregex flags="g"
+						pattern="\[\[(.+?)\|Home\]\]"
+						replace="" />
+					<replaceregex flags="g"
+						pattern="\[\[(.+?)\|(.+?)\]\]"
+						replace="&lt;a href='\2'&gt;\1&lt;\/a&gt;&lt;br\/&gt;" />
+					<replaceregex flags="g"
+						pattern="\[(.+?)\]\((.+?)\)"
+						replace="&lt;a href='\2'&gt;\1&lt;\/a&gt;&lt;br\/&gt;" />
+				</tokenfilter>
+			</filterchain>
+		</copy>
+
+		<!-- Copy ASDocs -->
+		<copy todir="docs/site/asdocs" overwrite="true" >
+			<fileset dir="docs/asdocs" />
+		</copy>
+
+	</target>
+
+
+
+
+
+	<!-- 
+	//
+	//
+	//	GLOBAL TARGETS 
+	//
+	//
+	-->
+
+
+	<target name="all" depends="clean, version, build, externals_android, package, docs" />
 
 	<target name="dev" depends="clean, build, package, docs" />
+
+	<target name="release" depends="wikiToPages" />
 
 
 </project>

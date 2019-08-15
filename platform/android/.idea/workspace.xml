@@ -6,11 +6,79 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad71ef86-c5a9-4243-aedc-0e4dbe422608" name="Default" comment="" />
+    <list default="true" id="ad71ef86-c5a9-4243-aedc-0e4dbe422608" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/../../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../build.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../build.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../build/com.distriqt.Exceptions.ane" beforeDir="false" afterPath="$PROJECT_DIR$/../../build/com.distriqt.Exceptions.ane" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../build_config/extension.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../build_config/extension.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../build_config/version.config" beforeDir="false" afterPath="$PROJECT_DIR$/../../build_config/version.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/AC_OETags.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/AC_OETags.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-classes.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-classes.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-A.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-A.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-B.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-B.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-C.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-C.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-D.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-D.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-E.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-E.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-F.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-F.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-G.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-G.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-H.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-H.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-I.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-I.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-J.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-J.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-K.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-K.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-L.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-L.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-M.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-M.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-N.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-N.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-O.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-O.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-P.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-P.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-Q.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-Q.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-R.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-R.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-S.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-S.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-T.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-T.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-U.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-U.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-V.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-V.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-W.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-W.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-X.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-X.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-Y.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-Y.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/all-index-Z.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/all-index-Z.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/asdoc.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/asdoc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/class-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/class-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/com/distriqt/extension/exceptions/ExceptionReport.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/com/distriqt/extension/exceptions/ExceptionReport.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/com/distriqt/extension/exceptions/Exceptions.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/com/distriqt/extension/exceptions/Exceptions.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/com/distriqt/extension/exceptions/class-list.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/com/distriqt/extension/exceptions/class-list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/com/distriqt/extension/exceptions/package-detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/com/distriqt/extension/exceptions/package-detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/cookies.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/cookies.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/help.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/help.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/index-list.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/index-list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/override.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/override.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/package-frame.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/package-frame.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/package-list.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/package-list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/print.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/print.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../docs/asdocs/title-bar.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../docs/asdocs/title-bar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../actionscript/src/com/distriqt/extension/exceptions/Version.as" beforeDir="false" afterPath="$PROJECT_DIR$/../actionscript/src/com/distriqt/extension/exceptions/Version.as" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/jarAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/taskJars.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/taskJars.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../default/src/com/distriqt/extension/exceptions/Version.as" beforeDir="false" afterPath="$PROJECT_DIR$/../default/src/com/distriqt/extension/exceptions/Version.as" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ios/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../ios/.gitignore" afterDir="false" />
+    </list>
     <ignored path="android.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -65,48 +133,56 @@
       </state>
     </system>
   </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-1361518854">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="gradle" value="2" />
+          <entry key="java" value="7" />
+          <entry key="properties" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Groovy" value="2" />
+          <entry key="JAVA" value="7" />
+          <entry key="Properties" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="java" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="JAVA" value="2" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="android" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ExceptionsContext.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/ExceptionsContext.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/util/IEventDispatcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="51" column="6" lean-forward="true" selection-start-line="51" selection-start-column="6" selection-end-line="51" selection-end-column="6" />
+            <state relative-caret-position="312">
+              <caret line="24" selection-start-line="24" selection-end-line="24" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExceptionsController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/controller/ExceptionsController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="102" column="21" selection-start-line="102" selection-start-column="21" selection-end-line="102" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FileInputStream.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../../../../../../sdks/android/android-sdk-macosx/sources/android-27/java/io/FileInputStream.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="132" column="11" selection-start-line="132" selection-start-column="11" selection-end-line="132" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build.gradle">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="19" selection-start-line="19" selection-end-line="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WritePendingExceptionToFileFunction.java" pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/functions/WritePendingExceptionToFileFunction.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="494">
@@ -115,47 +191,29 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PurgePendingExceptionFunction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/functions/PurgePendingExceptionFunction.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/functions/VersionFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="533">
-              <caret line="41" selection-start-line="41" selection-end-line="41" />
+            <state relative-caret-position="351">
+              <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExceptionReport.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/controller/ExceptionReport.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/functions/SetUncaughtExceptionHandlerFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="34" column="1" selection-start-line="34" selection-start-column="1" selection-end-line="34" selection-end-column="1" />
+            <state relative-caret-position="273">
+              <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GetPendingExceptionFunction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/functions/GetPendingExceptionFunction.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="624">
-              <caret line="48" column="40" selection-start-line="48" selection-start-column="40" selection-end-line="48" selection-end-column="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ExceptionsExtension.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/ExceptionsExtension.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="22" column="51" selection-start-line="22" selection-start-column="51" selection-end-line="22" selection-end-column="51" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FREUtils.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/util/FREUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="410">
-              <caret line="45" column="5" lean-forward="true" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
+            <state relative-caret-position="130">
+              <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -168,6 +226,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="GradleLocalSettings">
     <option name="myGradleHomes">
@@ -2130,6 +2191,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/functions/PurgePendingExceptionFunction.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/functions/GetPendingExceptionFunction.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/ExceptionsContext.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/ExceptionsExtension.java" />
       </list>
     </option>
   </component>
@@ -2139,14 +2201,12 @@
     <option name="width" value="1588" />
     <option name="height" value="1354" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -2173,6 +2233,9 @@
           <select />
         </subPane>
       </pane>
+      <pane id="ProjectPane" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2199,68 +2262,6 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <patterns />
-      <method>
-        <option name="Make" enabled="false" />
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    </configuration>
-    <configuration name="android:app [assembleRelease]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/app" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="assembleRelease" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-    </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
-      <properties />
-      <listeners />
-    </configuration>
     <configuration name="&lt;template&gt;" type="Applet" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
       <option name="HTML_FILE_NAME" />
@@ -2297,6 +2298,44 @@
     <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
     </configuration>
+    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="android:app [assembleRelease]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/app" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="assembleRelease" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.android:app [assembleRelease]" />
@@ -2320,82 +2359,58 @@
     <frame x="972" y="22" width="1588" height="1354" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info anchor="bottom" id="Android Profiler" show_stripe_button="false" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Palette&#9;" order="3" />
-      <window_info id="Image Layers" order="3" />
-      <window_info id="Build Variants" order="3" side_tool="true" />
-      <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3298217" />
-      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Logcat" />
-      <window_info id="Captures" order="2" weight="0.25" />
-      <window_info id="Capture Tool" order="3" />
-      <window_info id="Designer" order="3" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24967659" />
-      <window_info anchor="bottom" id="Build" weight="0.3298217" />
-      <window_info anchor="right" id="Gradle" order="3" weight="0.32988358" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Device File Explorer" side_tool="true" />
-      <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info id="Favorites" order="3" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="7" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Android Model" order="3" side_tool="true" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info id="Nl-Palette" order="3" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" id="Properties" order="3" />
+      <window_info id="Captures" order="2" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="3" />
+      <window_info id="Build Variants" order="4" side_tool="true" />
+      <window_info id="Image Layers" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info id="Capture Tool" order="7" />
+      <window_info id="Nl-Palette" order="8" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Gradle Console" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Android Monitor" order="7" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3298217" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Gradle Console" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Android Monitor" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info anchor="bottom" id="Messages" order="12" />
+      <window_info anchor="bottom" id="Build" order="13" weight="0.3292978" />
+      <window_info anchor="bottom" id="Android Profiler" order="14" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Logcat" order="15" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Properties" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Android Model" order="5" side_tool="true" />
+      <window_info anchor="right" id="Gradle" order="6" weight="0.32988358" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info anchor="right" id="Device File Explorer" order="9" side_tool="true" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/ExceptionsContext.java">
+    <entry file="file://$PROJECT_DIR$/../../../../../../../sdks/android/android-sdk-macosx/sources/android-27/java/io/FileInputStream.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="36" column="6" selection-start-line="36" selection-start-column="6" selection-end-line="36" selection-end-column="6" />
+        <state relative-caret-position="267">
+          <caret line="132" column="11" selection-start-line="132" selection-start-column="11" selection-end-line="132" selection-end-column="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/ExceptionsExtension.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/functions/GetPendingExceptionFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/ExceptionsContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/ExceptionsContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        <state relative-caret-position="624">
+          <caret line="48" column="40" selection-start-line="48" selection-start-column="40" selection-end-line="48" selection-end-column="40" />
         </state>
       </provider>
     </entry>
@@ -2406,10 +2421,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../../../../../sdks/android/android-sdk-macosx/sources/android-27/java/io/FileInputStream.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/functions/PurgePendingExceptionFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="132" column="11" selection-start-line="132" selection-start-column="11" selection-end-line="132" selection-end-column="11" />
+        <state relative-caret-position="533">
+          <caret line="41" selection-start-line="41" selection-end-line="41" />
         </state>
       </provider>
     </entry>
@@ -2427,38 +2442,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/functions/PurgePendingExceptionFunction.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/functions/VersionFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="533">
-          <caret line="41" selection-start-line="41" selection-end-line="41" />
+        <state relative-caret-position="351">
+          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/functions/GetPendingExceptionFunction.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/functions/SetUncaughtExceptionHandlerFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
-          <caret line="48" column="40" selection-start-line="48" selection-start-column="40" selection-end-line="48" selection-end-column="40" />
+        <state relative-caret-position="273">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/ExceptionsContext.java">
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="51" column="6" lean-forward="true" selection-start-line="51" selection-start-column="6" selection-end-line="51" selection-end-column="6" />
+        <state relative-caret-position="130">
+          <caret line="10" column="25" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/ExceptionsExtension.java">
+    <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="22" column="51" selection-start-line="22" selection-start-column="51" selection-end-line="22" selection-end-column="51" />
+        <state relative-caret-position="182">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/util/FREUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="45" column="5" lean-forward="true" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
+        <state relative-caret-position="702">
+          <caret line="57" column="11" lean-forward="true" selection-start-line="57" selection-start-column="11" selection-end-line="57" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/ExceptionsExtension.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="24" column="28" lean-forward="true" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/local.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/ExceptionsContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="663">
+          <caret line="51" column="6" selection-start-line="51" selection-start-column="6" selection-end-line="51" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/distriqt/extension/exceptions/util/IEventDispatcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
         </state>
       </provider>
     </entry>
