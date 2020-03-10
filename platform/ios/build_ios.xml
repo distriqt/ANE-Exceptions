@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<project default="build" name="ios"
+	xmlns:if="ant:if"
+	xmlns:unless="ant:unless"> 
+
+
+	
+	<import file="../../build_common.xml" />
+
+
+	<!-- 
+	//
+	//
+	//	CONFIGURATION 
+	//
+	//
+	-->
+	
+	<lower name="project.packagename" value="${project.name}" />
+
+	<dirname property="ios.basedir" file="${ant.file.ios}" />
+
+	<cleanchars name="ios.name" value="${project.grp}${project.name}" />
+
+	<!-- Check macOS and iOS enabled -->
+	<condition property="ios.shouldbuild" else="false">
+		<and>
+			<istrue value="${isMacOS}"/>
+			<istrue value="${ios.enabled}" />
+		</and>
+	</condition>
+
+
+	<!-- 
+	//
+	//
+	//	VERSIONING 
+	//
+	//
+	-->
+
+	<target name="version_write" >
+		<property name="version" value="${version_major}.${version_minor}.${version_build}" />
+	</target>
+
+
+
+
+    <!-- 
+	//
+	//
+	//	IOS TASKS 
+	//
+	//
+	-->
+
+
+    <!-- iOS simulator library -->
+	<target name="build_ios_simulator_project" unless="${ios.useworkspace}">
+		<echo message="[${ios.name}] Building iOS simulator library..." />
+		<exec executable="${ios.xcode_buildpath}">
+			<arg line="-project ${ios.basedir}/${ios.name}.xcodeproj"/>
+			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="BITCODE_GENERATION_MODE=bitcode" />
+			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-alltargets" />
+			<arg value="build" />
+			<arg line="-sdk iphonesimulator" />
+		</exec>
+	</target>
+	<target name="build_ios_simulator_workspace" if="${ios.useworkspace}">
+		<echo message="[${ios.name}] Building iOS simulator library..." />
+		<exec executable="${ios.xcode_buildpath}">
+			<arg line="-workspace ${ios.basedir}/${ios.name}.xcworkspace"/>
+			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="BITCODE_GENERATION_MODE=bitcode" />
+			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-scheme ${ios.name}" />
+			<arg value="build" />
+			<arg line="-sdk iphonesimulator" />
+		</exec>
+	</target>
+
+	<!-- iOS iphoneos library -->
+	<target name="build_ios_iphone_project" unless="${ios.useworkspace}">
+		<echo message="[${ios.name}] Building iOS library..."/>
+		<exec executable="${ios.xcode_buildpath}">
+			<arg line="-project ${ios.basedir}/${ios.name}.xcodeproj"/>
+			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="BITCODE_GENERATION_MODE=bitcode" />
+			<arg line="OTHER_CFLAGS='$(inherited) -fembed-bitcode'" />
+			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-alltargets" />
+			<arg value="build"/>
+			<arg line="-sdk iphoneos" />
+		</exec>
+	</target>
+	<target name="build_ios_iphone_workspace" if="${ios.useworkspace}">
+		<echo message="[${ios.name}] Building iOS library..."/>
+		<exec executable="${ios.xcode_buildpath}">
+			<arg line="-workspace ${ios.basedir}/${ios.name}.xcworkspace"/>
+			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="BITCODE_GENERATION_MODE=bitcode" />
+			<arg line="OTHER_CFLAGS='$(inherited) -fembed-bitcode'" />
+			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-scheme ${ios.name}" />
+			<arg value="build"/>
+			<arg line="-sdk iphoneos" />
+		</exec>
+	</target>
+
+	<!-- AppleTV library -->
+	<target name="build_tvos_project" unless="${ios.useworkspace}" >
+		<echo message="[${ios.name}] Building Apple TV library..." />
+		<exec executable="${ios.xcode_buildpath}" if:true="${tvos.enabled}">
+			<arg line="-project ${ios.basedir}/${ios.name}.xcodeproj"/>
+			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="BITCODE_GENERATION_MODE=bitcode" />
+			<arg line="OTHER_CFLAGS='$(inherited) -fembed-bitcode'" />
+			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-alltargets" />
+			<arg value="build" />
+			<arg line="-sdk appletvos" />
+		</exec>
+	</target>
+	<target name="build_tvos_workspace" if="${ios.useworkspace}" >
+		<echo message="[${ios.name}] Building Apple TV library..." />
+		<exec executable="${ios.xcode_buildpath}" if:true="${tvos.enabled}">
+			<arg line="-workspace ${ios.basedir}/${ios.name}.xcworkspace"/>
+			<arg line="ONLY_ACTIVE_ARCH=NO" />
+			<arg line="BITCODE_GENERATION_MODE=bitcode" />
+			<arg line="OTHER_CFLAGS='$(inherited) -fembed-bitcode'" />
+			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-scheme ${ios.name}" />
+			<arg value="build" />
+			<arg line="-sdk appletvos" />
+		</exec>
+	</target>
+
+
+	<target name="pre_build_ios" />
+
+
+
+
+
+	<target name="build" depends="version_write, pre_build_ios" if="${ios.shouldbuild}">
+
+		<echo message="Building iOS library..."/>
+
+		<antcall target="build_ios_simulator_project" />
+		<antcall target="build_ios_simulator_workspace" />
+		<antcall target="build_ios_iphone_project" />
+		<antcall target="build_ios_iphone_workspace" />
+		<antcall target="build_tvos_project" />
+		<antcall target="build_tvos_workspace" />
+
+		<antcall target="copy_corenativeextension_framework" />
+
+	</target>
+
+
+	<target name="clean" >
+
+		<delete dir="${ios.basedir}/build/" />
+
+	</target>
+
+
+	<target name="copy_corenativeextension_framework" if="${ios.packagecoreframework}">
+		<echo message="Copying CoreNativeExtension.framework ..."/>
+
+		<antcall target="copy_corenativeextension_framework_target" >
+			<param name="target" value="${ios.iphoneos_dir}" />
+		</antcall>
+		<antcall target="copy_corenativeextension_framework_target" >
+			<param name="target" value="${ios.iphonesimulator_dir}" />
+		</antcall>
+		<antcall target="copy_corenativeextension_framework_target" >
+			<param name="target" value="${ios.tvos_dir}" />
+		</antcall>
+	</target> 
+
+	<target name="copy_corenativeextension_framework_target">
+		<for param="builddir">
+			<path>
+				<dirset dir="${ios.basedir}/build">
+					<include name="**/${target}"/>
+				</dirset>
+			</path>
+			<sequential>
+				<copy overwrite="true" todir="@{builddir}/CoreNativeExtension.framework">
+					<fileset dir="${supportlibs.coreframework}/${target}/CoreNativeExtension.framework" />
+				</copy>
+			</sequential>
+		</for>
+	</target>
+
+
+	<!-- 
+	//
+	//
+	//	DOCUMENTATION 
+	//
+	//
+	-->
+
+	<target name="docs" description="">
+	</target>
+
+
+</project>

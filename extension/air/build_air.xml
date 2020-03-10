@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<project default="build" name="extension_air" 
+	xmlns:if="ant:if"
+	xmlns:unless="ant:unless"> 
+
+
+	
+	<import file="../../build_common.xml" />
+
+
+	<scriptdef language="javascript" name="variantname">
+		<attribute name="name" /> 
+		<attribute name="value" />
+		<![CDATA[
+		var variantName = attributes.get( "value" );
+		if (variantName.length > 0)
+		{
+			variantName = "." + variantName;
+		}
+		project.setProperty( attributes.get("name"), variantName );
+		]]>
+	</scriptdef>
+
+	<!-- 
+	//
+	//
+	//	CONFIGURATION 
+	//
+	//
+	-->
+	
+	<!-- <lower name="project.packagename" value="${project.name}" /> -->
+	<grppackagename name="project.packagename" prefix="" grp="${project.grp}" projectname="${project.name}" />
+
+    <property name="actionscript.name" value="distriqt.extension.${project.packagename}.swc" />
+	<property name="default.name" value="distriqt.extension.${project.packagename}.default.swc" />
+	
+	<property name="android.name" value="distriqt.extension.${project.packagename}.android.jar" />
+	<property name="android.extclass" value="${package.name}.${project.name}Extension" />
+	<packagetores name="android.resources" value="distriqt-extension-${project.packagename}-res" />
+
+	<cleanchars name="ios.name" value="${project.grp}${project.name}" />
+	
+	<cleanchars name="windows.name" value="${project.grp}${project.name}" />
+
+	<taskdef resource="flexTasks.tasks" classpath="${air.sdk}/ant/lib/flexTasks.jar" />
+	
+	<dirname property="air.basedir" file="${ant.file.extension_air}" />
+
+	 
+
+	<!-- 
+	//
+	//
+	//	VERSIONING 
+	//
+	//
+	-->
+
+	<target name="version_write" >
+		<property name="version" value="${version_major}.${version_minor}.${version_build}" />
+
+		<copy file="${common.basedir}/build_config/extension.xml" tofile="extension.build.xml" overwrite="true" >
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="@AIRVERSION@" to="${air.swfversion}"/>
+					<replacestring from="@EXTENSIONID@" to="${output.name}"/>
+					<replacestring from="@VERSION@" to="${version}"/>
+					<replacestring from="@ANDROIDLIB@" to="${android.name}"/>
+					<replacestring from="@ANDROIDEXTINIT@" to="${android.extclass}"/>
+					<replacestring from="@ANDROIDEXTFINAL@" to="${android.extclass}"/>
+					<replacestring from="@IOSLIB@" to="lib${ios.name}.a"/>
+					<replacestring from="@IOSEXTINIT@" to="${ios.name}ExtInitializer"/>
+					<replacestring from="@IOSEXTFINAL@" to="${ios.name}ExtFinalizer"/>
+					<replacestring from="@WINDOWSLIB@" to="${windows.name}.dll"/>
+					<replacestring from="@WINDOWSEXTINIT@" to="${windows.name}ExtInitializer"/>
+					<replacestring from="@WINDOWSEXTFINAL@" to="${windows.name}ExtFinalizer"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+	</target>
+
+
+
+
+
+    <!-- 
+	//
+	//
+	//	BUILD TASKS 
+	//
+	//
+	-->
+
+
+    <target name="build" if="${output.air.enabled}" >
+
+		<antcall target="package" >
+			<param name="variant" value="" />
+		</antcall>
+
+		<antcall target="build_variants" />
+    </target>
+
+
+	<target name="build_variants" if="variants">
+		<for list="${variants}" param="variant">
+			<sequential>
+				<echo>@{variant}</echo>
+				<antcall target="package" >
+					<param name="variant" value="@{variant}" />
+				</antcall>
+			</sequential>
+		</for>
+	</target>
+
+
+	<target name="package" >
+		<echo message="PACKAGE VARIANT: ${variant}" />
+	
+		<antcall target="clean" />
+
+		<antcall target="prepare_ios" >
+			<param name="variant" value="${variant}" />
+		</antcall>
+		<antcall target="prepare_android" if:true="${android.enabled}">
+			<param name="variant" value="${variant}" />
+		</antcall>
+		<antcall target="prepare_windows" if:true="${windows.enabled}">
+			<param name="variant" value="${variant}" />
+		</antcall>
+		<antcall target="package_ane" >
+			<param name="variant" value="${variant}" />
+		</antcall>
+    </target>
+
+
+    <target name="clean" >
+        <delete dir="${output.dir}" />
+        <delete dir="platform" />
+        <delete>
+			<fileset dir=".">
+				<include name="*.build.xml" />
+			</fileset>
+		</delete>
+    </target>
+
+
+    <target name="package_ane" description="Package ANE" depends="version_write" >
+		
+		<variantname name="variantName" value="${variant}" />
+		<echo message="PACKAGE ANE: ${variantName}" />
+
+        <!-- Copy over library.swf to each platform output -->
+		<mkdir dir="${output.tmpdir}" />
+		<unzip src="${common.basedir}/${actionscript.dir}/bin/${actionscript.name}" dest="${output.tmpdir}" overwrite="true"/>
+		<copy file="${output.tmpdir}/library.swf" todir="${ios.dir}/${ios.build_dir}/${variant}/${ios.iphoneos_dir}" failonerror="true" if:true="${ios.enabled}" />
+		<copy file="${output.tmpdir}/library.swf" todir="${ios.dir}/${ios.build_dir}/${variant}/${ios.iphonesimulator_dir}" failonerror="true" if:true="${ios.enabled}" />
+		<copy file="${output.tmpdir}/library.swf" todir="${ios.dir}/${ios.build_dir}/${variant}/${ios.tvos_dir}" failonerror="true" if:true="${tvos.enabled}" />
+		<copy file="${output.tmpdir}/library.swf" todir="${android.dir}/${android.outputdir}" failonerror="true" if:true="${android.enabled}" />
+		<copy file="${output.tmpdir}/library.swf" todir="${windows.dir}/${windows.outputdir}" failonerror="true" if:true="${windows.enabled}" />
+		<delete dir="${output.tmpdir}" />
+		
+		<unzip src="${common.basedir}/${default.dir}/bin/${default.name}" dest="${default.dir}/" overwrite="true"/>
+		<delete file="${default.dir}/catalog.xml" />
+		
+		<mkdir dir="${output.dir}/${variant}" />
+
+
+		<!-- Compile ANE -->
+		<exec executable="${air.adt}" failonerror="true">
+			<arg value="-package"/>
+			<arg value="-target"/>
+			<arg value="ane"/>
+			<arg value="${output.dir}/${variant}/${output.name}${variantName}.ane"/>
+			<arg value="extension.build.xml"/>
+			<arg line="-swc ${common.basedir}/${actionscript.dir}/bin/${actionscript.name}"/>
+			
+			<arg line="-platform iPhone-ARM -platformoptions ${ios.dir}/platform_ios${variant}.build.xml -C ${ios.dir}/${ios.build_dir}/${variant}/${ios.iphoneos_dir} ." if:true="${ios.enabled}" />
+			<arg line="-platform iPhone-x86 -platformoptions ${ios.dir}/platform_ios${variant}.build.xml -C ${ios.dir}/${ios.build_dir}/${variant}/${ios.iphonesimulator_dir} ." if:true="${ios.enabled}" />
+			<arg line="-platform appleTV-ARM -platformoptions ${ios.dir}/platform_tvos${variant}.build.xml -C ${ios.dir}/${ios.build_dir}/${variant}/${ios.tvos_dir} ." if:true="${tvos.enabled}" /> 
+			
+			<arg line="-platform Android-ARM -platformoptions ${android.dir}/platform_android${variant}.build.xml -C ${android.dir}/${android.outputdir} ." if:true="${android.enabled}" />
+			<arg line="-platform Android-ARM64 -platformoptions ${android.dir}/platform_android${variant}.build.xml -C ${android.dir}/${android.outputdir} ." if:true="${android.enabled}" />
+			<arg line="-platform Android-x86 -platformoptions ${android.dir}/platform_android${variant}.build.xml -C ${android.dir}/${android.outputdir} ." if:true="${android.enabled}" />
+			
+			<arg line="-platform Windows-x86 -C ${windows.dir}/${windows.outputdir} ." if:true="${windows.enabled}" />
+
+			<arg line="-platform default -C ${default.dir} ."/>
+		</exec>
+
+
+		<!-- Copy to output -->
+		<mkdir dir="${common.basedir}/${output.dir}/${variant}" />
+		<copy file="${output.dir}/${variant}/${output.name}${variantName}.ane" todir="${common.basedir}/${output.dir}/${variant}" />
+		
+	</target>
+
+
+
+
+
+    <!-- 
+	//
+	//
+	//	iOS 
+	//
+	//
+	-->
+
+    <target name="prepare_ios"  description="Copy iOS files for packaging" if="${ios.enabled}">
+		
+        <copy overwrite="true" todir="${ios.dir}/${ios.build_dir}/${variant}/${ios.iphoneos_dir}" >
+            <fileset dir="${common.basedir}/${ios.dir}/${ios.build_dir}/${variant}/${ios.iphoneos_dir}" erroronmissingdir="false">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+        <copy overwrite="true" todir="${ios.dir}/${ios.build_dir}/${variant}/${ios.iphonesimulator_dir}" >
+            <fileset dir="${common.basedir}/${ios.dir}/${ios.build_dir}/${variant}/${ios.iphonesimulator_dir}" erroronmissingdir="false">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+        <copy overwrite="true" todir="${ios.dir}/${ios.build_dir}/${variant}/${ios.tvos_dir}" if:true="${tvos.enabled}">
+            <fileset dir="${common.basedir}/${ios.dir}/${ios.build_dir}/${variant}/${ios.tvos_dir}" erroronmissingdir="false">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+
+		<copy overwrite="true" todir="${ios.dir}/${ios.build_dir}/${variant}/${ios.iphoneos_dir}" >
+			<fileset dir="${common.basedir}/${ios.dir}/${ios.name}" erroronmissingdir="false">
+				<include name="*.framework/**"/>
+				<include name="*.bundle/**"/>
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${ios.dir}/${ios.build_dir}/${variant}/${ios.iphonesimulator_dir}" >
+			<fileset dir="${common.basedir}/${ios.dir}/${ios.name}" erroronmissingdir="false">
+				<include name="*.framework/**"/>
+				<include name="*.bundle/**"/>
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${ios.dir}/${ios.build_dir}/${variant}/${ios.tvos_dir}" if:true="${tvos.enabled}">
+			<fileset dir="${common.basedir}/${ios.dir}/${ios.name}" erroronmissingdir="false">
+				<include name="*.framework/**"/>
+				<include name="*.bundle/**"/>
+			</fileset>
+		</copy>
+		
+		<copy overwrite="true" todir="${ios.dir}/${ios.build_dir}/${variant}/${ios.iphoneos_dir}" >
+			<fileset dir="${common.basedir}/${ios.dir}/libs/${variant}" erroronmissingdir="false">
+				<include name="*.framework/**"/>
+				<include name="*.bundle/**"/>
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${ios.dir}/${ios.build_dir}/${variant}/${ios.iphonesimulator_dir}" >
+			<fileset dir="${common.basedir}/${ios.dir}/libs/${variant}" erroronmissingdir="false">
+				<include name="*.framework/**"/>
+				<include name="*.bundle/**"/>
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${ios.dir}/${ios.build_dir}/${variant}/${ios.tvos_dir}" if:true="${tvos.enabled}">
+			<fileset dir="${common.basedir}/${ios.dir}/libs/${variant}" erroronmissingdir="false">
+				<include name="*.framework/**"/>
+				<include name="*.bundle/**"/>
+			</fileset>
+		</copy>
+
+		<delete failonerror="false">
+			<fileset dir="${ios.dir}/${ios.build_dir}/${variant}/${ios.iphoneos_dir}">
+				<include name="**/libPods*.a" />
+			</fileset>
+			<fileset dir="${ios.dir}/${ios.build_dir}/${variant}/${ios.iphonesimulator_dir}">
+				<include name="**/libPods*.a" />
+			</fileset>
+			<fileset dir="${ios.dir}/${ios.build_dir}/${variant}/${ios.tvos_dir}">
+				<include name="**/libPods*.a" />
+			</fileset>
+		</delete>
+
+		<antcall target="prepare_ios_platform" >
+			<param name="variant" value="${variant}" />
+		</antcall>
+
+	</target>
+
+    <target name="prepare_ios_platform" >
+		<property name="version" value="${version_major}.${version_minor}.${version_build}" />
+        <fileset id="platform.ios.pods.fs" dir="${ios.dir}/${ios.build_dir}/${variant}/${ios.iphoneos_dir}" casesensitive="yes">
+			<include name="**/*.a"/>
+			<exclude name="**/lib${ios.name}.a" />
+			<exclude name="**/libPods*.a" />
+		</fileset>
+
+		<var name="ios_build_path" unset="true"/>
+		<cleanpath name="ios_build_path" value="${air.basedir}/${ios.dir}/${ios.build_dir}/${variant}/${ios.iphoneos_dir}/" />
+
+		<pathconvert refid="platform.ios.pods.fs" property="platform.ios.pods" pathsep="&lt;/packagedDependency&gt;${line.separator}&lt;packagedDependency&gt;">
+			<map from="${ios_build_path}" to="" />
+		</pathconvert>
+		<wrapxmltag name="platform.ios.pods.str" input="${platform.ios.pods}" tag="packagedDependency" />
+		
+		<copy file="${common.basedir}/build_config/platform_ios${variant}.xml" tofile="${ios.dir}/platform_ios${variant}.build.xml" overwrite="true" >
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="@AIRVERSION@" to="${air.swfversion}"/>
+					<replacestring from="@VERSION@" to="${version}"/>
+					<replacestring from="@PODS@" to="${platform.ios.pods.str}"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+		<copy file="${common.basedir}/build_config/platform_tvos${variant}.xml" tofile="${ios.dir}/platform_tvos${variant}.build.xml" overwrite="true" failonerror="false" >
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="@AIRVERSION@" to="${air.swfversion}"/>
+					<replacestring from="@VERSION@" to="${version}"/>
+					<replacestring from="@PODS@" to="${platform.ios.pods.str}"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+	</target>
+
+
+
+    <!-- 
+	//
+	//
+	//	ANDROID 
+	//
+	//
+	-->
+
+    <target name="prepare_android" description="Copy Android files for packaging" >
+		<delete dir="${common.basedir}/${android.dir}/${android.outputdir}/android-profile" />
+		
+		<mkdir dir="${android.dir}/${output.tmpdir}" />
+		<unzip src="${common.basedir}/${android.dir}/app/build/outputs/aar/app-release.aar" dest="${android.dir}/${output.tmpdir}" overwrite="true"/>
+
+		<copy file="${android.dir}/${output.tmpdir}/classes.jar" tofile="${android.dir}/${android.outputdir}/${android.name}" />
+		
+		<copy includeEmptyDirs="false" overwrite="true" todir="${android.dir}/${android.outputdir}/${android.resources}">
+			<fileset dir="${android.dir}/${output.tmpdir}/res/" >
+				<exclude name="**/values.xml" />
+			</fileset>
+		</copy>
+		<copy includeEmptyDirs="false" overwrite="true" todir="${android.dir}/${android.outputdir}/${android.resources}">
+			<fileset dir="${common.basedir}/${android.dir}/app/src/main/res/" >
+				<include name="values/*.xml" />
+				<exclude name="values/values.xml" />
+			</fileset>
+		</copy>
+
+		<copy includeEmptyDirs="false" overwrite="true" failonerror="false" quiet="true" todir="${android.dir}/${android.outputdir}">
+			<fileset dir="${common.basedir}/${android.dir}/app/libs" >
+				<exclude name="**/corenativeextension.android.lib.jar" />
+				<exclude name="**/corenativeextension.android.lib.air.jar" />
+				<exclude name="**/FlashRuntimeExtensions.jar" />
+				<exclude name="**/runtimeClasses.jar" />
+				<exclude name="**/mockable-android*" />
+			</fileset>
+		</copy>
+
+		<copy includeEmptyDirs="false" overwrite="true" failonerror="false" quiet="true" todir="${android.dir}/${android.outputdir}/libs">
+			<fileset dir="${common.basedir}/${android.dir}/${output.tmpdir}/jni/" />
+		</copy>
+		
+		<delete dir="${android.dir}/${output.tmpdir}" />
+
+		<foreach target="explode_aar" param="explode_aar_file">
+			<fileset dir="${common.basedir}/${android.dir}/externals/" erroronmissingdir="false" id="filesetexternals" >
+				<include name="*.aar" />
+			</fileset>
+			<fileset dir="${common.basedir}/${android.dir}/libs/${variant}" erroronmissingdir="false" id="filesetvariant">
+				<include name="*.aar" />
+			</fileset>
+			<fileset dir="${common.basedir}/${android.dir}/dependencies" erroronmissingdir="false" id="filesetdependencies">
+				<include name="*.aar" />
+			</fileset>
+			<path>
+				<union>
+					<resources refid="filesetexternals" />
+					<resources refid="filesetvariant" />
+					<resources refid="filesetdependencies" />
+				</union>
+			</path>
+		</foreach>
+
+
+		<for list="${android.additional_projects}" param="project">
+			<sequential>
+				<antcall target="explode_aar">
+					<param name="explode_aar_file" value="${common.basedir}/${android.dir}/@{project}/build/outputs/aar/@{project}-release.aar" />
+					<param name="explode_aar_name" value="@{project}" />
+				</antcall>
+			</sequential>
+		</for>
+		
+
+		<copy todir="${android.dir}/${android.outputdir}">
+			<fileset dir="${common.basedir}/${android.dir}/externals/" erroronmissingdir="false" >
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${android.dir}/${android.outputdir}">
+			<fileset dir="${common.basedir}/${android.dir}/libs/${variant}" erroronmissingdir="false">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${android.dir}/${android.outputdir}">
+			<fileset dir="${common.basedir}/${android.dir}/dependencies" erroronmissingdir="false">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		
+		<antcall target="prepare_android_platform" >
+			<param name="variant" value="${variant}" />
+		</antcall>
+
+
+	</target>
+	
+	
+	
+
+    <target name="prepare_android_platform" >
+		<fileset id="platform.android.jar.fs" dir="${android.dir}/${android.outputdir}" casesensitive="yes">
+			<include name="**/*.jar"/>
+			<exclude name="**/${android.name}" />
+		</fileset>
+		<pathconvert refid="platform.android.jar.fs" property="platform.android.jars" pathsep="&lt;/packagedDependency&gt;${line.separator}&lt;packagedDependency&gt;">
+			<map from="${basedir}/platform/android/build/" to="" />
+		</pathconvert>
+		<wrapxmltag name="platform.android.jars.str" input="${platform.android.jars}" tag="packagedDependency" />
+		<property name="version" value="${version_major}.${version_minor}.${version_build}" />
+		<copy file="${common.basedir}/build_config/platform_android${variant}.xml" tofile="${android.dir}/platform_android${variant}.build.xml" overwrite="true" >
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="@AIRVERSION@" to="${air.swfversion}"/>
+					<replacestring from="@ANDROIDPACKAGE@" to="${package.name}"/>
+					<replacestring from="@ANDROIDRES@" to="${android.resources}"/>
+					<replacestring from="@JARS@" to="${platform.android.jars.str}"/>
+					<replacestring from="@VERSION@" to="${version}"/>
+					<replacestring from="@VERSIONEXT@" to="${version.grp}"/>
+					<replacestring from="@VERSIONGROUP@" to="${version.grp}"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+	</target>
+
+
+	<target name="explode_aar">
+		<basename property="explode_aar_name" file="${explode_aar_file}" suffix=".aar" />
+		<var name="explode_aar_name_lang" unset="true"/>
+		<striplangcode name="explode_aar_name_lang" value="${explode_aar_name}" />
+		<echo message="explode ${explode_aar_file} ${explode_aar_name} ${explode_aar_name_lang}" />
+
+		<mkdir dir="${android.dir}/${output.tmpdir}" />
+		<unzip src="${explode_aar_file}" dest="${android.dir}/${output.tmpdir}" overwrite="true"/>
+
+		<copy file="${android.dir}/${output.tmpdir}/classes.jar" tofile="${android.dir}/${android.outputdir}/${explode_aar_name}.jar" />
+		<copy includeEmptyDirs="false" overwrite="true" todir="${android.dir}/${android.outputdir}/${explode_aar_name_lang}-res" failonerror="false">
+			<fileset dir="${android.dir}/${output.tmpdir}/res/" />
+		</copy>
+
+		<copy includeEmptyDirs="false" overwrite="true" failonerror="false" quiet="true" todir="${android.dir}/${android.outputdir}/libs">
+			<fileset dir="${android.dir}/${output.tmpdir}/jni/" />
+		</copy>
+
+		<delete dir="${android.dir}/${output.tmpdir}" />
+		
+	</target>
+
+
+	<scriptdef language="javascript" name="striplangcode">
+		<attribute name="name" />
+		<attribute name="value" /> 
+		<![CDATA[
+		project.setProperty( attributes.get( "name" ),
+							 attributes.get( "value" ).replace( /-ui-/g, "-" ) );
+		]]>
+	</scriptdef>
+
+
+	<!-- 
+	//
+	//
+	//	WINDOWS 
+	//
+	//
+	-->
+
+	<target name="prepare_windows" description="Copy Windows files for packaging" >
+
+		<copy overwrite="true" todir="${windows.dir}/${windows.outputdir}" >
+			<fileset dir="${common.basedir}/${windows.dir}/${windows.outputdir}" erroronmissingdir="false">
+				<include name="**/*"/>
+				<exclude name="CoreLibrary.dll" />
+				<exclude name="DesktopBridge.Helpers.dll" />
+				<exclude name="FREInterface.dll" />
+				<exclude name="System.Runtime.WindowsRuntime.dll" />
+				<exclude name="Newtonsoft.Json.dll" />
+				<exclude name="QueryString.NETCore.dll" />
+			</fileset>
+		</copy>
+
+		<if>
+			<equals arg1="${windows.packagecorelib}" arg2="true" />
+			<then>
+			<copy overwrite="true" todir="${windows.dir}/${windows.outputdir}" >
+				<fileset dir="${common.basedir}/${windows.dir}/${windows.outputdir}" erroronmissingdir="false">
+					<include name="CoreLibrary.dll" />
+					<include name="DesktopBridge.Helpers.dll" />
+					<include name="FREInterface.dll" />
+					<include name="System.Runtime.WindowsRuntime.dll" />
+					<include name="Newtonsoft.Json.dll" />
+					<include name="QueryString.NETCore.dll" />
+				</fileset>
+			</copy>
+			</then>
+		</if>
+
+	</target>
+	
+
+
+
+
+
+	<!-- 
+	//
+	//
+	//	DOCUMENTATION 
+	//
+	//
+	-->
+
+    <target name="docs" description="">
+    </target>
+
+
+</project>
+

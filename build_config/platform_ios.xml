@@ -1,4 +1,4 @@
-<platform xmlns="http://ns.adobe.com/air/extension/4.0">
+<platform xmlns="http://ns.adobe.com/air/extension/@AIRVERSION@">
 	<copyright>2019 // distriqt</copyright>
 	<sdkVersion>9.0</sdkVersion>
 	<linkerOptions>
@@ -7,5 +7,6 @@
 	</linkerOptions>
 	<packagedDependencies>
 		<packagedDependency>CrashReporter.framework</packagedDependency>
+@PODS@
 	</packagedDependencies>
 </platform>

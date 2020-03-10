@@ -1,10 +1,12 @@
-<platform xmlns="http://ns.adobe.com/air/extension/4.0">
+<platform xmlns="http://ns.adobe.com/air/extension/@AIRVERSION@">
+	<copyright>2019 // distriqt</copyright>
 	<packagedDependencies>
+@JARS@
 	</packagedDependencies>
 	<packagedResources>
 	     <packagedResource>
-		    <packageName>com.distriqt.extension.exceptions</packageName> 
-		    <folderName>distriqt-extension-exceptions-res</folderName> 
+		    <packageName>@ANDROIDPACKAGE@</packageName> 
+		    <folderName>@ANDROIDRES@</folderName> 
 		</packagedResource>
 	</packagedResources>
 </platform>

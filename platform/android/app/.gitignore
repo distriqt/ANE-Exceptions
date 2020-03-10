@@ -1,1 +1,5 @@
-/build
+build/*
+!build/outputs
+build/outputs/logs
+build/outputs/aar/*
+!build/outputs/aar/app-release.aar

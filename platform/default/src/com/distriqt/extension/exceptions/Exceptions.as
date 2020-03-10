@@ -33,9 +33,9 @@ package com.distriqt.extension.exceptions
 		
 		//
 		//	ID and Version numbers
-		public static const EXT_CONTEXT_ID			: String = "com.distriqt.Exceptions";
+		public static const EXT_CONTEXT_ID			: String = Const.EXTENSIONID;
 		
-		public static const VERSION					: String = Version.VERSION;
+		public static const VERSION					: String = Const.VERSION;
 		private static const VERSION_DEFAULT		: String = "0";
 		private static const IMPLEMENTATION_DEFAULT	: String = "unknown";
 		

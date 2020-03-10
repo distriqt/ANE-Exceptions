@@ -1,4 +1,24 @@
-build
+# Include Release directories, in build and build/variant
+!build/*
+build/*/*
+!build/Release-*/*
+!build/*/Release-*
+build/Shared*
+build/XC*
+build/Debug*
+build/Intermediates*
+build/*.build
+
+!build_unity/*
+build_unity/*/*
+!build_unity/Release-*/*
+!build_unity/*/Release-*
+build_unity/Shared*
+build_unity/XC*
+build_unity/Debug*
+build_unity/Intermediates*
+build_unity/*.build
+
 project.xcworkspace
 xcuserdata
 DerivedData

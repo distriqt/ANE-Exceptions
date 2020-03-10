@@ -1,44 +1,48 @@
-<extension xmlns="http://ns.adobe.com/air/extension/4.0">
-	<id>com.distriqt.Exceptions</id>
+<extension xmlns="http://ns.adobe.com/air/extension/@AIRVERSION@">
+	<id>@EXTENSIONID@</id>
 	<versionNumber>@VERSION@</versionNumber>
 	<platforms>
+
 		<platform name="Android-ARM">
 			<applicationDeployment>
-				<nativeLibrary>distriqt.extension.exceptions.android.jar</nativeLibrary>
-				<initializer>com.distriqt.extension.exceptions.ExceptionsExtension</initializer>
-				<finalizer>com.distriqt.extension.exceptions.ExceptionsExtension</finalizer>
+				<nativeLibrary>@ANDROIDLIB@</nativeLibrary>
+				<initializer>@ANDROIDEXTINIT@</initializer>
+				<finalizer>@ANDROIDEXTFINAL@</finalizer>
 			</applicationDeployment>
 		</platform>
 		<platform name="Android-ARM64">
 			<applicationDeployment>
-				<nativeLibrary>distriqt.extension.exceptions.android.jar</nativeLibrary>
-				<initializer>com.distriqt.extension.exceptions.ExceptionsExtension</initializer>
-				<finalizer>com.distriqt.extension.exceptions.ExceptionsExtension</finalizer>
+				<nativeLibrary>@ANDROIDLIB@</nativeLibrary>
+				<initializer>@ANDROIDEXTINIT@</initializer>
+				<finalizer>@ANDROIDEXTFINAL@</finalizer>
 			</applicationDeployment>
 		</platform>
 		<platform name="Android-x86">
 			<applicationDeployment>
-				<nativeLibrary>distriqt.extension.exceptions.android.jar</nativeLibrary>
-				<initializer>com.distriqt.extension.exceptions.ExceptionsExtension</initializer>
-				<finalizer>com.distriqt.extension.exceptions.ExceptionsExtension</finalizer>
+				<nativeLibrary>@ANDROIDLIB@</nativeLibrary>
+				<initializer>@ANDROIDEXTINIT@</initializer>
+				<finalizer>@ANDROIDEXTFINAL@</finalizer>
 			</applicationDeployment>
 		</platform>
+
 		<platform name="iPhone-ARM">
 			<applicationDeployment>
-				<nativeLibrary>libExceptions.a</nativeLibrary>
-				<initializer>ExceptionsExtInitializer</initializer>
-				<finalizer>ExceptionsExtFinalizer</finalizer>
+				<nativeLibrary>@IOSLIB@</nativeLibrary>
+				<initializer>@IOSEXTINIT@</initializer>
+				<finalizer>@IOSEXTFINAL@</finalizer>
 			</applicationDeployment>
 		</platform>
 		<platform name="iPhone-x86">
 			<applicationDeployment>
-				<nativeLibrary>libExceptions.a</nativeLibrary>
-				<initializer>ExceptionsExtInitializer</initializer>
-				<finalizer>ExceptionsExtFinalizer</finalizer>
+				<nativeLibrary>@IOSLIB@</nativeLibrary>
+				<initializer>@IOSEXTINIT@</initializer>
+				<finalizer>@IOSEXTFINAL@</finalizer>
 			</applicationDeployment>
 		</platform>
+
 		<platform name="default"> 
 			<applicationDeployment /> 
 		</platform>
+		
 	</platforms>
 </extension>

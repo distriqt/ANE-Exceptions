@@ -1,7 +1,6 @@
 /local.properties
 bin
 gen
-build
 release
 .idea/libraries
 .idea/shelf

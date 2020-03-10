@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<project default="build" name="default"> 
+
+
+	
+	<import file="../../build_common.xml" />
+
+
+	<!-- 
+	//
+	//
+	//	CONFIGURATION 
+	//
+	//
+	-->
+	
+	<!-- <lower name="project.packagename" value="${project.name}" /> -->
+	<grppackagename name="project.packagename" prefix="" grp="${project.grp}" projectname="${project.name}" />
+
+	<property name="default.name" value="distriqt.extension.${project.packagename}.default.swc" />
+
+	<taskdef resource="flexTasks.tasks" classpath="${air.sdk}/ant/lib/flexTasks.jar" />
+	
+	<dirname property="default.basedir" file="${ant.file.default}" />
+
+
+
+	<!-- 
+	//
+	//
+	//	VERSIONING 
+	//
+	//
+	-->
+
+	<target name="version_write" >
+		<property name="version" value="${version_major}.${version_minor}.${version_build}" />
+
+		<copy file="${common.basedir}/${codetmpl}/Const.as" tofile="${default.basedir}/src/${package.path}/Const.as" overwrite="true" >
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="@VERSION@" to="${version}"/>
+					<replacestring from="@EXTENSIONID@" to="${output.name}"/>
+					<replacestring from="@PACKAGE@" to="${package.name}"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+	</target>
+
+
+
+
+    <!-- 
+	//
+	//
+	//	ACTIONSCRIPT TASKS 
+	//
+	//
+	-->
+
+	<target name="pre_build_default" />
+
+
+	<target name="build" depends="version_write, pre_build_default">
+
+		<echo message="Building default library..."/>
+
+		<compc output="${default.basedir}/bin/${default.name}" debug="${DEBUG_MODE}" swf-version="17">
+			<load-config filename="${air.sdk}/frameworks/air-config.xml" />
+			<source-path path-element="${default.basedir}/src" />
+			<include-sources dir="${default.basedir}/src" includes="*" />
+		</compc>
+
+		<echo message="done"/>
+
+	</target>
+
+
+	<target name="clean" >
+		<delete dir="${default.basedir}/bin" />
+	</target>
+
+
+
+
+	<!-- 
+	//
+	//
+	//	DOCUMENTATION 
+	//
+	//
+	-->
+
+	<target name="docs" description="">
+	</target>
+
+
+</project>

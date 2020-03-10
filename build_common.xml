@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<project default="bootstrap" name="common" > 
+    
+	<dirname property="common.basedir" file="${ant.file.common}" />
+
+	<property file="${common.basedir}/build_config/build.config" description="build properties" />
+	<property file="${common.basedir}/build_config/global.config" description="global properties" />
+	<property file="${common.basedir}/../../build_config/version.config" description="grp version properties" />
+	<property file="${common.basedir}/build_config/version.config" description="build version properties" />
+
+	<property name="version.grp" value="${version_grp_major}.${version_grp_minor}.${version_grp_build}" />
+	
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+	<target name="bootstrap">
+		<mkdir dir="${user.home}/.ant/lib"/>
+		<get dest="${user.home}/.ant/lib/ant-contrib.jar" src="https://search.maven.org/remotecontent?filepath=ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar"/>
+	</target>
+
+
+
+	<!-- PLATFORM INFORMATION -->
+
+	<condition property="isWindows" else="false">
+		<os family="windows" />
+	</condition>
+
+	<condition property="isMacOS" else="false">
+		<os family="mac" />
+	</condition>
+
+	<condition property="air.sdk" value="${air.sdk.windows}" else="${air.sdk.macos}">
+		<istrue value="${isWindows}"/>
+	</condition>
+	<property name="AIR_SDK_HOME" value="${air.sdk}" />
+	
+	
+	<condition property="android.sdk" value="${android.sdk.windows}" else="${android.sdk.macos}">
+		<istrue value="${isWindows}"/>
+	</condition>
+	<condition property="android.gradle" value="gradlew.bat" else="./gradlew">
+		<istrue value="${isWindows}"/>
+	</condition>
+
+	<condition property="air.adt" value="${air.sdk}/bin/adt.bat" else="${air.sdk}/bin/adt">
+		<istrue value="${isWindows}"/>
+	</condition>
+
+	<condition property="air.asdoc" value="${air.sdk}/bin/asdoc.bat" else="${air.sdk}/bin/asdoc">
+		<istrue value="${isWindows}"/>
+	</condition>
+	
+
+    <!-- SCRIPTS -->
+
+	<scriptdef language="javascript" name="lower">
+		<attribute name="name" />
+		<attribute name="value" /> 
+		<![CDATA[
+		project.setProperty( attributes.get( "name" ),
+							 attributes.get( "value" ).toLowerCase() );
+		]]>
+	</scriptdef>
+
+	<scriptdef language="javascript" name="cleanchars">
+		<attribute name="name" />
+		<attribute name="value" /> 
+		<![CDATA[
+		project.setProperty( attributes.get( "name" ),
+							 attributes.get( "value" ).replace( ".", "" ) );
+		]]>
+	</scriptdef>
+
+	<scriptdef language="javascript" name="cleanpath">
+		<attribute name="name" />
+		<attribute name="value" /> 
+		<![CDATA[
+		project.setProperty( attributes.get( "name" ),
+							 attributes.get( "value" ).replace( /\/\/|\/\.\//g, "/" ) );
+		]]>
+	</scriptdef>
+	
+	<scriptdef language="javascript" name="wrapxmltag">
+		<attribute name="name" /> 
+		<attribute name="input" />
+		<attribute name="tag" />
+		<![CDATA[
+		var value = "";
+		var input = String(attributes.get( "input" ));
+		var tag = String(attributes.get( "tag" ));
+		if (input.length > 0)
+		{ 
+			value = "<"+tag+">"+input+"</"+tag+">";
+		}
+		project.setProperty( attributes.get( "name" ), value );
+		]]>
+	</scriptdef>
+
+	<scriptdef language="javascript" name="outputname">
+		<attribute name="name" />
+		<attribute name="prefix" />
+		<attribute name="grp" /> 
+		<attribute name="projectname" />
+		<![CDATA[
+		var outputName = "";
+		
+		var prefix = attributes.get( "prefix" );
+		if (prefix.length > 0)
+			outputName = prefix + ".";
+			
+		var grp = attributes.get( "grp" ).toLowerCase();
+		var projectname = attributes.get( "projectname" );
+		if (grp.length > 0)
+		{
+			outputName += grp + "." + projectname;
+		}
+		else 
+		{
+			outputName += projectname;
+		}
+		project.setProperty( attributes.get("name"), outputName );
+		]]>
+	</scriptdef>
+
+	<scriptdef language="javascript" name="grppackagename">
+		<attribute name="name" />
+		<attribute name="prefix" />
+		<attribute name="grp" /> 
+		<attribute name="projectname" />
+		<![CDATA[
+		var packageName = "";
+
+		var prefix = attributes.get( "prefix" );
+		if (prefix.length > 0)
+			packageName = prefix + ".";
+
+		var grp = attributes.get( "grp" ).toLowerCase();
+		var projectname = attributes.get( "projectname" ).toLowerCase();
+		if (grp.length > 0)
+		{
+			packageName += grp + "." + projectname;
+		}
+		else 
+		{
+			packageName += projectname;
+		}
+		project.setProperty( attributes.get("name"), packageName );
+		]]>
+	</scriptdef>
+
+	<scriptdef language="javascript" name="packagepath">
+		<attribute name="name" />
+		<attribute name="value" /> 
+		<![CDATA[
+		project.setProperty( attributes.get( "name" ),
+							 attributes.get( "value" ).replace( /\./g, "/" ) );
+		]]>
+	</scriptdef>
+
+	<scriptdef language="javascript" name="packagetores">
+		<attribute name="name" />
+		<attribute name="value" /> 
+		<![CDATA[
+		project.setProperty( attributes.get( "name" ),
+							 attributes.get( "value" ).replace( /\./g, "-" ) );
+		]]>
+	</scriptdef>
+
+
+	<outputname name="output.name" prefix="${output.basename}" grp="${project.grp}" projectname="${project.name}" />
+	<grppackagename name="package.name" prefix="${package.basename}" grp="${project.grp}" projectname="${project.name}" />
+	<packagepath name="package.path" value="${package.name}" />
+
+</project>
