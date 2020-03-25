@@ -28,13 +28,23 @@
 	
 	<target name="version">
 		<antcall target="version_increment" />
+		<antcall target="version_write" />
 	</target>
 
-	<target name="version_increment">
+	<target name="version_increment" if="${version.autoincrement}">
 		<propertyfile file="./build_config/version.config">
 			<entry key="version_build" type="int" operation="+" value="1" pattern="000" />
 		</propertyfile>
 	</target>
+
+	<target name="version_write">
+		<var name="version" value="${version_major}.${version_minor}.${version_build}" />
+		<echo 
+			file="${output.dir}/VERSION.md" 
+			append="false" 
+			message="| ${output.name} | ${version} | ${version.android} | ${version.ios} |${line.separator}" />
+	</target>
+
 
 
 	<!-- 

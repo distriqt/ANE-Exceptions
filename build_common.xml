@@ -4,10 +4,10 @@
     
 	<dirname property="common.basedir" file="${ant.file.common}" />
 
-	<property file="${common.basedir}/build_config/build.config" description="build properties" />
-	<property file="${common.basedir}/build_config/global.config" description="global properties" />
 	<property file="${common.basedir}/../../build_config/version.config" description="grp version properties" />
 	<property file="${common.basedir}/build_config/version.config" description="build version properties" />
+	<property file="${common.basedir}/build_config/build.config" description="build properties" />
+	<property file="${common.basedir}/build_config/global.config" description="global properties" />
 
 	<property name="version.grp" value="${version_grp_major}.${version_grp_minor}.${version_grp_build}" />
 	
