@@ -1,17 +1,17 @@
 /**
- *        __       __               __ 
+ *        __       __               __
  *   ____/ /_ ____/ /______ _ ___  / /_
  *  / __  / / ___/ __/ ___/ / __ `/ __/
- * / /_/ / (__  ) / / /  / / /_/ / / 
- * \__,_/_/____/_/ /_/  /_/\__, /_/ 
- *                           / / 
- *                           \/ 
+ * / /_/ / (__  ) / / /  / / /_/ / /
+ * \__,_/_/____/_/ /_/  /_/\__, /_/
+ *                           / /
+ *                           \/
  * http://distriqt.com
  *
  * This is a test application for the distriqt extension
- * 
- * @author Michael Archbold
- * 	
+ *
+ * @author 		Michael Archbold (https://github.com/marchbold)
+ *
  */
 package
 {
@@ -29,7 +29,7 @@ package
 	import flash.text.TextFormat;
 	
 	
-	/**	
+	/**
 	 * Sample application for using the Exceptions Native Extension
 	 */
 	public class TestExceptions extends Sprite
@@ -39,8 +39,7 @@ package
 		//	VARIABLES
 		//
 		
-		private var _text		: TextField;
-		
+		private var _text:TextField;
 		
 		
 		////////////////////////////////////////////////////////
@@ -64,7 +63,7 @@ package
 		}
 		
 		
-		private function init( ):void
+		private function init():void
 		{
 			try
 			{
@@ -79,10 +78,10 @@ package
 					if (Exceptions.service.hasPendingException())
 					{
 						var report:ExceptionReport = Exceptions.service.getPendingException( false );
-						message( "date: "+		new Date(report.timestamp).toLocaleString() );
-						message( "name: "+		report.name );
-						message( "reason: "+	report.reason );
-						message( "report: "+	report.report );
+						message( "date: " + new Date( report.timestamp ).toLocaleString() );
+						message( "name: " + report.name );
+						message( "reason: " + report.reason );
+						message( "report: " + report.report );
 						
 						
 						var output:File = File.applicationStorageDirectory.resolvePath( "report.crash" );
@@ -97,7 +96,7 @@ package
 			}
 			catch (e:Error)
 			{
-				message( "ERROR::"+e.message );
+				message( "ERROR::" + e.message );
 			}
 		}
 		
@@ -105,7 +104,7 @@ package
 		private function message( str:String ):void
 		{
 			trace( str );
-			_text.appendText(str+"\n");
+			_text.appendText( str + "\n" );
 		}
 		
 		
@@ -116,7 +115,7 @@ package
 		private function stage_resizeHandler( event:Event ):void
 		{
 			_text.y = 40;
-			_text.width  = stage.stageWidth;
+			_text.width = stage.stageWidth;
 			_text.height = stage.stageHeight - 100;
 		}
 		

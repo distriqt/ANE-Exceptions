@@ -59,7 +59,7 @@
     <!-- iOS simulator library -->
 	<target name="build_ios_simulator_project" unless="${ios.useworkspace}">
 		<echo message="[${ios.name}] Building iOS simulator library..." />
-		<exec executable="${ios.xcode_buildpath}">
+		<exec executable="${ios.xcode_buildpath}" if:true="${iosimulator.enabled}">
 			<arg line="-project ${ios.basedir}/${ios.name}.xcodeproj"/>
 			<arg line="ONLY_ACTIVE_ARCH=NO" />
 			<arg line="BITCODE_GENERATION_MODE=bitcode" />
@@ -71,7 +71,7 @@
 	</target>
 	<target name="build_ios_simulator_workspace" if="${ios.useworkspace}">
 		<echo message="[${ios.name}] Building iOS simulator library..." />
-		<exec executable="${ios.xcode_buildpath}">
+		<exec executable="${ios.xcode_buildpath}" if:true="${iosimulator.enabled}">
 			<arg line="-workspace ${ios.basedir}/${ios.name}.xcworkspace"/>
 			<arg line="ONLY_ACTIVE_ARCH=NO" />
 			<arg line="BITCODE_GENERATION_MODE=bitcode" />
@@ -141,7 +141,44 @@
 
 	<target name="pre_build_ios" />
 
+	<target name="build_xib" >
+		<mkdir dir=".tmp" />
+		<for param="xibfile">
+			<path>
+				<fileset dir="${ios.basedir}">
+					<include name="**/*.xib"/>
+				</fileset>
+			</path>
+			<sequential>
+				<var name="nibfilename" unset="true"/>
+				<echo message="@{xibfile}" />
+				<basename property="nibfilename" file="@{xibfile}" suffix=".xib" />
+				<echo message="${nibfilename}" />
+				<exec executable="ibtool">
+					<arg line="--compile" />
+					<arg line=".tmp/${nibfilename}.nib" />
+					<arg line="@{xibfile}" />
+				</exec>
+			</sequential>
+		</for>
 
+		<for param="outputlib">
+			<path>
+				<fileset dir="${ios.basedir}/${ios.build_dir}">
+					<include name="**/*.a"/>
+				</fileset>
+			</path>
+			<sequential>
+				<var name="outputlibdir" unset="true"/>
+				<dirname property="outputlibdir" file="@{outputlib}" />
+				<copy todir="${outputlibdir}" flatten="true" overwrite="true" >
+					<fileset dir=".tmp" />
+				</copy>
+			</sequential>
+		</for>
+
+		<delete dir=".tmp" />
+	</target>
 
 
 
@@ -155,6 +192,8 @@
 		<antcall target="build_ios_iphone_workspace" />
 		<antcall target="build_tvos_project" />
 		<antcall target="build_tvos_workspace" />
+
+		<antcall target="build_xib" />
 
 		<antcall target="copy_corenativeextension_framework" />
 

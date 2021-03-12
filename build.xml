@@ -2,6 +2,7 @@
 <project default="all" name="ane.build"> 
 	
 	<import file="build_common.xml" />
+	<import file="build_docsconversion.xml" />
 	<property file="${common.basedir}/build_config/build.config" description="build properties" />
 	
 	
@@ -96,18 +97,32 @@
 
 	<target name="docs">
         <iterate target="docs" directory="platform" />
+
+		<!-- Ensure documentation is updated -->
+		<lower name="project.namelower" value="${project.name}" />
+		<var name="docs.dir" value="docs/site/docs/${project.namelower}" />
+		<var name="docs.asdocs_dir" value="docs/site/static/asdocs/${project.namelower}" />
+
+		<!-- Copy ASDocs -->
+		<copy todir="${docs.asdocs_dir}" overwrite="true" >
+			<fileset dir="docs/asdocs" />
+		</copy>
+
+		<!-- Copy CHANGELOG -->
+		<copy tofile="${docs.dir}/changelog.md" overwrite="true" file="CHANGELOG.md" />
+
 	</target>
 
 
 	<target name="wikiToPages">
-		<mkdir dir="docs/site" />
-		<echo file="docs/site/.gitignore" >
+		<mkdir dir="docs/pages" />
+		<echo file="docs/pages/.gitignore" >
 Gemfile
 _site
 		</echo>
 		
 		<delete defaultexcludes="false" includeemptydirs="true">
-			<fileset dir="docs/site">
+			<fileset dir="docs/pages">
 				<include name="**/*" />
 				<exclude name=".gitignore" />
 			</fileset>
@@ -121,7 +136,7 @@ _site
 			<arg value="git@gitlab.com:airnativeextensions/github-pages-template.git" />
 			<arg value="_tmpclone" />
 		</exec>
-		<copy todir="docs/site" overwrite="true" >
+		<copy todir="docs/pages" overwrite="true" >
 			<fileset dir="_tmpclone" />
 			<filterchain>
 				<tokenfilter>
@@ -137,7 +152,7 @@ _site
 		 - copy images 
 		 - sidebar manipulation to html
 		 -->
-		<copy todir="docs/site" overwrite="true" >
+		<copy todir="docs/pages" overwrite="true" >
 			<fileset dir="docs/wiki" defaultexcludes="false">
 				<exclude name="**/_Sidebar.md" />
 				<exclude name="**/_Footer.md" />
@@ -150,13 +165,13 @@ _site
 				</tokenfilter>
 			</filterchain>
 		</copy>
-		<move file="docs/site/Home.md" tofile="docs/site/index.md" />
-		<copy todir="docs/site" overwrite="true" >
+		<move file="docs/pages/Home.md" tofile="docs/pages/index.md" />
+		<copy todir="docs/pages" overwrite="true" >
 			<fileset dir="docs/wiki" defaultexcludes="false">
 				<include name="**/images/**" />
 			</fileset>
 		</copy>
-		<copy file="docs/wiki/_Sidebar.md" tofile="docs/site/_includes/Sidebar.html" overwrite="true">
+		<copy file="docs/wiki/_Sidebar.md" tofile="docs/pages/_includes/Sidebar.html" overwrite="true">
 			<filterchain>
 				<tokenfilter>
 					<replacestring from="---" to="&lt;br/&gt;&lt;hr/&gt;"/>
@@ -178,12 +193,38 @@ _site
 		</copy>
 
 		<!-- Copy ASDocs -->
-		<copy todir="docs/site/asdocs" overwrite="true" >
+		<copy todir="docs/pages/asdocs" overwrite="true" >
 			<fileset dir="docs/asdocs" />
 		</copy>
 
 	</target>
 
+
+
+
+
+	<!-- 
+	//
+	//
+	//	DEPLOYMENT 
+	//
+	//
+	-->
+
+	<target name="deploy">
+
+		<!-- Copy docs to site -->
+		<copy todir="${docs.external_site_source}" overwrite="true" failonerror="false">
+			<fileset dir="docs/site" >
+				<include name="**/*" />
+				<exclude name="sidebars.js" />
+			</fileset>
+		</copy>
+		
+		<lower name="project.namelower" value="${project.name}" />
+		<copy tofile="${docs.external_site_source}/docs/${project.namelower}/changelog.md" overwrite="true" file="CHANGELOG.md" />
+
+	</target>
 
 
 
@@ -199,7 +240,7 @@ _site
 
 	<target name="clean" depends="clean_platforms, clean_extensions" />
 
-	<target name="release" depends="docs, wikiToPages" />
+	<target name="release" depends="docs, deploy" />
 
 
 </project>

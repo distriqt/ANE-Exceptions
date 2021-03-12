@@ -1,15 +1,15 @@
 /**
- *        __       __               __ 
+ *        __       __               __
  *   ____/ /_ ____/ /______ _ ___  / /_
  *  / __  / / ___/ __/ ___/ / __ `/ __/
- * / /_/ / (__  ) / / /  / / /_/ / / 
- * \__,_/_/____/_/ /_/  /_/\__, /_/ 
- *                           / / 
- *                           \/ 
+ * / /_/ / (__  ) / / /  / / /_/ / /
+ * \__,_/_/____/_/ /_/  /_/\__, /_/
+ *                           / /
+ *                           \/
  * http://distriqt.com
  *
  * @brief  		Exceptions Native Extension
- * @author 		Michael Archbold
+ * @author 		Michael Archbold (https://github.com/marchbold)
  * @created		Aug 19, 2016
  * @copyright	http://distriqt.com/copyright/license.txt
  */
@@ -33,17 +33,16 @@ package com.distriqt.extension.exceptions
 		
 		//
 		//	ID and Version numbers
-		public static const EXT_CONTEXT_ID			: String = Const.EXTENSIONID;
+		public static const EXT_CONTEXT_ID:String = Const.EXTENSIONID;
 		
-		public static const VERSION					: String = Const.VERSION;
-		private static const VERSION_DEFAULT		: String = "0";
-		private static const IMPLEMENTATION_DEFAULT	: String = "unknown";
+		public static const VERSION:String = Const.VERSION;
+		private static const VERSION_DEFAULT:String = "0";
+		private static const IMPLEMENTATION_DEFAULT:String = "unknown";
 		
 		//
 		//	Error Messages
-		private static const ERROR_CREATION			: String = "The native extension context could not be created";
-		private static const ERROR_SINGLETON		: String = "The extension has already been created. Use ExtensionClass.service to access the functionality of the class";
-		
+		private static const ERROR_CREATION:String = "The native extension context could not be created";
+		private static const ERROR_SINGLETON:String = "The extension has already been created. Use ExtensionClass.service to access the functionality of the class";
 		
 		
 		////////////////////////////////////////////////////////
@@ -52,11 +51,10 @@ package com.distriqt.extension.exceptions
 		
 		//
 		// Singleton variables
-		private static var _instance				: Exceptions;
-		private static var _shouldCreateInstance	: Boolean = false;
+		private static var _instance:Exceptions;
+		private static var _shouldCreateInstance:Boolean = false;
 		
-		private var _extensionId	: String;
-		
+		private var _extensionId:String;
 		
 		
 		////////////////////////////////////////////////////////
@@ -72,14 +70,13 @@ package com.distriqt.extension.exceptions
 		
 		private static function createInstance():void
 		{
-			if(_instance == null)
+			if (_instance == null)
 			{
-				_shouldCreateInstance = true; 
+				_shouldCreateInstance = true;
 				_instance = new Exceptions();
 				_shouldCreateInstance = false;
 			}
 		}
-		
 		
 		
 		////////////////////////////////////////////////////////
@@ -129,7 +126,6 @@ package com.distriqt.extension.exceptions
 		}
 		
 		
-		
 		//
 		//
 		//	EXCEPTIONS FUNCTIONALITY
@@ -165,7 +161,7 @@ package com.distriqt.extension.exceptions
 		 *
 		 * @return	<code>ExceptionReport</code> object or null if there was no pending exception
 		 */
-		public function getPendingException( purge:Boolean=true ):ExceptionReport
+		public function getPendingException( purge:Boolean = true ):ExceptionReport
 		{
 			return null;
 		}
@@ -182,7 +178,7 @@ package com.distriqt.extension.exceptions
 		 *
 		 * @return <code>true</code> if the pending exception was successfully written to the file
 		 */
-		public function writePendingExceptionToFile( file:File, purge:Boolean=true ):Boolean
+		public function writePendingExceptionToFile( file:File, purge:Boolean = true ):Boolean
 		{
 			return false;
 		}
@@ -197,17 +193,14 @@ package com.distriqt.extension.exceptions
 		}
 		
 		
-		
 		////////////////////////////////////////////////////////
 		//	INTERNALS
 		//
 		
 		
-		
 		////////////////////////////////////////////////////////
 		//	EVENT HANDLERS
 		//
-		
 		
 		
 	}

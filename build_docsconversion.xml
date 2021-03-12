@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<project name="ane.docsconversion"> 
+	
+	<import file="build_common.xml" />
+	<property file="${common.basedir}/build_config/build.config" description="build properties" />
+
+
+
+    <target name="deprecateWiki">
+        <echo>DEPRECATING WIKI</echo>
+        <lower name="project.namelower" value="${project.name}" />
+		<!-- Writing "Moved to" pointers to wiki -->
+		<for param="filename">
+			<path>
+				<fileset dir="docs/wiki" defaultexcludes="false">
+					<exclude name="**/_Sidebar.md" />
+					<exclude name="**/_Footer.md" />
+					<include name="**/*.md" />
+				</fileset>
+			</path>
+			<sequential>
+				<var name="doc.title" unset="true" />
+				<var name="doc.filename" unset="true" />
+				<wikitodoctitle name="doc.title" value="@{filename}" />
+				<lower name="doc.titlelower" value="${doc.title}" />
+				<wikitodocfilename name="doc.filename" value="${doc.title}" />
+
+                <echo file="@{filename}" >
+This wiki has been deprecated. All content is now available in our new [documentation site](https://docs.airnativeextensions.com).
+            
+This page can be found here: https://docs.airnativeextensions.com/docs/${project.namelower}/${doc.filename}
+                </echo>
+
+			</sequential>
+		</for>
+
+		<antcall target="wikiToPages" />
+
+    </target>
+
+
+	<scriptdef language="javascript" name="wikitodocfilename">
+		<attribute name="name" />
+		<attribute name="value" /> 
+		<![CDATA[
+			var source = attributes.get( "value" );
+			if (source.charAt(1) == ".") source = source.substr(2);
+			if (source.toLowerCase() == "home.md") source = "index.md";
+			if (source.toLowerCase() == "home") source = "";
+			source = source.toLowerCase().replaceAll( " ", "-" ) 
+			project.setProperty( attributes.get( "name" ), source );
+		]]>
+	</scriptdef>
+	<scriptdef language="javascript" name="wikitodoctitle">
+		<attribute name="name" />
+		<attribute name="value" /> 
+		<![CDATA[
+			var path = attributes.get( "value" );
+			var filename = path.substring(path.lastIndexOf('/') + 1);
+			if (filename.charAt(1) == ".") filename = filename.substr(2);
+			var title = filename.substring( 0, filename.lastIndexOf(".") );
+			project.setProperty( attributes.get( "name" ), title );
+		]]>
+	</scriptdef>
+
+	<target name="wikiToSite">
+		<lower name="project.namelower" value="${project.name}" />
+		<var name="docs.dir" value="docs/site/docs/${project.namelower}" />
+		<var name="docs.asdocs_dir" value="docs/site/static/asdocs/${project.namelower}" />
+
+		<delete defaultexcludes="false" includeemptydirs="true">
+			<fileset dir="docs/site">
+				<include name="**/*" />
+			</fileset>
+		</delete>
+		<mkdir dir="${docs.dir}" />
+
+		<!-- Convert wiki md to site md -->
+		<for param="filename">
+			<path>
+				<fileset dir="docs/wiki" defaultexcludes="false">
+					<exclude name="**/_Sidebar.md" />
+					<exclude name="**/_Footer.md" />
+					<include name="**/*.md" />
+				</fileset>
+			</path>
+			<sequential>
+				<var name="doc.title" unset="true" />
+				<var name="doc.filename" unset="true" />
+				<wikitodoctitle name="doc.title" value="@{filename}" />
+				<lower name="doc.titlelower" value="${doc.title}" />
+				<wikitodocfilename name="doc.filename" value="${doc.title}.md" />
+				<copy tofile="${docs.dir}/${doc.filename}" overwrite="true" file="@{filename}">
+					<filterchain>
+
+						<!-- LINKS [[title|u.link]] -->
+						<scriptfilter language="javascript">
+							var line = self.getToken();
+							var regex = /\[\[([^\]]+?)\|(.+?)\]\]/g;
+							var result = line.replace( regex, function( $0, $1, $2 )
+							{
+								var link = $2;
+								if (link.charAt(1) == ".") link = link.substr(2);
+								if (link.toLowerCase() == "home") link = "./";
+								link = link.toLowerCase().replaceAll( " ", "-" ); 
+								return "[" + $1 + "](" + link + ")";
+							});
+							self.setToken( result );
+						</scriptfilter>
+					
+						<!-- IMAGES [[img/x.png]] -->
+						<replaceregex flags="g" pattern="\[\[(.+?)\]\]" replace="\!\[\]\(\1\)" />
+
+						<!-- OLD ASDOCS -->
+						<tokenfilter>
+							<replacestring from="distriqt.github.io/ANE-${project.name}/asdocs" to="docs.airnativeextensions.com/asdocs/${project.namelower}"/>
+							<replacestring from="```as3" to="```actionscript"/>
+							<replacestring from="```c#" to="```csharp"/>
+							<replacestring from="http://airnativeextensions.com/knowledgebase/tutorial/1" to="/docs/tutorials/getting-started"/>
+							<replacestring from="https://airnativeextensions.com/knowledgebase/tutorial/1" to="/docs/tutorials/getting-started"/>
+							<replacestring from="http://airnativeextensions.github.io/tutorials/" to="/docs/tutorials/"/>
+							<replacestring from="https://airnativeextensions.github.io/tutorials/" to="/docs/tutorials/"/>
+						</tokenfilter>
+
+					</filterchain>
+
+					<!-- Rename u.Section Name.md > section-name.md  -->
+					<scriptmapper language="javascript">
+						var dest = source;
+						if (dest.charAt(1) == ".") dest = dest.substr(2);
+						if (dest.toLowerCase() == "home.md") dest = "index.md";
+						dest = dest.toLowerCase().replaceAll( " ", "-" ); 
+						self.addMappedName( dest );
+					</scriptmapper>
+				</copy>
+
+				<var name="doc.content" unset="true" />
+				<loadfile property="doc.content" srcfile="${docs.dir}/${doc.filename}"/> 
+				
+				<if>
+					<equals arg1="${doc.titlelower}" arg2="home" />
+					<then>
+<echo file="${docs.dir}/${doc.filename}" >---
+title: ${project.name}
+hide_title: true
+slug: /${project.namelower}/
+---
+</echo>
+					</then>
+					<else>
+<echo file="${docs.dir}/${doc.filename}" >---
+title: ${doc.title}
+sidebar_label: ${doc.title}
+---
+</echo>
+					</else>
+				</if>
+				<echo append="true" file="${docs.dir}/${doc.filename}">${doc.content}</echo>
+			
+			</sequential>
+		</for>
+
+		<!-- Copy images -->
+		<copy todir="${docs.dir}" overwrite="true" >
+			<fileset dir="docs/wiki" defaultexcludes="false">
+				<include name="**/images/**" />
+			</fileset>
+		</copy>
+
+		<antcall target="docs" />
+		<antcall target="deploy" />
+
+
+	</target>
+
+</project>

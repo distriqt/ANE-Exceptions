@@ -96,6 +96,12 @@
 	-->
 
 	<target name="docs" description="Generate asdocs">
+		<antcall target="htmldocs" />
+		<antcall target="embeddeddocs" if:true="${output.packageasdocs}"/>
+	</target>
+
+
+	<target name="htmldocs">
 		<delete dir="${common.basedir}/${output.docs}" />
 		<mkdir dir="${common.basedir}/${output.docs}" />
 		
@@ -114,8 +120,30 @@
 			<arg line="-lenient" />
 			<arg line="-library-path+='${air.sdk}/frameworks/libs/air/airglobal.swc'"/>
 		</exec>	  
-
 	</target>
 
+
+	<target name="embeddeddocs">
+		<delete dir="${common.basedir}/${output.docs}/.embedded" />
+		<mkdir dir="${common.basedir}/${output.docs}/.embedded" />
+		
+		<exec executable="${air.asdoc}" failonerror="true">
+			<env key="FLEX_HOME" value="${air.sdk}"/>
+			<env key="FALCON_HOME" value="${air.sdk}"/>
+			<arg line="-compiler.locale en_US" />
+			<arg line="-source-path ${actionscript.basedir}/src" />
+			<arg line="-window-title 'distriqt // ${project.name}'" />
+			<arg line="-main-title 'distriqt // ${project.name} Native Extension Documentation'" if:true="${isWindows}" />
+			<arg line="-main-title '&lt;a href=&quot;http://distriqt.com&quot; target=&quot;_top&quot; &gt;distriqt&lt;/a&gt; // ${project.name} Native Extension Documentation'" if:true="${isMacOS}" />
+			<arg line="-footer 'Copyright distriqt 2016'" if:true="${isWindows}" />
+			<arg line="-footer 'Copyright &lt;a href=&quot;http://distriqt.com&quot; target=&quot;_top&quot; &gt;distriqt&lt;/a&gt; 2016'" if:true="${isMacOS}" />
+			<arg line="-doc-sources ${actionscript.basedir}/src"/>
+			<arg line="-output ${common.basedir}/${output.docs}/.embedded"/>
+			<arg line="-lenient" />
+			<arg line="-keep-xml=true" />
+			<arg line="-skip-xsl=true" />
+			<arg line="-library-path+='${air.sdk}/frameworks/libs/air/airglobal.swc'"/>
+		</exec>	  
+	</target>
 
 </project>

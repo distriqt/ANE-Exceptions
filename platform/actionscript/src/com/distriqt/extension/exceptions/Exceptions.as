@@ -1,15 +1,15 @@
 /**
- *        __       __               __ 
+ *        __       __               __
  *   ____/ /_ ____/ /______ _ ___  / /_
  *  / __  / / ___/ __/ ___/ / __ `/ __/
- * / /_/ / (__  ) / / /  / / /_/ / / 
- * \__,_/_/____/_/ /_/  /_/\__, /_/ 
- *                           / / 
- *                           \/ 
+ * / /_/ / (__  ) / / /  / / /_/ / /
+ * \__,_/_/____/_/ /_/  /_/\__, /_/
+ *                           / /
+ *                           \/
  * http://distriqt.com
  *
  * @brief  		Exceptions Native Extension
- * @author 		Michael Archbold
+ * @author 		Michael Archbold (https://github.com/marchbold)
  * @created		Aug 19, 2016
  * @copyright	http://distriqt.com/copyright/license.txt
  */
@@ -22,7 +22,7 @@ package com.distriqt.extension.exceptions
 	import flash.filesystem.File;
 	
 	
-	/**	
+	/**
 	 * <p>
 	 * This class represents the Exceptions extension.
 	 * </p>
@@ -32,19 +32,19 @@ package com.distriqt.extension.exceptions
 		////////////////////////////////////////////////////////
 		//	CONSTANTS
 		//
-
+		
 		//
 		//	ID and Version numbers
-		public static const EXT_CONTEXT_ID			: String = Const.EXTENSIONID;
+		public static const EXT_CONTEXT_ID:String = Const.EXTENSIONID;
 		
-		public static const VERSION					: String = Const.VERSION;
-		private static const VERSION_DEFAULT		: String = "0";
-		private static const IMPLEMENTATION_DEFAULT	: String = "unknown";
+		public static const VERSION:String = Const.VERSION;
+		private static const VERSION_DEFAULT:String = "0";
+		private static const IMPLEMENTATION_DEFAULT:String = "unknown";
 		
 		//
 		//	Error Messages
-		private static const ERROR_CREATION			: String = "The native extension context could not be created";
-		private static const ERROR_SINGLETON		: String = "The singleton has already been created. Use Exceptions.service to access the functionality";
+		private static const ERROR_CREATION:String = "The native extension context could not be created";
+		private static const ERROR_SINGLETON:String = "The singleton has already been created. Use Exceptions.service to access the functionality";
 		
 		
 		////////////////////////////////////////////////////////
@@ -53,13 +53,12 @@ package com.distriqt.extension.exceptions
 		
 		//
 		// Singleton variables
-		private static var _instance				: Exceptions;
-		private static var _shouldCreateInstance	: Boolean = false;
+		private static var _instance:Exceptions;
+		private static var _shouldCreateInstance:Boolean = false;
 		
-		private static var _extContext				: ExtensionContext = null;
+		private static var _extContext:ExtensionContext = null;
 		
-		private var _extensionId					: String = "";
-
+		private var _extensionId:String = "";
 		
 		
 		////////////////////////////////////////////////////////
@@ -79,18 +78,17 @@ package com.distriqt.extension.exceptions
 		
 		/**
 		 * @private
-		 * Creates the actual singleton instance 
+		 * Creates the actual singleton instance
 		 */
 		private static function createInstance():void
 		{
-			if(_instance == null)
+			if (_instance == null)
 			{
-				_shouldCreateInstance = true; 
+				_shouldCreateInstance = true;
 				_instance = new Exceptions();
 				_shouldCreateInstance = false;
 			}
 		}
-		
 		
 		
 		////////////////////////////////////////////////////////
@@ -99,7 +97,7 @@ package com.distriqt.extension.exceptions
 		
 		/**
 		 * Constructor
-		 * 
+		 *
 		 * You should not call this directly, but instead use the singleton access
 		 */
 		public function Exceptions()
@@ -126,11 +124,11 @@ package com.distriqt.extension.exceptions
 		
 		/**
 		 * <p>
-		 * Disposes the extension and releases any allocated resources. Once this function 
-		 * has been called, a call to <code>init</code> is neccesary again before any of the 
+		 * Disposes the extension and releases any allocated resources. Once this function
+		 * has been called, a call to <code>init</code> is neccesary again before any of the
 		 * extensions functionality will work.
 		 * </p>
-		 */		
+		 */
 		public function dispose():void
 		{
 			if (_extContext)
@@ -187,7 +185,7 @@ package com.distriqt.extension.exceptions
 		
 		/**
 		 * <p>
-		 * The implementation currently in use. 
+		 * The implementation currently in use.
 		 * This should be one of the following depending on the platform in use and the
 		 * functionality supported by this extension:
 		 * <ul>
@@ -197,7 +195,7 @@ package com.distriqt.extension.exceptions
 		 * <li><code>unknown</code></li>
 		 * </ul>
 		 * </p>
-		 */		
+		 */
 		public function get implementation():String
 		{
 			try
@@ -218,9 +216,9 @@ package com.distriqt.extension.exceptions
 		//
 		
 		/**
-		 * 
-		 * 
-		 */		
+		 *
+		 *
+		 */
 		public function setUncaughtExceptionHandler():void
 		{
 			try
@@ -264,7 +262,7 @@ package com.distriqt.extension.exceptions
 		 *
 		 * @return	<code>ExceptionReport</code> object or null if there was no pending exception
 		 */
-		public function getPendingException( purge:Boolean=true ):ExceptionReport
+		public function getPendingException( purge:Boolean = true ):ExceptionReport
 		{
 			try
 			{
@@ -289,7 +287,7 @@ package com.distriqt.extension.exceptions
 		 *
 		 * @return <code>true</code> if the pending exception was successfully written to the file
 		 */
-		public function writePendingExceptionToFile( file:File, purge:Boolean=true ):Boolean
+		public function writePendingExceptionToFile( file:File, purge:Boolean = true ):Boolean
 		{
 			try
 			{
@@ -320,12 +318,9 @@ package com.distriqt.extension.exceptions
 		}
 		
 		
-		
-		
 		////////////////////////////////////////////////////////
 		//	INTERNALS
 		//
-		
 		
 		
 		////////////////////////////////////////////////////////
@@ -337,7 +332,7 @@ package com.distriqt.extension.exceptions
 			switch (event.code)
 			{
 				case "extension:error":
-					dispatchEvent( new ErrorEvent( ErrorEvent.ERROR, false, false, event.level ));
+					dispatchEvent( new ErrorEvent( ErrorEvent.ERROR, false, false, event.level ) );
 					break;
 			}
 		}

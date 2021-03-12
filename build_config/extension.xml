@@ -24,6 +24,13 @@
 				<finalizer>@ANDROIDEXTFINAL@</finalizer>
 			</applicationDeployment>
 		</platform>
+		<platform name="Android-x64">
+			<applicationDeployment>
+				<nativeLibrary>@ANDROIDLIB@</nativeLibrary>
+				<initializer>@ANDROIDEXTINIT@</initializer>
+				<finalizer>@ANDROIDEXTFINAL@</finalizer>
+			</applicationDeployment>
+		</platform>
 
 		<platform name="iPhone-ARM">
 			<applicationDeployment>

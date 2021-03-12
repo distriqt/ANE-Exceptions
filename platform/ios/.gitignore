@@ -2,7 +2,9 @@
 !build/*
 build/*/*
 !build/Release-*/*
+build/Release-*/CoreNativeExtension.framework
 !build/*/Release-*
+build/*/Release-*/CoreNativeExtension.framework
 build/Shared*
 build/XC*
 build/Debug*
