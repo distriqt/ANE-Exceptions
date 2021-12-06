@@ -141,6 +141,9 @@
 		<antcall target="prepare_macos" if:true="${macos.enabled}">
 			<param name="variant" value="${variant}" />
 		</antcall>
+		<antcall target="override" >
+			<param name="variant" value="${variant}" />
+		</antcall>
 
 		<antcall target="package_ane" >
 			<param name="variant" value="${variant}" />
@@ -172,6 +175,7 @@
 		<copy file="${output.tmpdir}/library.swf" todir="${ios.dir}/${ios.build_dir}/${variant}/${ios.tvos_dir}" failonerror="true" if:true="${tvos.enabled}" />
 		<copy file="${output.tmpdir}/library.swf" todir="${android.dir}/${android.outputdir}" failonerror="true" if:true="${android.enabled}" />
 		<copy file="${output.tmpdir}/library.swf" todir="${windows.dir}/${windows.outputdir}" failonerror="true" if:true="${windows.enabled}" />
+		<copy file="${output.tmpdir}/library.swf" todir="${windows.dir}/${windows.outputdir64}" failonerror="true" if:true="${windows.enabled}" />
 		<copy file="${output.tmpdir}/library.swf" todir="${macos.dir}/${macos.build_dir}" failonerror="true" if:true="${macos.enabled}" />
 		<delete dir="${output.tmpdir}" />
 		
@@ -200,6 +204,7 @@
 			<arg line="-platform Android-x64 -platformoptions ${android.dir}/platform_android${variant}.build.xml -C ${android.dir}/${android.outputdir} ." if:true="${android.enabled}" />
 			
 			<arg line="-platform Windows-x86 -C ${windows.dir}/${windows.outputdir} ." if:true="${windows.enabled}" />
+			<arg line="-platform Windows-x86-64 -C ${windows.dir}/${windows.outputdir64} ." if:true="${windows.enabled}" />
 
 			<arg line="-platform MacOS-x86-64 -C ${macos.dir}/${macos.build_dir} ." if:true="${macos.enabled}" /> 
 
@@ -340,7 +345,13 @@
 					<fileset dir="@{frameworkname}/ios-i386_x86_64-simulator" erroronmissingdir="false">
 						<patternset refid="libs.frameworks.bundles"/>
 					</fileset>
+					<fileset dir="@{frameworkname}/ios-x86_64-simulator" erroronmissingdir="false">
+						<patternset refid="libs.frameworks.bundles"/>
+					</fileset>
 					<fileset dir="@{frameworkname}/ios-arm64_i386_x86_64-simulator" erroronmissingdir="false">
+						<patternset refid="libs.frameworks.bundles"/>
+					</fileset>
+					<fileset dir="@{frameworkname}/ios-arm64_x86_64-simulator" erroronmissingdir="false">
 						<patternset refid="libs.frameworks.bundles"/>
 					</fileset>
 				</copy>
@@ -482,8 +493,27 @@
 			<exclude name="**/libPods*.a" />
 		</fileset>
 
-		<var name="ios_build_path" unset="true"/>
-		<cleanpath name="ios_build_path" value="${air.basedir}/${ios.dir}/${ios.build_dir}/${variant}/${ios.iphoneos_dir}/" />
+		<!-- <var name="ios_build_path" unset="true"/> -->
+		<propertyregex 
+			property="ios_build_path" 
+			input="${air.basedir}/${ios.dir}/${ios.build_dir}/${variant}/${ios.iphoneos_dir}/"
+			regexp="\/\/|\/\.\/"
+			replace="/" 
+			override="true"
+			global="true"
+			defaultValue="${air.basedir}/${ios.dir}/${ios.build_dir}/${variant}/${ios.iphoneos_dir}/" />
+
+		<echo message="${ios_build_path}" />
+		<echo message="${ios_build_path}" />
+		<echo message="${ios_build_path}" />
+		<echo message="${ios_build_path}" />
+		<echo message="${ios_build_path}" />
+		<echo message="${ios_build_path}" />
+		<echo message="${ios_build_path}" />
+		<echo message="${ios_build_path}" />
+		<echo message="${ios_build_path}" />
+
+		<!-- <cleanpath name="ios_build_path" value="${air.basedir}/${ios.dir}/${ios.build_dir}/${variant}/${ios.iphoneos_dir}/" /> -->
 
 		<pathconvert refid="platform.ios.pods.fs" property="platform.ios.pods" pathsep="&lt;/packagedDependency&gt;${line.separator}&lt;packagedDependency&gt;">
 			<map from="${ios_build_path}" to="" />
@@ -544,6 +574,7 @@
 			<fileset dir="${common.basedir}/${android.dir}/app/libs" >
 				<exclude name="**/corenativeextension.android.lib.jar" />
 				<exclude name="**/corenativeextension.android.lib.air.jar" />
+				<exclude name="**/classes.jar" />
 				<exclude name="**/FlashRuntimeExtensions.jar" />
 				<exclude name="**/runtimeClasses.jar" />
 				<exclude name="**/mockable-android*" />
@@ -638,22 +669,19 @@
 	</target>
 
 
-	<scriptdef language="javascript" name="striplangcode">
-		<attribute name="name" />
-		<attribute name="value" /> 
-		<![CDATA[
-			project.setProperty( 
-				attributes.get( "name" ), 
-				attributes.get( "value" )
-					.replace( /-ui-/g, "-" )
-			);
-		]]>
-	</scriptdef>
-
 	<target name="explode_aar">
 		<basename property="explode_aar_name" file="${explode_aar_file}" suffix=".aar" />
-		<var name="explode_aar_name_lang" unset="true"/>
-        <striplangcode name="explode_aar_name_lang" value="${explode_aar_name}" />
+		
+		<!-- striplangcode -->
+		<propertyregex 
+			property="explode_aar_name_lang" 
+			input="${explode_aar_name}"
+			regexp="-ui-"
+			replace="-" 
+			override="true"
+			global="true"
+			defaultValue="${explode_aar_name}" />
+
 		<echo message="explode ${explode_aar_file} ${explode_aar_name} ${explode_aar_name_lang}" />
 		<!-- <echo message="explode ${explode_aar_file} ${explode_aar_name}" /> -->
 
@@ -703,11 +731,33 @@
 			</fileset>
 		</copy>
 
+		<copy overwrite="true" todir="${windows.dir}/${windows.outputdir64}" >
+			<fileset dir="${common.basedir}/${windows.dir}/${windows.outputdir64}" erroronmissingdir="false">
+				<include name="**/*"/>
+				<exclude name="CoreLibrary.dll" />
+				<exclude name="DesktopBridge.Helpers.dll" />
+				<exclude name="FREInterface.dll" />
+				<exclude name="System.Runtime.WindowsRuntime.dll" />
+				<exclude name="Newtonsoft.Json.dll" />
+				<exclude name="QueryString.NETCore.dll" />
+			</fileset>
+		</copy>
+
 		<if>
 			<equals arg1="${windows.packagecorelib}" arg2="true" />
 			<then>
 			<copy overwrite="true" todir="${windows.dir}/${windows.outputdir}" >
 				<fileset dir="${common.basedir}/${windows.dir}/${windows.outputdir}" erroronmissingdir="false">
+					<include name="CoreLibrary.dll" />
+					<include name="DesktopBridge.Helpers.dll" />
+					<include name="FREInterface.dll" />
+					<include name="System.Runtime.WindowsRuntime.dll" />
+					<include name="Newtonsoft.Json.dll" />
+					<include name="QueryString.NETCore.dll" />
+				</fileset>
+			</copy>
+			<copy overwrite="true" todir="${windows.dir}/${windows.outputdir64}" >
+				<fileset dir="${common.basedir}/${windows.dir}/${windows.outputdir64}" erroronmissingdir="false">
 					<include name="CoreLibrary.dll" />
 					<include name="DesktopBridge.Helpers.dll" />
 					<include name="FREInterface.dll" />
@@ -759,6 +809,22 @@
 	</target>
 
 
+
+	<!-- 
+	//
+	//
+	//	OVERRIDE 
+	//
+	//
+	-->
+
+	<target name="override" description="Override any files in the packaging directory">
+		<copy overwrite="true" todir="platform" failonerror="false">
+			<fileset dir="override" >
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+	</target>
 
 	
 

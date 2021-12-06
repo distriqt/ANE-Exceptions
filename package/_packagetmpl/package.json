@@ -1,0 +1,21 @@
+{
+  "id": "@EXTENSIONID@",
+  "name": "@NAME@",
+  "url": "https://github.com/@GITHUB_REPO@",
+  "docUrl": "https://github.com/@GITHUB_REPO@/wiki",
+  "description": "@DESCRIPTION@",
+  "type": "ane",
+  "version": "@VERSION@",
+  "sourceUrl": "https://github.com/@GITHUB_REPO@/releases/download/v@VERSIONRELEASE@/@EXTENSIONID@_@VERSION@.airpackage",
+  "publishedAt": "@DATE@T00:00:00.000Z",
+  "dependencies": [],
+  "parameters": [],
+  "tags": [],
+  "license": {
+    "url": "",
+    "type": "none",
+    "public": true
+  },
+  "status": "release",
+  "purchaseUrl": ""
+}

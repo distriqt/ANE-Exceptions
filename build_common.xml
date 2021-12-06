@@ -15,8 +15,11 @@
 	<target name="bootstrap">
 		<mkdir dir="${user.home}/.ant/lib"/>
 		<get dest="${user.home}/.ant/lib/ant-contrib.jar" src="https://search.maven.org/remotecontent?filepath=ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar"/>
+		
+		<get dest="${user.home}/.ant/lib/rhino.jar" src="https://repo1.maven.org/maven2/org/mozilla/rhino/1.7.14-RC1/rhino-1.7.14-RC1.jar"/>
+		<get dest="${user.home}/.ant/lib/bsf.jar" src="http://search.maven.org/remotecontent?filepath=bsf/bsf/2.4.0/bsf-2.4.0.jar"/>
+		<get dest="${user.home}/.ant/lib/commons-logging-api.jar" src="http://search.maven.org/remotecontent?filepath=commons-logging/commons-logging-api/1.1/commons-logging-api-1.1.jar"/> 
 	</target>
-
 
 
 	<!-- PLATFORM INFORMATION -->
@@ -67,19 +70,10 @@
 		<attribute name="value" /> 
 		<![CDATA[
 		project.setProperty( attributes.get( "name" ),
-							 attributes.get( "value" ).replace( ".", "" ) );
+							 attributes.get( "value" ).replaceAll( "\\.", "" ) );
 		]]>
 	</scriptdef>
 
-	<scriptdef language="javascript" name="cleanpath">
-		<attribute name="name" />
-		<attribute name="value" /> 
-		<![CDATA[
-		project.setProperty( attributes.get( "name" ),
-							 attributes.get( "value" ).replace( /\/\/|\/\.\//g, "/" ) );
-		]]>
-	</scriptdef>
-	
 	<scriptdef language="javascript" name="wrapxmltag">
 		<attribute name="name" /> 
 		<attribute name="input" />
@@ -96,6 +90,7 @@
 		]]>
 	</scriptdef>
 
+
 	<scriptdef language="javascript" name="outputname">
 		<attribute name="name" />
 		<attribute name="prefix" />
@@ -104,12 +99,12 @@
 		<![CDATA[
 		var outputName = "";
 		
-		var prefix = attributes.get( "prefix" );
+		var prefix = String(attributes.get( "prefix" ));
 		if (prefix.length > 0)
 			outputName = prefix + ".";
 			
-		var grp = attributes.get( "grp" ).toLowerCase();
-		var projectname = attributes.get( "projectname" );
+		var grp = String(attributes.get( "grp" ).toLowerCase());
+		var projectname = String(attributes.get( "projectname" ));
 		if (grp.length > 0)
 		{
 			outputName += grp + "." + projectname;
@@ -130,12 +125,12 @@
 		<![CDATA[
 		var packageName = "";
 
-		var prefix = attributes.get( "prefix" );
+		var prefix = String(attributes.get( "prefix" ));
 		if (prefix.length > 0)
 			packageName = prefix + ".";
 
-		var grp = attributes.get( "grp" ).toLowerCase();
-		var projectname = attributes.get( "projectname" ).toLowerCase();
+		var grp = String(attributes.get( "grp" ).toLowerCase());
+		var projectname = String(attributes.get( "projectname" ).toLowerCase());
 		if (grp.length > 0)
 		{
 			packageName += grp + "." + projectname;
@@ -153,7 +148,7 @@
 		<attribute name="value" /> 
 		<![CDATA[
 		project.setProperty( attributes.get( "name" ),
-							 attributes.get( "value" ).replace( /\./g, "/" ) );
+							 attributes.get( "value" ).replaceAll( "\\.", "/" ) );
 		]]>
 	</scriptdef>
 
@@ -162,7 +157,7 @@
 		<attribute name="value" /> 
 		<![CDATA[
 		project.setProperty( attributes.get( "name" ),
-							 attributes.get( "value" ).replace( /\./g, "-" ) );
+							 attributes.get( "value" ).replaceAll( "\\.", "-" ) );
 		]]>
 	</scriptdef>
 

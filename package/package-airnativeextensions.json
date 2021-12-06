@@ -1,0 +1,21 @@
+{
+  "id": "@EXTENSIONID@",
+  "name": "@NAME@",
+  "url": "https://airnativeextensions.com/extension/@EXTENSIONID@",
+  "docUrl": "https://docs.airnativeextensions.com/docs/@NAMELOWER@",
+  "description": "@DESCRIPTION@",
+  "type": "ane",
+  "version": "@VERSION@",
+  "sourceUrl": "https://github.com/@GITHUB_REPO@/releases/download/v@VERSIONRELEASE@/@EXTENSIONID@_@VERSION@.airpackage",
+  "publishedAt": "@DATE@T00:00:00.000Z",
+  "dependencies": ["com.distriqt.Core:6.x.x"],
+  "parameters": [],
+  "tags": [],
+  "license": {
+    "type": "airnativeextensions",
+    "url": "https://airnativeextensions.com/license",
+    "public": false
+  },
+  "status": "release",
+  "purchaseUrl": "https://airnativeextensions.com/extension/@EXTENSIONID@"
+}

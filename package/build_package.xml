@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<project default="build" name="airpackage"
+	xmlns:if="ant:if"
+	xmlns:unless="ant:unless"> 
+
+
+	
+	<import file="../build_common.xml" />
+
+	<property name="version.release" value="${version_release_major}.${version_release_minor}.${version_release_build}" if:set="version_release_major" />
+	<property name="version.release" value="${version_major}.${version_minor}.${version_build}" />
+	<property name="version" value="${version_major}.${version_minor}.${version_build}" />
+	<lower name="project.namelower" value="${project.name}" />
+
+	<dirname property="airpackage.basedir" file="${ant.file.airpackage}" />
+
+	<tstamp>
+		<format property="publish_date" pattern="yyyy-MM-dd" locale="en,UK" />
+	</tstamp>
+
+	<target name="clean" >
+		<antcall target="clean_variant" >
+			<param name="variant.basedir" value="${airpackage.basedir}" />
+		</antcall>
+		<foreach target="clean_variant" param="variant.basedir" inheritall="true" >
+			<path>
+				<dirset dir="${airpackage.basedir}">
+					<include name="variants/*"/>
+				</dirset>
+			</path>
+		</foreach>
+	</target>
+
+	<target name="clean_variant" >
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${variant.basedir}">
+				<include name="**/build/**" />
+				<include name="**/*.airpackage" />
+			</fileset>
+		</delete>
+		<!-- delete all platform/android/subdirectories but not platform/android/AndroidManifest.xml -->
+		<if>
+			<available file="${variant.basedir}/platforms/android" type="dir" />
+			<then>
+				<for param="androidDir" >
+					<path>
+						<dirset dir="${variant.basedir}/platforms/android" >
+							<include name="*"/>
+						</dirset>
+					</path>
+					<sequential>
+						<delete includeEmptyDirs="true" failonerror="false" dir="@{androidDir}" />
+					</sequential>
+				</for>
+			</then>
+		</if>
+	</target>
+
+
+	<target name="copy_template" >
+		<copy todir="${airpackage.sourcedir}/${output.dir}" overwrite="true" >
+			<fileset dir="${common.basedir}/${airpackage.tmpl}">
+				<!-- Exclude these as they are just templates for manual integration -->
+				<exclude name="assets/**" /> 
+				<exclude name="platforms/**" />
+			</fileset>
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="@NAME@" to="${airpackage.name}"/>
+					<replacestring from="@NAMELOWER@" to="${project.namelower}"/>
+					<replacestring from="@DESCRIPTION@" to="${airpackage.description}"/>
+					<replacestring from="@GITHUB_REPO@" to="${github.repo}"/>
+					<replacestring from="@VERSION@" to="${version}"/>
+					<replacestring from="@VERSIONRELEASE@" to="${version.release}"/>
+					<replacestring from="@EXTENSIONID@" to="${output.name}"/>
+					<replacestring from="@PACKAGE@" to="${package.name}"/>
+					<replacestring from="@ANDROIDPACKAGE@" to="${package.name}"/>
+					<replacestring from="@DATE@" to="${publish_date}"/>
+					<replacestring from="@VARIANT@" to="${airpackage.variant}"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+	</target>
+
+
+	<target name="copy" >
+
+		<!-- See if variant ane dir exists, else copy normal ane -->
+		<if>
+			<available file="${common.basedir}/${output.dir}/${airpackage.variant}"/>
+			<then>
+				<copy todir="${airpackage.sourcedir}/${output.dir}/ane" flatten="true" overwrite="true" >
+					<fileset dir="${common.basedir}/${output.dir}/${airpackage.variant}">
+						<include name="*.ane" />
+					</fileset>
+				</copy>
+				<copy todir="${airpackage.sourcedir}/${output.dir}/assets/ios" overwrite="true" >
+					<fileset dir="${common.basedir}/${output.dir}/${airpackage.variant}">
+						<include name="Frameworks/**" />
+					</fileset>
+				</copy>
+			</then>
+			<else>
+				<copy todir="${airpackage.sourcedir}/${output.dir}/ane" flatten="true" overwrite="true" >
+					<fileset dir="${common.basedir}/${output.dir}">
+						<include name="*.ane" />
+					</fileset>
+				</copy>
+				<copy todir="${airpackage.sourcedir}/${output.dir}/assets/ios" overwrite="true" >
+					<fileset dir="${common.basedir}/${output.dir}">
+						<include name="Frameworks/**" />
+					</fileset>
+				</copy>
+			</else>
+		</if>
+
+		
+		<copy todir="${airpackage.sourcedir}/${output.dir}" overwrite="true" failonerror="false">
+			<fileset dir="${common.basedir}/../..">
+				<include name="CHANGELOG.md" />
+				<include name="README.md" />
+			</fileset> 
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="![](images/hero.png)" to=""/>
+					<replacestring from="![](images/promo.png)" to=""/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+		<copy todir="${airpackage.sourcedir}/${output.dir}" overwrite="true" failonerror="false">
+			<fileset dir="${common.basedir}">
+				<include name="CHANGELOG.md" />
+				<include name="README.md" />
+			</fileset> 
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="![](images/hero.png)" to=""/>
+					<replacestring from="![](images/promo.png)" to=""/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+		<copy todir="${airpackage.sourcedir}/${output.dir}" overwrite="true" >
+			<fileset dir="${airpackage.sourcedir}">
+				<include name="package.json" />
+				<include name="CHANGELOG.md" />
+				<include name="README.md" />
+				<include name="assets/**" />
+				<include name="platforms/**" />
+			</fileset> 
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="@NAME@" to="${airpackage.name}"/>
+					<replacestring from="@NAMELOWER@" to="${project.namelower}"/>
+					<replacestring from="@DESCRIPTION@" to="${airpackage.description}"/>
+					<replacestring from="@GITHUB_REPO@" to="${github.repo}"/>
+					<replacestring from="@VERSION@" to="${version}"/>
+					<replacestring from="@VERSIONRELEASE@" to="${version.release}"/>
+					<replacestring from="@EXTENSIONID@" to="${output.name}"/>
+					<replacestring from="@PACKAGE@" to="${package.name}"/>
+					<replacestring from="@ANDROIDPACKAGE@" to="${package.name}"/>
+					<replacestring from="@DATE@" to="${publish_date}"/>
+					<replacestring from="@VARIANT@" to="${airpackage.variant}"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
+	</target>
+
+
+	<target name="build_android" >
+		
+		<fileset dir="${common.basedir}/${android.dir}/externals/" erroronmissingdir="false" id="filesetexternals" >
+			<include name="*.aar" />
+		</fileset>
+		<fileset dir="${common.basedir}/${android.dir}/libs/${airpackage.variant}" erroronmissingdir="false" id="filesetvariant">
+			<include name="*.aar" />
+		</fileset>
+		<fileset dir="${common.basedir}/${android.dir}/dependencies" erroronmissingdir="false" id="filesetdependencies">
+			<include name="*.aar" />
+		</fileset>
+		<foreach target="explode_aar" param="explode_aar_file">
+			<param name="airpackage.sourcedir" value="${airpackage.sourcedir}" />
+			<param name="airpackage.variant" value="${airpackage.variant}" />
+			<path>
+				<union>
+					<resources refid="filesetexternals" />
+					<resources refid="filesetvariant" />
+					<resources refid="filesetdependencies" />
+				</union>
+			</path>
+		</foreach>
+
+	</target> 
+
+
+	<target name="explode_aar">
+		<basename property="explode_aar_name" file="${explode_aar_file}" suffix=".aar" />
+		<echo message="explode ${explode_aar_file} ${explode_aar_name}" />
+
+		<mkdir dir="${airpackage.basedir}/${output.tmpdir}/${explode_aar_name}" />
+		<unzip src="${explode_aar_file}" dest="${airpackage.basedir}/${output.tmpdir}/${explode_aar_name}" overwrite="true"/>
+		<copy overwrite="true" failonerror="false" quiet="true" todir="${airpackage.sourcedir}/${output.dir}/platforms/android/${explode_aar_name}" >
+			<fileset dir="${airpackage.basedir}/${output.tmpdir}/${explode_aar_name}" >
+				<include name="AndroidManifest.xml" />
+			</fileset>
+		</copy>
+		<copy overwrite="true" failonerror="false" quiet="true" todir="${airpackage.sourcedir}/${output.dir}/assets/android" >
+			<fileset dir="${airpackage.basedir}/${output.tmpdir}/${explode_aar_name}/assets" >
+				<include name="*" />
+			</fileset>
+		</copy>
+		<delete dir="${airpackage.basedir}/${output.tmpdir}" />
+	</target>
+
+
+	<!-- BUILD -->
+
+	<target name="build" depends="clean" >
+		<antcall target="build_android" >
+			<param name="airpackage.sourcedir" value="${airpackage.basedir}" />
+			<param name="airpackage.variant" value="" />
+		</antcall>
+
+		<antcall target="copy_template" >
+			<param name="airpackage.sourcedir" value="${airpackage.basedir}" />
+			<param name="airpackage.variant" value="" />
+		</antcall>
+		<antcall target="copy" >
+			<param name="airpackage.sourcedir" value="${airpackage.basedir}" />
+			<param name="airpackage.variant" value="" />
+		</antcall>
+		<exec executable="apm" dir="${airpackage.basedir}">
+			<arg line="build build" />
+		</exec>
+
+		<!-- Build variants -->
+		<antcall target="build_variants" />
+
+	</target>
+
+	<target name="build_variants" >
+		<foreach target="build_variant" param="variant.basedir" inheritall="true" >
+			<path>
+				<dirset dir="${airpackage.basedir}">
+					<include name="variants/*"/>
+				</dirset>
+			</path>
+		</foreach>
+	</target>
+
+	<target name="build_variant" >
+		<basename property="variant.name" file="${variant.basedir}"/>
+		
+		<echo message="BUILD VARIANT: ${variant.name}" />
+
+		<antcall target="build_android" >
+			<param name="airpackage.sourcedir" value="${variant.basedir}" />
+			<param name="airpackage.variant" value="${variant.name}" />
+		</antcall>
+
+		<antcall target="copy_template" >
+			<param name="airpackage.sourcedir" value="${variant.basedir}" />
+			<param name="airpackage.variant" value="${variant.name}" />
+		</antcall>
+		<antcall target="copy" >
+			<param name="airpackage.sourcedir" value="${variant.basedir}" />
+			<param name="airpackage.variant" value="${variant.name}" />
+		</antcall>
+		<exec executable="apm" dir="${variant.basedir}">
+			<arg line="build build" />
+		</exec>
+
+	</target>
+
+
+
+
+
+
+
+
+	<!-- DEPLOY -->
+
+	<target name="deploy" depends="build">
+		<foreach target="deploy_package" param="packagefile" inheritall="true">
+			<path>
+				<fileset dir="${airpackage.basedir}">
+					<include name="**/**/*.airpackage"/>
+				</fileset>
+			</path>
+		</foreach>
+	</target>
+
+	<target name="deploy_package" >
+		<echo message="deploying to ${github.repo} v${version.release} ${packagefile}" />
+		<!-- Upload to github release -->
+		<exec executable="gh" failonerror="true">
+			<arg line="-R ${github.repo} release upload v${version.release}" />
+			<arg line="${packagefile}" />
+			<arg line="--clobber" />
+		</exec>
+		<!-- Publish to apm repository -->
+		<exec executable="apm">
+			<arg line="publish ${packagefile}" />
+		</exec>
+	</target>
+
+
+
+
+
+
+</project>

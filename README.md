@@ -1,7 +1,7 @@
-built by [distriqt //](http://airnativeextensions.com) 
+built by [distriqt //](https://airnativeextensions.com) 
 
 
-![Exceptions](images/promo.png)
+![Exceptions](https://raw.githubusercontent.com/distriqt/ANE-Exceptions/master/images/promo.png)
 
 
 # Exceptions
@@ -67,7 +67,7 @@ The highest quality and widest range of Native Extensions for Adobe AIR
 With many native extensions available, we are the largest provider of native extensions for AIR developers. 
 Our mobile solutions allow developers to fast-forward development and focus on building great games and apps.
 
-http://airnativeextensions.com
+https://airnativeextensions.com
 
 
 

@@ -1,5 +1,5 @@
 <platform xmlns="http://ns.adobe.com/air/extension/@AIRVERSION@">
-	<copyright>2019 // distriqt</copyright>
+	<copyright>2021 // distriqt</copyright>
 	<packagedDependencies>
 @JARS@
 	</packagedDependencies>

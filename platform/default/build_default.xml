@@ -67,10 +67,14 @@
 
 		<echo message="Building default library..."/>
 
+		<mkdir dir="${default.basedir}/libs" />
 		<compc output="${default.basedir}/bin/${default.name}" debug="${DEBUG_MODE}" swf-version="17">
 			<load-config filename="${air.sdk}/frameworks/air-config.xml" />
 			<source-path path-element="${default.basedir}/src" />
 			<include-sources dir="${default.basedir}/src" includes="*" />
+            <library-path dir="${default.basedir}/libs" append="true">
+                <include name="*.swc" />
+            </library-path>
 		</compc>
 
 		<echo message="done"/>

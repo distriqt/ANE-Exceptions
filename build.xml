@@ -2,7 +2,6 @@
 <project default="all" name="ane.build"> 
 	
 	<import file="build_common.xml" />
-	<import file="build_docsconversion.xml" />
 	<property file="${common.basedir}/build_config/build.config" description="build properties" />
 	
 	
@@ -28,21 +27,26 @@
 	-->
 	
 	<target name="version">
-		<antcall target="version_increment" />
 		<antcall target="version_write" />
 	</target>
 
 	<target name="version_increment" if="${version.autoincrement}">
 		<propertyfile file="./build_config/version.config">
-			<entry key="version_build" type="int" operation="+" value="1" pattern="000" />
+			<entry key="version_build" type="int" operation="+" value="1" />
 		</propertyfile>
 	</target>
 
 	<target name="version_write">
+<echo file="build/VERSION.md" append="false" >## Version Details
+
+| Extension | Version | Android Lib | iOS Lib |
+| --- | --- | --- | --- |
+</echo> 
+
 		<var name="version" value="${version_major}.${version_minor}.${version_build}" />
 		<echo 
 			file="${output.dir}/VERSION.md" 
-			append="false" 
+			append="true" 
 			message="| ${output.name} | ${version} | ${version.android} | ${version.ios} |${line.separator}" />
 	</target>
 
@@ -206,6 +210,25 @@ _site
 	<!-- 
 	//
 	//
+	//	AIR PACKAGE 
+	//
+	//
+	-->
+
+	<target name="airpackage" >
+        <iterate target="deploy" directory="package" />
+	</target> 
+
+
+	<target name="clean_airpackage" >
+        <iterate target="clean" directory="package" />
+	</target> 
+
+
+
+	<!-- 
+	//
+	//
 	//	DEPLOYMENT 
 	//
 	//
@@ -238,9 +261,9 @@ _site
 
 	<target name="all" depends="version, build_platforms, build_extensions" />
 
-	<target name="clean" depends="clean_platforms, clean_extensions" />
+	<target name="clean" depends="clean_platforms, clean_extensions, clean_airpackage" />
 
-	<target name="release" depends="docs, deploy" />
+	<target name="release" depends="version, docs, deploy" />
 
 
 </project>
