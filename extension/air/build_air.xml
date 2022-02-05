@@ -13,7 +13,7 @@
 		<attribute name="name" /> 
 		<attribute name="value" />
 		<![CDATA[
-		var variantName = attributes.get( "value" );
+		var variantName = String(attributes.get( "value" ));
 		if (variantName.length > 0)
 		{
 			variantName = "." + variantName;

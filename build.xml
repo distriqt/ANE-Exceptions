@@ -236,6 +236,11 @@ _site
 
 	<target name="deploy">
 
+		<lower name="project.namelower" value="${project.name}" />
+		
+		<delete dir="${docs.external_site_source}/docs/${project.namelower}" />
+		<delete dir="${docs.external_site_source}/static/asdocs/${project.namelower}" />
+
 		<!-- Copy docs to site -->
 		<copy todir="${docs.external_site_source}" overwrite="true" failonerror="false">
 			<fileset dir="docs/site" >
@@ -244,8 +249,14 @@ _site
 			</fileset>
 		</copy>
 		
-		<lower name="project.namelower" value="${project.name}" />
-		<copy tofile="${docs.external_site_source}/docs/${project.namelower}/changelog.md" overwrite="true" file="CHANGELOG.md" />
+		<copy tofile="${docs.external_site_source}/docs/${project.namelower}/changelog.md" overwrite="true"
+			file="CHANGELOG.md" >
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="######" to="###"/>
+				</tokenfilter>
+			</filterchain>
+		</copy>
 
 	</target>
 
