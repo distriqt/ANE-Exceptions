@@ -1,0 +1,73 @@
+---
+title: Add the Extension
+sidebar_label: Add the Extension
+---
+
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+import InstallAPM from './_includes/add-apm.md'
+import InstallManual from './_includes/add-manual.md'
+
+import AppDescriptorAPM from './_includes/add-apm-appdescriptor.md'
+import AppDescriptorManual from './_includes/add-manual-appdescriptor.md'
+
+
+The simplest way to install and manage your AIR native extensions and libraries is to use the AIR Package Manager (`apm`). We highly recommend using `apm`, as it will handle downloading all required dependencies and manage your application descriptor (Android manifest additions, iOS info additions etc).
+
+However you can choose to install it manually, as you would have done in the past. 
+
+## Install
+
+<Tabs
+  groupId="packagemanager"
+  defaultValue="apm"
+  values={[
+    {label: 'APM', value: 'apm'},
+    {label: 'Manual', value: 'manual'},
+  ]}>
+
+  <TabItem value="apm" >
+	<InstallAPM/>
+  </TabItem>
+  <TabItem value="manual" >
+	<InstallManual/>
+  </TabItem>
+  
+</Tabs>
+
+
+## Application Descriptor
+
+<Tabs
+  groupId="packagemanager"
+  defaultValue="apm"
+  values={[
+    {label: 'APM', value: 'apm'},
+    {label: 'Manual', value: 'manual'},
+  ]}>
+
+  <TabItem value="apm" >
+	<AppDescriptorAPM/>
+  </TabItem>
+  <TabItem value="manual" >
+	<AppDescriptorManual/>
+  </TabItem>
+  
+</Tabs>
+
+
+
+## Checking for Support
+
+You can use the `isSupported` flag to determine if this extension is supported on the current platform and device.
+
+This allows you to react to whether the functionality is available on the device and provide an alternative solution if not.
+
+
+```actionscript
+if (Exceptions.isSupported)
+{
+	// Functionality here
+}
+```

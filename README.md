@@ -24,6 +24,9 @@ your application to your own error logging server.
 
 ## Documentation
 
+Latest documentation can be found in the [documentation site](https://docs.airnativeextensions.com/docs/exceptions) along with the [asdocs](https://docs.airnativeextensions.com/asdocs/exceptions). 
+
+
 This extension is very simple in the implementation, having only 2 main functions.
 
 To start catching exceptions you simply call `setUncaughtExceptionHandler()` at 
