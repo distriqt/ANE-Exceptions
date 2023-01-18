@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 
-<project default="build" name="default"> 
+<project default="build" name="default">
 
 
-	
 	<import file="../../build_common.xml" />
 
 
@@ -14,16 +13,15 @@
 	//
 	//
 	-->
-	
+
 	<!-- <lower name="project.packagename" value="${project.name}" /> -->
 	<grppackagename name="project.packagename" prefix="" grp="${project.grp}" projectname="${project.name}" />
 
 	<property name="default.name" value="distriqt.extension.${project.packagename}.default.swc" />
 
 	<taskdef resource="flexTasks.tasks" classpath="${air.sdk}/ant/lib/flexTasks.jar" />
-	
-	<dirname property="default.basedir" file="${ant.file.default}" />
 
+	<dirname property="default.basedir" file="${ant.file.default}" />
 
 
 	<!-- 
@@ -34,25 +32,23 @@
 	//
 	-->
 
-	<target name="version_write" >
+	<target name="version_write">
 		<property name="version" value="${version_major}.${version_minor}.${version_build}" />
 
-		<copy file="${common.basedir}/${codetmpl}/Const.as" tofile="${default.basedir}/src/${package.path}/Const.as" overwrite="true" >
+		<copy file="${common.basedir}/${codetmpl}/Const.as" tofile="${default.basedir}/src/${package.path}/Const.as" overwrite="true">
 			<filterchain>
 				<tokenfilter>
-					<replacestring from="@VERSION@" to="${version}"/>
-					<replacestring from="@VERSIONEXT@" to="${version.grp}"/>
-					<replacestring from="@EXTENSIONID@" to="${output.name}"/>
-					<replacestring from="@PACKAGE@" to="${package.name}"/>
+					<replacestring from="@VERSION@" to="${version}" />
+					<replacestring from="@VERSIONEXT@" to="${version.grp}" />
+					<replacestring from="@EXTENSIONID@" to="${output.name}" />
+					<replacestring from="@PACKAGE@" to="${package.name}" />
 				</tokenfilter>
 			</filterchain>
 		</copy>
 	</target>
 
 
-
-
-    <!-- 
+	<!-- 
 	//
 	//
 	//	ACTIONSCRIPT TASKS 
@@ -65,28 +61,26 @@
 
 	<target name="build" depends="version_write, pre_build_default">
 
-		<echo message="Building default library..."/>
+		<echo message="Building default library..." />
 
 		<mkdir dir="${default.basedir}/libs" />
-		<compc output="${default.basedir}/bin/${default.name}" debug="${DEBUG_MODE}" swf-version="17">
+		<compc output="${default.basedir}/bin/${default.name}" debug="${DEBUG_MODE}" swf-version="${air.swfversion}">
 			<load-config filename="${air.sdk}/frameworks/air-config.xml" />
 			<source-path path-element="${default.basedir}/src" />
 			<include-sources dir="${default.basedir}/src" includes="*" />
-            <library-path dir="${default.basedir}/libs" append="true">
-                <include name="*.swc" />
-            </library-path>
+			<library-path dir="${default.basedir}/libs" append="true">
+				<include name="*.swc" />
+			</library-path>
 		</compc>
 
-		<echo message="done"/>
+		<echo message="done" />
 
 	</target>
 
 
-	<target name="clean" >
+	<target name="clean">
 		<delete dir="${default.basedir}/bin" />
 	</target>
-
-
 
 
 	<!-- 
@@ -97,8 +91,7 @@
 	//
 	-->
 
-	<target name="docs" description="">
-	</target>
+	<target name="docs" description=""></target>
 
 
 </project>

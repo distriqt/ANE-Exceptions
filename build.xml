@@ -1,23 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?> 
-<project default="all" name="ane.build"> 
-	
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="all" name="ane.build">
+
 	<import file="build_common.xml" />
 	<property file="${common.basedir}/build_config/build.config" description="build properties" />
-	
-	
+
+
 	<macrodef name="iterate">
-        <attribute name="target"/>
-        <attribute name="directory"/>
-        <sequential>
-            <subant target="@{target}">
-                <fileset dir="@{directory}">
+		<attribute name="target" />
+		<attribute name="directory" />
+		<sequential>
+			<subant target="@{target}">
+				<fileset dir="@{directory}">
 					<include name="**/build_*.xml" />
 				</fileset>
-            </subant>
-        </sequential>
-    </macrodef>
-	
-	
+			</subant>
+		</sequential>
+	</macrodef>
+
+
 	<!-- 
 	//
 	//
@@ -25,7 +25,7 @@
 	//
 	//
 	-->
-	
+
 	<target name="version">
 		<antcall target="version_write" />
 	</target>
@@ -37,19 +37,15 @@
 	</target>
 
 	<target name="version_write">
-<echo file="build/VERSION.md" append="false" >## Version Details
+		<echo file="build/VERSION.md" append="false">## Version Details
 
 | Extension | Version | Android Lib | iOS Lib |
 | --- | --- | --- | --- |
-</echo> 
+</echo>
 
 		<var name="version" value="${version_major}.${version_minor}.${version_build}" />
-		<echo 
-			file="${output.dir}/VERSION.md" 
-			append="true" 
-			message="| ${output.name} | ${version} | ${version.android} | ${version.ios} |${line.separator}" />
+		<echo file="${output.dir}/VERSION.md" append="true" message="| ${output.name} | ${version} | ${version.android} | ${version.ios} |${line.separator}" />
 	</target>
-
 
 
 	<!-- 
@@ -62,13 +58,12 @@
 
 
 	<target name="build_platforms">
-        <iterate target="build" directory="platform" />
+		<iterate target="build" directory="platform" />
 	</target>
 
 	<target name="clean_platforms">
-        <iterate target="clean" directory="platform" />
+		<iterate target="clean" directory="platform" />
 	</target>
-
 
 
 	<!-- 
@@ -80,15 +75,13 @@
 	-->
 
 
-
 	<target name="build_extensions">
-        <iterate target="build" directory="extension" />
+		<iterate target="build" directory="extension" />
 	</target>
 
 	<target name="clean_extensions">
-        <iterate target="clean" directory="extension" />
+		<iterate target="clean" directory="extension" />
 	</target>
-
 
 
 	<!-- 
@@ -100,7 +93,7 @@
 	-->
 
 	<target name="docs">
-        <iterate target="docs" directory="platform" />
+		<iterate target="docs" directory="platform" />
 
 		<!-- Ensure documentation is updated -->
 		<lower name="project.namelower" value="${project.name}" />
@@ -108,7 +101,7 @@
 		<var name="docs.asdocs_dir" value="docs/site/static/asdocs/${project.namelower}" />
 
 		<!-- Copy ASDocs -->
-		<copy todir="${docs.asdocs_dir}" overwrite="true" >
+		<copy todir="${docs.asdocs_dir}" overwrite="true">
 			<fileset dir="docs/asdocs" />
 		</copy>
 
@@ -120,11 +113,11 @@
 
 	<target name="wikiToPages">
 		<mkdir dir="docs/pages" />
-		<echo file="docs/pages/.gitignore" >
+		<echo file="docs/pages/.gitignore">
 Gemfile
 _site
 		</echo>
-		
+
 		<delete defaultexcludes="false" includeemptydirs="true">
 			<fileset dir="docs/pages">
 				<include name="**/*" />
@@ -133,18 +126,17 @@ _site
 		</delete>
 
 
-
 		<!-- Clone the site template -->
-		<exec executable="git" >
+		<exec executable="git">
 			<arg value="clone" />
 			<arg value="git@gitlab.com:airnativeextensions/github-pages-template.git" />
 			<arg value="_tmpclone" />
 		</exec>
-		<copy todir="docs/pages" overwrite="true" >
+		<copy todir="docs/pages" overwrite="true">
 			<fileset dir="_tmpclone" />
 			<filterchain>
 				<tokenfilter>
-					<replacestring from="Template" to="${project.name}"/>
+					<replacestring from="Template" to="${project.name}" />
 				</tokenfilter>
 			</filterchain>
 		</copy>
@@ -156,7 +148,7 @@ _site
 		 - copy images 
 		 - sidebar manipulation to html
 		 -->
-		<copy todir="docs/pages" overwrite="true" >
+		<copy todir="docs/pages" overwrite="true">
 			<fileset dir="docs/wiki" defaultexcludes="false">
 				<exclude name="**/_Sidebar.md" />
 				<exclude name="**/_Footer.md" />
@@ -164,13 +156,13 @@ _site
 			</fileset>
 			<filterchain>
 				<tokenfilter>
-					<replacestring from="[[" to="![]("/>
-					<replacestring from="]]" to=")"/>
+					<replacestring from="[[" to="![](" />
+					<replacestring from="]]" to=")" />
 				</tokenfilter>
 			</filterchain>
 		</copy>
 		<move file="docs/pages/Home.md" tofile="docs/pages/index.md" />
-		<copy todir="docs/pages" overwrite="true" >
+		<copy todir="docs/pages" overwrite="true">
 			<fileset dir="docs/wiki" defaultexcludes="false">
 				<include name="**/images/**" />
 			</fileset>
@@ -178,33 +170,22 @@ _site
 		<copy file="docs/wiki/_Sidebar.md" tofile="docs/pages/_includes/Sidebar.html" overwrite="true">
 			<filterchain>
 				<tokenfilter>
-					<replacestring from="---" to="&lt;br/&gt;&lt;hr/&gt;"/>
+					<replacestring from="---" to="&lt;br/&gt;&lt;hr/&gt;" />
 					<!--<replacestring from="|Home]]" to="|https://airnativeextensions.com/extension/com.distriqt.${project.name}]]"/>-->
-					<replaceregex flags="g" 
-						pattern="^(.[^\[\(\&lt;]+)$" 
-						replace="&lt;h4&gt;\1&lt;/h4&gt;" />
-					<replaceregex flags="g"
-						pattern="\[\[(.+?)\|Home\]\]"
-						replace="" />
-					<replaceregex flags="g"
-						pattern="\[\[(.+?)\|(.+?)\]\]"
-						replace="&lt;a href='\2'&gt;\1&lt;\/a&gt;&lt;br\/&gt;" />
-					<replaceregex flags="g"
-						pattern="\[(.+?)\]\((.+?)\)"
-						replace="&lt;a href='\2'&gt;\1&lt;\/a&gt;&lt;br\/&gt;" />
+					<replaceregex flags="g" pattern="^(.[^\[\(\&lt;]+)$" replace="&lt;h4&gt;\1&lt;/h4&gt;" />
+					<replaceregex flags="g" pattern="\[\[(.+?)\|Home\]\]" replace="" />
+					<replaceregex flags="g" pattern="\[\[(.+?)\|(.+?)\]\]" replace="&lt;a href='\2'&gt;\1&lt;\/a&gt;&lt;br\/&gt;" />
+					<replaceregex flags="g" pattern="\[(.+?)\]\((.+?)\)" replace="&lt;a href='\2'&gt;\1&lt;\/a&gt;&lt;br\/&gt;" />
 				</tokenfilter>
 			</filterchain>
 		</copy>
 
 		<!-- Copy ASDocs -->
-		<copy todir="docs/pages/asdocs" overwrite="true" >
+		<copy todir="docs/pages/asdocs" overwrite="true">
 			<fileset dir="docs/asdocs" />
 		</copy>
 
 	</target>
-
-
-
 
 
 	<!-- 
@@ -215,15 +196,14 @@ _site
 	//
 	-->
 
-	<target name="airpackage" >
-        <iterate target="deploy" directory="package" />
-	</target> 
+	<target name="airpackage">
+		<iterate target="deploy" directory="package" />
+	</target>
 
 
-	<target name="clean_airpackage" >
-        <iterate target="clean" directory="package" />
-	</target> 
-
+	<target name="clean_airpackage">
+		<iterate target="clean" directory="package" />
+	</target>
 
 
 	<!-- 
@@ -237,29 +217,27 @@ _site
 	<target name="deploy">
 
 		<lower name="project.namelower" value="${project.name}" />
-		
+
 		<delete dir="${docs.external_site_source}/docs/${project.namelower}" />
 		<delete dir="${docs.external_site_source}/static/asdocs/${project.namelower}" />
 
 		<!-- Copy docs to site -->
 		<copy todir="${docs.external_site_source}" overwrite="true" failonerror="false">
-			<fileset dir="docs/site" >
+			<fileset dir="docs/site">
 				<include name="**/*" />
 				<exclude name="sidebars.js" />
 			</fileset>
 		</copy>
-		
-		<copy tofile="${docs.external_site_source}/docs/${project.namelower}/changelog.md" overwrite="true"
-			file="CHANGELOG.md" >
+
+		<copy tofile="${docs.external_site_source}/docs/${project.namelower}/changelog.md" overwrite="true" file="CHANGELOG.md">
 			<filterchain>
 				<tokenfilter>
-					<replacestring from="######" to="###"/>
+					<replacestring from="######" to="###" />
 				</tokenfilter>
 			</filterchain>
 		</copy>
 
 	</target>
-
 
 
 	<!-- 
@@ -272,7 +250,9 @@ _site
 
 	<target name="all" depends="version, build_platforms, build_extensions" />
 
-	<target name="clean" depends="clean_platforms, clean_extensions, clean_airpackage" />
+	<target name="clean" depends="clean_platforms, clean_extensions, clean_airpackage" >
+		<delete dir="${common.basedir}/${output.dir}" />
+	</target>
 
 	<target name="release" depends="version, docs, deploy" />
 

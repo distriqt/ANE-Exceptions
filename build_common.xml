@@ -65,6 +65,17 @@
 		]]>
 	</scriptdef>
 
+	<scriptdef language="javascript" name="titlecase">
+		<attribute name="name" />
+		<attribute name="value" /> 
+		<![CDATA[
+		var value = String(attributes.get( "value" ));
+		var titlecase = value.charAt(0).toUpperCase() + value.substr(1);
+		
+		project.setProperty( attributes.get( "name" ), titlecase );
+		]]>
+	</scriptdef>
+
 	<scriptdef language="javascript" name="cleanchars">
 		<attribute name="name" />
 		<attribute name="value" /> 
@@ -165,5 +176,29 @@
 	<outputname name="output.name" prefix="${output.basename}" grp="${project.grp}" projectname="${project.name}" />
 	<grppackagename name="package.name" prefix="${package.basename}" grp="${project.grp}" projectname="${project.name}" />
 	<packagepath name="package.path" value="${package.name}" />
+
+	<loadproperties srcFile="${common.basedir}/${android.dir}/app/build.gradle">
+		<filterchain>
+			<linecontains>
+				<contains value="minSdkVersion"/>
+			</linecontains>
+			<replaceregex pattern="\sminSdkVersion\s([0-9]*)" replace="minSdkVersion=\1" />
+		</filterchain>
+	</loadproperties>
+	<property name="minSdkVersion" value="${android.minSdkVersion}" />
+	<var name="android.minSdkVersion" unset="true" />
+	<property name="android.minSdkVersion" value="${minSdkVersion}"  />
+
+	<loadproperties srcFile="${common.basedir}/${android.dir}/app/build.gradle">
+		<filterchain>
+			<linecontains>
+				<contains value="targetSdkVersion"/>
+			</linecontains>
+			<replaceregex pattern="\stargetSdkVersion\s([0-9]*)" replace="targetSdkVersion=\1" />
+		</filterchain>
+	</loadproperties>
+	<property name="targetSdkVersion" value="${android.targetSdkVersion}" />
+	<var name="android.targetSdkVersion" unset="true" />
+	<property name="android.targetSdkVersion" value="${targetSdkVersion}"  />
 
 </project>

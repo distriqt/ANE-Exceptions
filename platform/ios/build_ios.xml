@@ -1,11 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 
-<project default="build" name="ios"
-	xmlns:if="ant:if"
-	xmlns:unless="ant:unless"> 
+<project default="build" name="ios" xmlns:if="ant:if" xmlns:unless="ant:unless">
 
 
-	
 	<import file="../../build_common.xml" />
 
 
@@ -16,7 +13,7 @@
 	//
 	//
 	-->
-	
+
 	<lower name="project.packagename" value="${project.name}" />
 
 	<dirname property="ios.basedir" file="${ant.file.ios}" />
@@ -26,7 +23,7 @@
 	<!-- Check macOS and iOS enabled -->
 	<condition property="ios.shouldbuild" else="false">
 		<and>
-			<istrue value="${isMacOS}"/>
+			<istrue value="${isMacOS}" />
 			<istrue value="${ios.enabled}" />
 		</and>
 	</condition>
@@ -40,14 +37,12 @@
 	//
 	-->
 
-	<target name="version_write" >
+	<target name="version_write">
 		<property name="version" value="${version_major}.${version_minor}.${version_build}" />
 	</target>
 
 
-
-
-    <!-- 
+	<!-- 
 	//
 	//
 	//	IOS TASKS 
@@ -55,83 +50,138 @@
 	//
 	-->
 
+	<target name="build_ios_bootstrap" >
+		<if>
+			<available file="${ios.basedir}/libs" type="dir" />
+			<then>
+				<for param="zipfile">
+					<path>
+						<fileset dir="${ios.basedir}/libs" >
+							<include name="*.zip" />
+						</fileset>
+					</path>
+					<sequential>
+						<echo>@{zipfile}</echo>
+						<exec executable="unzip" dir="${ios.basedir}/libs" >
+							<arg line="-n @{zipfile}" />
+						</exec>
+					</sequential>
+				</for>
+			</then>
+		</if>
+	</target>
 
-    <!-- iOS simulator library -->
+
+	<!-- iOS simulator library -->
 	<target name="build_ios_simulator_project" unless="${ios.useworkspace}">
 		<echo message="[${ios.name}] Building iOS simulator library..." />
-		<exec executable="${ios.xcode_buildpath}" if:true="${iosimulator.enabled}">
-			<arg line="-project ${ios.basedir}/${ios.name}.xcodeproj"/>
+		<var name="ret1" unset="true" />
+		<exec executable="${ios.xcode_buildpath}" resultproperty="ret1">
+			<arg line="-project ${ios.basedir}/${ios.name}.xcodeproj" />
 			<arg line="ONLY_ACTIVE_ARCH=NO" />
-			<arg line="BITCODE_GENERATION_MODE=bitcode" />
-			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-configuration ${ios.xcode_build}" />
 			<arg line="-alltargets" />
 			<arg value="build" />
 			<arg line="-sdk iphonesimulator" />
 		</exec>
+		<fail>
+			<condition>
+				<not>
+					<equals arg1="0" arg2="${ret1}" />
+				</not>
+			</condition>
+		</fail>
 	</target>
 	<target name="build_ios_simulator_workspace" if="${ios.useworkspace}">
 		<echo message="[${ios.name}] Building iOS simulator library..." />
-		<exec executable="${ios.xcode_buildpath}" if:true="${iosimulator.enabled}">
-			<arg line="-workspace ${ios.basedir}/${ios.name}.xcworkspace"/>
+		<var name="ret1" unset="true" />
+		<exec executable="${ios.xcode_buildpath}" resultproperty="ret1">
+			<arg line="-workspace ${ios.basedir}/${ios.name}.xcworkspace" />
 			<arg line="ONLY_ACTIVE_ARCH=NO" />
-			<arg line="BITCODE_GENERATION_MODE=bitcode" />
-			<arg line="-configuration ${ios.xcode_build}"/>
+			<arg line="-configuration ${ios.xcode_build}" />
 			<arg line="-scheme ${ios.name}" />
 			<arg value="build" />
 			<arg line="-sdk iphonesimulator" />
 		</exec>
+		<fail>
+			<condition>
+				<not>
+					<equals arg1="0" arg2="${ret1}" />
+				</not>
+			</condition>
+		</fail>
 	</target>
 
 	<!-- iOS iphoneos library -->
 	<target name="build_ios_iphone_project" unless="${ios.useworkspace}">
-		<echo message="[${ios.name}] Building iOS library..."/>
-		<exec executable="${ios.xcode_buildpath}">
-			<arg line="-project ${ios.basedir}/${ios.name}.xcodeproj"/>
+		<echo message="[${ios.name}] Building iOS library..." />
+		<var name="ret1" unset="true" />
+		<exec executable="${ios.xcode_buildpath}" resultproperty="ret1">
+			<arg line="-project ${ios.basedir}/${ios.name}.xcodeproj" />
 			<arg line="ONLY_ACTIVE_ARCH=NO" />
-			<arg line="BITCODE_GENERATION_MODE=bitcode" />
-			<arg line="OTHER_CFLAGS='$(inherited) -fembed-bitcode'" />
-			<arg line="-configuration ${ios.xcode_build}"/>
+			<!-- <arg line="BITCODE_GENERATION_MODE=bitcode" /> -->
+			<!-- <arg line="OTHER_CFLAGS='$(inherited) -fembed-bitcode'" /> -->
+			<arg line="OTHER_CFLAGS='$(inherited) -fno-objc-msgsend-selector-stubs'" />
+			<arg line="-configuration ${ios.xcode_build}" />
 			<arg line="-alltargets" />
-			<arg value="build"/>
+			<arg value="build" />
 			<arg line="-sdk iphoneos" />
 		</exec>
+		<fail>
+			<condition>
+				<not>
+					<equals arg1="0" arg2="${ret1}" />
+				</not>
+			</condition>
+		</fail>
 	</target>
 	<target name="build_ios_iphone_workspace" if="${ios.useworkspace}">
-		<echo message="[${ios.name}] Building iOS library..."/>
-		<exec executable="${ios.xcode_buildpath}">
-			<arg line="-workspace ${ios.basedir}/${ios.name}.xcworkspace"/>
+		<echo message="[${ios.name}] Building iOS library..." />
+		<var name="ret1" unset="true" />
+		<exec executable="${ios.xcode_buildpath}" resultproperty="ret1">
+			<arg line="-workspace ${ios.basedir}/${ios.name}.xcworkspace" />
 			<arg line="ONLY_ACTIVE_ARCH=NO" />
-			<arg line="BITCODE_GENERATION_MODE=bitcode" />
-			<arg line="OTHER_CFLAGS='$(inherited) -fembed-bitcode'" />
-			<arg line="-configuration ${ios.xcode_build}"/>
+			<!-- <arg line="BITCODE_GENERATION_MODE=bitcode" /> -->
+			<!-- <arg line="OTHER_CFLAGS='$(inherited) -fembed-bitcode'" /> -->
+			<arg line="OTHER_CFLAGS='$(inherited) -fno-objc-msgsend-selector-stubs'" />
+			<arg line="-configuration ${ios.xcode_build}" />
 			<arg line="-scheme ${ios.name}" />
-			<arg value="build"/>
+			<arg value="build" />
 			<arg line="-sdk iphoneos" />
 		</exec>
+		<fail>
+			<condition>
+				<not>
+					<equals arg1="0" arg2="${ret1}" />
+				</not>
+			</condition>
+		</fail>
 	</target>
 
 	<!-- AppleTV library -->
-	<target name="build_tvos_project" unless="${ios.useworkspace}" >
+	<target name="build_tvos_project" unless="${ios.useworkspace}">
 		<echo message="[${ios.name}] Building Apple TV library..." />
 		<exec executable="${ios.xcode_buildpath}" if:true="${tvos.enabled}">
-			<arg line="-project ${ios.basedir}/${ios.name}.xcodeproj"/>
+			<arg line="-project ${ios.basedir}/${ios.name}.xcodeproj" />
 			<arg line="ONLY_ACTIVE_ARCH=NO" />
-			<arg line="BITCODE_GENERATION_MODE=bitcode" />
-			<arg line="OTHER_CFLAGS='$(inherited) -fembed-bitcode'" />
-			<arg line="-configuration ${ios.xcode_build}"/>
+			<!-- <arg line="BITCODE_GENERATION_MODE=bitcode" /> -->
+			<!-- <arg line="OTHER_CFLAGS='$(inherited) -fembed-bitcode'" /> -->
+			<arg line="OTHER_CFLAGS='$(inherited) -fno-objc-msgsend-selector-stubs'" />
+			<arg line="-configuration ${ios.xcode_build}" />
 			<arg line="-alltargets" />
 			<arg value="build" />
 			<arg line="-sdk appletvos" />
 		</exec>
 	</target>
-	<target name="build_tvos_workspace" if="${ios.useworkspace}" >
+	<target name="build_tvos_workspace" if="${ios.useworkspace}">
 		<echo message="[${ios.name}] Building Apple TV library..." />
 		<exec executable="${ios.xcode_buildpath}" if:true="${tvos.enabled}">
-			<arg line="-workspace ${ios.basedir}/${ios.name}.xcworkspace"/>
+			<arg line="-workspace ${ios.basedir}/${ios.name}.xcworkspace" />
 			<arg line="ONLY_ACTIVE_ARCH=NO" />
-			<arg line="BITCODE_GENERATION_MODE=bitcode" />
-			<arg line="OTHER_CFLAGS='$(inherited) -fembed-bitcode'" />
-			<arg line="-configuration ${ios.xcode_build}"/>
+			<!-- <arg line="BITCODE_GENERATION_MODE=bitcode" /> -->
+			<!-- <arg line="OTHER_CFLAGS='$(inherited) -fembed-bitcode'" /> -->
+			<arg line="OTHER_CFLAGS='$(inherited) -fno-objc-msgsend-selector-stubs'" />
+			<arg line="-configuration ${ios.xcode_build}" />
 			<arg line="-scheme ${ios.name}" />
 			<arg value="build" />
 			<arg line="-sdk appletvos" />
@@ -141,16 +191,16 @@
 
 	<target name="pre_build_ios" />
 
-	<target name="build_xib" >
+	<target name="build_xib">
 		<mkdir dir=".tmp" />
 		<for param="xibfile">
 			<path>
 				<fileset dir="${ios.basedir}">
-					<include name="**/*.xib"/>
+					<include name="**/*.xib" />
 				</fileset>
 			</path>
 			<sequential>
-				<var name="nibfilename" unset="true"/>
+				<var name="nibfilename" unset="true" />
 				<echo message="@{xibfile}" />
 				<basename property="nibfilename" file="@{xibfile}" suffix=".xib" />
 				<echo message="${nibfilename}" />
@@ -165,13 +215,13 @@
 		<for param="outputlib">
 			<path>
 				<fileset dir="${ios.basedir}/${ios.build_dir}">
-					<include name="**/*.a"/>
+					<include name="**/*.a" />
 				</fileset>
 			</path>
 			<sequential>
-				<var name="outputlibdir" unset="true"/>
+				<var name="outputlibdir" unset="true" />
 				<dirname property="outputlibdir" file="@{outputlib}" />
-				<copy todir="${outputlibdir}" flatten="true" overwrite="true" >
+				<copy todir="${outputlibdir}" flatten="true" overwrite="true">
 					<fileset dir=".tmp" />
 				</copy>
 			</sequential>
@@ -181,13 +231,13 @@
 	</target>
 
 
-
 	<target name="build" depends="version_write, pre_build_ios" if="${ios.shouldbuild}">
 
-		<echo message="Building iOS library..."/>
+		<echo message="Building iOS library..." />
 
-		<antcall target="build_ios_simulator_project" />
-		<antcall target="build_ios_simulator_workspace" />
+		<antcall target="build_ios_bootstrap" />
+		<antcall target="build_ios_simulator_project" if:true="${iosimulator.enabled}" />
+		<antcall target="build_ios_simulator_workspace" if:true="${iosimulator.enabled}" />
 		<antcall target="build_ios_iphone_project" />
 		<antcall target="build_ios_iphone_workspace" />
 		<antcall target="build_tvos_project" />
@@ -200,7 +250,7 @@
 	</target>
 
 
-	<target name="clean" >
+	<target name="clean">
 
 		<delete dir="${ios.basedir}/build/" />
 
@@ -208,24 +258,24 @@
 
 
 	<target name="copy_corenativeextension_framework" if="${ios.packagecoreframework}">
-		<echo message="Copying CoreNativeExtension.framework ..."/>
+		<echo message="Copying CoreNativeExtension.framework ..." />
 
-		<antcall target="copy_corenativeextension_framework_target" >
+		<antcall target="copy_corenativeextension_framework_target">
 			<param name="target" value="${ios.iphoneos_dir}" />
 		</antcall>
-		<antcall target="copy_corenativeextension_framework_target" >
+		<antcall target="copy_corenativeextension_framework_target">
 			<param name="target" value="${ios.iphonesimulator_dir}" />
 		</antcall>
-		<antcall target="copy_corenativeextension_framework_target" >
+		<antcall target="copy_corenativeextension_framework_target">
 			<param name="target" value="${ios.tvos_dir}" />
 		</antcall>
-	</target> 
+	</target>
 
 	<target name="copy_corenativeextension_framework_target">
 		<for param="builddir">
 			<path>
 				<dirset dir="${ios.basedir}/build">
-					<include name="**/${target}"/>
+					<include name="**/${target}" />
 				</dirset>
 			</path>
 			<sequential>
@@ -245,8 +295,7 @@
 	//
 	-->
 
-	<target name="docs" description="">
-	</target>
+	<target name="docs" description=""></target>
 
 
 </project>

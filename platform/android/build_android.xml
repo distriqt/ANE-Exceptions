@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 
-<project default="build" name="android"> 
+<project default="build" name="android">
 
 
-	
 	<import file="../../build_common.xml" />
 
 
@@ -14,7 +13,7 @@
 	//
 	//
 	-->
-	
+
 	<lower name="project.packagename" value="${project.name}" />
 
 	<dirname property="android.basedir" file="${ant.file.android}" />
@@ -22,7 +21,7 @@
 	<!-- Check macOS and android enabled -->
 	<condition property="android.shouldbuild" else="false">
 		<and>
-			<istrue value="${isMacOS}"/>
+			<istrue value="${isMacOS}" />
 			<istrue value="${android.enabled}" />
 		</and>
 	</condition>
@@ -37,7 +36,7 @@
 	//
 	-->
 
-	<target name="version_write" >
+	<target name="version_write">
 		<property name="version" value="${version_major}.${version_minor}.${version_build}" />
 
 		<!-- <copy file="${common.basedir}/${codetmpl}/Version.as" tofile="${actionscript.basedir}/src/com/distriqt/extension/${project.packagename}/Version.as" overwrite="true" >
@@ -51,9 +50,7 @@
 	</target>
 
 
-
-
-    <!-- 
+	<!-- 
 	//
 	//
 	//	ANDROID TASKS 
@@ -66,9 +63,9 @@
 
 	<target name="build" depends="version_write, pre_build_android" if="${android.shouldbuild}">
 
-		<echo message="Building Android library..."/>
+		<echo message="Building Android library..." />
 
-		<exec executable="${android.basedir}/${android.gradle}" >
+		<exec executable="${android.basedir}/${android.gradle}">
 			<arg line="assemble" />
 		</exec>
 
@@ -78,8 +75,8 @@
 
 		<delete>
 			<fileset dir="${android.basedir}" defaultexcludes="false">
-				<include name="**/.DS_Store"  />
-				<include name="build"  />
+				<include name="**/.DS_Store" />
+				<include name="build" />
 			</fileset>
 		</delete>
 
@@ -88,7 +85,7 @@
 
 	<target name="clean" if="${android.shouldbuild}">
 
-		<exec executable="${android.basedir}/${android.gradle}" >
+		<exec executable="${android.basedir}/${android.gradle}">
 			<arg line="clean" />
 		</exec>
 
@@ -105,12 +102,7 @@
 
 		<for list="${android.externals}" param="lib">
 			<sequential>
-				<propertyregex override="true"
-					property="libversion"  
-					input="@{lib}"
-					regexp="\@VERSIONEXT\@" 
-					replace="${version.grp}"
-					defaultvalue="@{lib}" />
+				<propertyregex override="true" property="libversion" input="@{lib}" regexp="\@VERSIONEXT\@" replace="${version.grp}" defaultvalue="@{lib}" />
 
 				<echo>android external: ${libversion}</echo>
 
@@ -131,12 +123,23 @@
 					</first>
 				</path>
 
+				<fail message="Could not find dependency: ${libversion}">
+					<condition>
+						<or>
+							<equals arg1="${toString:aarfile}" arg2="" />
+							<not>
+								<available file="${toString:aarfile}" />
+							</not>
+						</or>
+					</condition>
+				</fail>
+
 				<if>
-					<equals arg1="${android.useAndroidX}" arg2="true"/>
+					<equals arg1="${android.useAndroidX}" arg2="true" />
 					<then>
-						<var name="aarfilename" unset="true"/>
-						<basename property="aarfilename" file="${toString:aarfile}"/>
-						
+						<var name="aarfilename" unset="true" />
+						<basename property="aarfilename" file="${toString:aarfile}" />
+
 						<echo>jetify android external: ${toString:aarfile} -> ${aarfilename}</echo>
 
 						<exec executable="${android.jetifier}">
@@ -149,35 +152,49 @@
 					<else>
 						<echo>copy android external: ${toString:aarfile}</echo>
 
-						<copy file="${toString:aarfile}" todir="${android.basedir}/externals" failonerror="false" /> 	
+						<copy file="${toString:aarfile}" todir="${android.basedir}/externals" failonerror="false" />
 					</else>
 				</if>
+
 				
+				<path id="assetsdir">
+					<dirset dir="${android.gradle_cache}" id="aar_assets">
+						<include name="**/${libversion}/assets/**" />
+					</dirset>
+				</path>
+
+
+				<copy overwrite="true" todir="${android.basedir}/externals/assets" flatten="true" includeEmptyDirs="false" failonerror="false">
+					<fileset dir="${android.gradle_cache}">
+						<include name="**/${libversion}/assets/**" />
+					</fileset>
+				</copy>
+
 			</sequential>
 		</for>
 	</target>
 
 
 	<target name="copy_corenativeextension_android_lib" if="${android.packagecorelib}">
-		<echo message="Copying corenativeextension.android.lib ..."/>
+		<echo message="Copying corenativeextension.android.lib ..." />
 
 		<mkdir dir="${android.basedir}/libs/noair" />
 		<copy overwrite="true" todir="${android.basedir}/libs/noair">
-			<fileset dir="${supportlibs.corejar}" >
+			<fileset dir="${supportlibs.corejar}">
 				<include name="*.jar" />
 				<exclude name="*air.jar" />
 			</fileset>
 		</copy>
-	
+
 		<mkdir dir="${android.basedir}/libs" />
 		<copy overwrite="true" todir="${android.basedir}/libs">
-			<fileset dir="${supportlibs.corejar}" >
+			<fileset dir="${supportlibs.corejar}">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
 
-	</target> 
-	
+	</target>
+
 
 	<!-- 
 	//
@@ -187,8 +204,7 @@
 	//
 	-->
 
-	<target name="docs" description="">
-	</target>
+	<target name="docs" description=""></target>
 
 
 </project>

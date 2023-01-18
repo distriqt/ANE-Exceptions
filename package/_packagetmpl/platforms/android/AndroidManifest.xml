@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="@ANDROIDPACKAGE@" >
 
-    <uses-sdk android:minSdkVersion="16" />
+    <uses-sdk android:minSdkVersion="@ANDROIDMINSDK@" android:targetSdkVersion="@ANDROIDTARGETSDK@" />
 
     <application>
     </application>

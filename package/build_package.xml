@@ -19,6 +19,10 @@
 		<format property="publish_date" pattern="yyyy-MM-dd" locale="en,UK" />
 	</tstamp>
 
+	<tstamp>
+		<format property="publish_date_time" pattern="yyyy-MM-dd'T'HH:mm:ss.000'Z'" locale="en,UK" />
+	</tstamp>
+
 	<target name="clean" >
 		<antcall target="clean_variant" >
 			<param name="variant.basedir" value="${airpackage.basedir}" />
@@ -75,9 +79,12 @@
 					<replacestring from="@VERSIONRELEASE@" to="${version.release}"/>
 					<replacestring from="@EXTENSIONID@" to="${output.name}"/>
 					<replacestring from="@PACKAGE@" to="${package.name}"/>
-					<replacestring from="@ANDROIDPACKAGE@" to="${package.name}"/>
 					<replacestring from="@DATE@" to="${publish_date}"/>
+					<replacestring from="@DATETIME@" to="${publish_date_time}"/>
 					<replacestring from="@VARIANT@" to="${airpackage.variant}"/>
+					<replacestring from="@ANDROIDPACKAGE@" to="${package.name}"/>
+					<replacestring from="@ANDROIDMINSDK@" to="${android.minSdkVersion}"/>
+					<replacestring from="@ANDROIDTARGETSDK@" to="${android.targetSdkVersion}"/>
 				</tokenfilter>
 			</filterchain>
 		</copy>
@@ -87,29 +94,40 @@
 	<target name="copy" >
 
 		<!-- See if variant ane dir exists, else copy normal ane -->
+		<fileset id="variant_ane" dir="${common.basedir}/${output.dir}">
+			<include name="${airpackage.variant}/*.ane" />
+		</fileset>
+		<fileset id="normal_ane" dir="${common.basedir}/${output.dir}">
+			<include name="*.ane" />
+		</fileset>
+		<pathconvert refid="variant_ane" property="use_variant_ane" setonempty="false"/>
 		<if>
-			<available file="${common.basedir}/${output.dir}/${airpackage.variant}"/>
+			<isset property="use_variant_ane" />
 			<then>
 				<copy todir="${airpackage.sourcedir}/${output.dir}/ane" flatten="true" overwrite="true" >
-					<fileset dir="${common.basedir}/${output.dir}/${airpackage.variant}">
-						<include name="*.ane" />
-					</fileset>
-				</copy>
-				<copy todir="${airpackage.sourcedir}/${output.dir}/assets/ios" overwrite="true" >
-					<fileset dir="${common.basedir}/${output.dir}/${airpackage.variant}">
-						<include name="Frameworks/**" />
-					</fileset>
+					<fileset refid="variant_ane"/>
 				</copy>
 			</then>
 			<else>
 				<copy todir="${airpackage.sourcedir}/${output.dir}/ane" flatten="true" overwrite="true" >
-					<fileset dir="${common.basedir}/${output.dir}">
-						<include name="*.ane" />
+					<fileset refid="normal_ane"/>
+				</copy>
+			</else>
+		</if>
+
+		<if>
+			<available file="${common.basedir}/${output.dir}/${airpackage.variant}/assets"/>
+			<then>
+				<copy todir="${airpackage.sourcedir}/${output.dir}/assets" overwrite="true" includeEmptyDirs="false" failonerror="false">
+					<fileset dir="${common.basedir}/${output.dir}/${airpackage.variant}/assets">
+						<include name="**" />
 					</fileset>
 				</copy>
-				<copy todir="${airpackage.sourcedir}/${output.dir}/assets/ios" overwrite="true" >
-					<fileset dir="${common.basedir}/${output.dir}">
-						<include name="Frameworks/**" />
+			</then>
+			<else>
+				<copy todir="${airpackage.sourcedir}/${output.dir}/assets" overwrite="true" includeEmptyDirs="false" failonerror="false">
+					<fileset dir="${common.basedir}/${output.dir}/assets">
+						<include name="**" />
 					</fileset>
 				</copy>
 			</else>
@@ -158,9 +176,12 @@
 					<replacestring from="@VERSIONRELEASE@" to="${version.release}"/>
 					<replacestring from="@EXTENSIONID@" to="${output.name}"/>
 					<replacestring from="@PACKAGE@" to="${package.name}"/>
-					<replacestring from="@ANDROIDPACKAGE@" to="${package.name}"/>
 					<replacestring from="@DATE@" to="${publish_date}"/>
+					<replacestring from="@DATETIME@" to="${publish_date_time}"/>
 					<replacestring from="@VARIANT@" to="${airpackage.variant}"/>
+					<replacestring from="@ANDROIDPACKAGE@" to="${package.name}"/>
+					<replacestring from="@ANDROIDMINSDK@" to="${android.minSdkVersion}"/>
+					<replacestring from="@ANDROIDTARGETSDK@" to="${android.targetSdkVersion}"/>
 				</tokenfilter>
 			</filterchain>
 		</copy>
@@ -206,7 +227,7 @@
 		</copy>
 		<copy overwrite="true" failonerror="false" quiet="true" todir="${airpackage.sourcedir}/${output.dir}/assets/android" >
 			<fileset dir="${airpackage.basedir}/${output.tmpdir}/${explode_aar_name}/assets" >
-				<include name="*" />
+				<include name="**" />
 			</fileset>
 		</copy>
 		<delete dir="${airpackage.basedir}/${output.tmpdir}" />
@@ -304,9 +325,6 @@
 			<arg line="publish ${packagefile}" />
 		</exec>
 	</target>
-
-
-
 
 
 

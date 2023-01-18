@@ -1,6 +1,6 @@
 <platform xmlns="http://ns.adobe.com/air/extension/@AIRVERSION@">
-	<copyright>2021 // distriqt</copyright>
-	<sdkVersion>9.0</sdkVersion>
+	<copyright>2023 // distriqt</copyright>
+	<sdkVersion>11.0</sdkVersion>
 	<linkerOptions>
 		<option>-w</option>
 	</linkerOptions>

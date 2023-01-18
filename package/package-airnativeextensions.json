@@ -7,8 +7,8 @@
   "type": "ane",
   "version": "@VERSION@",
   "sourceUrl": "https://github.com/@GITHUB_REPO@/releases/download/v@VERSIONRELEASE@/@EXTENSIONID@_@VERSION@.airpackage",
-  "publishedAt": "@DATE@T00:00:00.000Z",
-  "dependencies": ["com.distriqt.Core:6.x.x"],
+  "publishedAt": "@DATETIME@",
+  "dependencies": ["com.distriqt.Core:7.x.x"],
   "parameters": [],
   "tags": [],
   "license": {

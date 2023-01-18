@@ -2,4 +2,4 @@
 
 | Extension | Version | Android Lib | iOS Lib |
 | --- | --- | --- | --- |
-| com.distriqt.Exceptions | 3.0.8 |  |  |
+| com.distriqt.Exceptions | 3.1.0 |  |  |

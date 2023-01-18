@@ -1,11 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 
-<project default="build" name="actionscript"
-	xmlns:if="ant:if"
-	xmlns:unless="ant:unless"> 
+<project default="build" name="actionscript" xmlns:if="ant:if" xmlns:unless="ant:unless">
 
 
-	
 	<import file="../../build_common.xml" />
 
 
@@ -16,16 +13,15 @@
 	//
 	//
 	-->
-	
+
 	<!-- <lower name="project.packagename" value="${project.name}" /> -->
 	<grppackagename name="project.packagename" prefix="" grp="${project.grp}" projectname="${project.name}" />
 
-    <property name="actionscript.name" value="distriqt.extension.${project.packagename}.swc" />
-	
-	<taskdef resource="flexTasks.tasks" classpath="${air.sdk}/ant/lib/flexTasks.jar" />
-	
-	<dirname property="actionscript.basedir" file="${ant.file.actionscript}" />
+	<property name="actionscript.name" value="distriqt.extension.${project.packagename}.swc" />
 
+	<taskdef resource="flexTasks.tasks" classpath="${air.sdk}/ant/lib/flexTasks.jar" />
+
+	<dirname property="actionscript.basedir" file="${ant.file.actionscript}" />
 
 
 	<!-- 
@@ -36,25 +32,23 @@
 	//
 	-->
 
-	<target name="version_write" >
+	<target name="version_write">
 		<property name="version" value="${version_major}.${version_minor}.${version_build}" />
 
-		<copy file="${common.basedir}/${codetmpl}/Const.as" tofile="${actionscript.basedir}/src/${package.path}/Const.as" overwrite="true" >
+		<copy file="${common.basedir}/${codetmpl}/Const.as" tofile="${actionscript.basedir}/src/${package.path}/Const.as" overwrite="true">
 			<filterchain>
 				<tokenfilter>
-					<replacestring from="@VERSION@" to="${version}"/>
-					<replacestring from="@VERSIONEXT@" to="${version.grp}"/>
-					<replacestring from="@EXTENSIONID@" to="${output.name}"/>
-					<replacestring from="@PACKAGE@" to="${package.name}"/>
+					<replacestring from="@VERSION@" to="${version}" />
+					<replacestring from="@VERSIONEXT@" to="${version.grp}" />
+					<replacestring from="@EXTENSIONID@" to="${output.name}" />
+					<replacestring from="@PACKAGE@" to="${package.name}" />
 				</tokenfilter>
 			</filterchain>
 		</copy>
 	</target>
 
 
-
-
-    <!-- 
+	<!-- 
 	//
 	//
 	//	ACTIONSCRIPT TASKS 
@@ -67,24 +61,22 @@
 
 	<target name="build" depends="version_write, pre_build_actionscript">
 
-		<echo message="Building actionscript library..."/>
+		<echo message="Building actionscript library..." />
 
-		<compc output="${actionscript.basedir}/bin/${actionscript.name}" debug="${DEBUG_MODE}" swf-version="17">
+		<compc output="${actionscript.basedir}/bin/${actionscript.name}" debug="${DEBUG_MODE}" swf-version="${air.swfversion}">
 			<load-config filename="${air.sdk}/frameworks/air-config.xml" />
 			<source-path path-element="${actionscript.basedir}/src" />
 			<include-sources dir="${actionscript.basedir}/src" includes="*" />
 		</compc>
 
-		<echo message="done"/>
+		<echo message="done" />
 
 	</target>
 
 
-	<target name="clean" >
+	<target name="clean">
 		<delete dir="${actionscript.basedir}/bin" />
 	</target>
-
-
 
 
 	<!-- 
@@ -97,17 +89,17 @@
 
 	<target name="docs" description="Generate asdocs">
 		<antcall target="htmldocs" />
-		<antcall target="embeddeddocs" if:true="${output.packageasdocs}"/>
+		<antcall target="embeddeddocs" if:true="${output.packageasdocs}" />
 	</target>
 
 
 	<target name="htmldocs">
 		<delete dir="${common.basedir}/${output.docs}" />
 		<mkdir dir="${common.basedir}/${output.docs}" />
-		
+
 		<exec executable="${air.asdoc}" failonerror="true">
-			<env key="FLEX_HOME" value="${air.sdk}"/>
-			<env key="FALCON_HOME" value="${air.sdk}"/>
+			<env key="FLEX_HOME" value="${air.sdk}" />
+			<env key="FALCON_HOME" value="${air.sdk}" />
 			<arg line="-compiler.locale en_US" />
 			<arg line="-source-path ${actionscript.basedir}/src" />
 			<arg line="-window-title 'distriqt // ${project.name}'" />
@@ -115,21 +107,21 @@
 			<arg line="-main-title '&lt;a href=&quot;http://distriqt.com&quot; target=&quot;_top&quot; &gt;distriqt&lt;/a&gt; // ${project.name} Native Extension Documentation'" if:true="${isMacOS}" />
 			<arg line="-footer 'Copyright distriqt 2016'" if:true="${isWindows}" />
 			<arg line="-footer 'Copyright &lt;a href=&quot;http://distriqt.com&quot; target=&quot;_top&quot; &gt;distriqt&lt;/a&gt; 2016'" if:true="${isMacOS}" />
-			<arg line="-doc-sources ${actionscript.basedir}/src"/>
-			<arg line="-output ${common.basedir}/${output.docs}"/>
+			<arg line="-doc-sources ${actionscript.basedir}/src" />
+			<arg line="-output ${common.basedir}/${output.docs}" />
 			<arg line="-lenient" />
-			<arg line="-library-path+='${air.sdk}/frameworks/libs/air/airglobal.swc'"/>
-		</exec>	  
+			<arg line="-library-path+='${air.sdk}/frameworks/libs/air/airglobal.swc'" />
+		</exec>
 	</target>
 
 
 	<target name="embeddeddocs">
 		<delete dir="${common.basedir}/${output.docs}/.embedded" />
 		<mkdir dir="${common.basedir}/${output.docs}/.embedded" />
-		
+
 		<exec executable="${air.asdoc}" failonerror="true">
-			<env key="FLEX_HOME" value="${air.sdk}"/>
-			<env key="FALCON_HOME" value="${air.sdk}"/>
+			<env key="FLEX_HOME" value="${air.sdk}" />
+			<env key="FALCON_HOME" value="${air.sdk}" />
 			<arg line="-compiler.locale en_US" />
 			<arg line="-source-path ${actionscript.basedir}/src" />
 			<arg line="-window-title 'distriqt // ${project.name}'" />
@@ -137,13 +129,13 @@
 			<arg line="-main-title '&lt;a href=&quot;http://distriqt.com&quot; target=&quot;_top&quot; &gt;distriqt&lt;/a&gt; // ${project.name} Native Extension Documentation'" if:true="${isMacOS}" />
 			<arg line="-footer 'Copyright distriqt 2016'" if:true="${isWindows}" />
 			<arg line="-footer 'Copyright &lt;a href=&quot;http://distriqt.com&quot; target=&quot;_top&quot; &gt;distriqt&lt;/a&gt; 2016'" if:true="${isMacOS}" />
-			<arg line="-doc-sources ${actionscript.basedir}/src"/>
-			<arg line="-output ${common.basedir}/${output.docs}/.embedded"/>
+			<arg line="-doc-sources ${actionscript.basedir}/src" />
+			<arg line="-output ${common.basedir}/${output.docs}/.embedded" />
 			<arg line="-lenient" />
 			<arg line="-keep-xml=true" />
 			<arg line="-skip-xsl=true" />
-			<arg line="-library-path+='${air.sdk}/frameworks/libs/air/airglobal.swc'"/>
-		</exec>	  
+			<arg line="-library-path+='${air.sdk}/frameworks/libs/air/airglobal.swc'" />
+		</exec>
 	</target>
 
 </project>

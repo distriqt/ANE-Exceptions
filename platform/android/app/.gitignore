@@ -1,5 +1,6 @@
 build/*
 !build/outputs
+build/outputs/apk
 build/outputs/logs
 build/outputs/aar/*
 !build/outputs/aar/app-release.aar
